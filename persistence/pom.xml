@@ -15,9 +15,9 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.infinispan</groupId>
-            <artifactId>infinispan-core</artifactId>
-            <version>9.1.0.Final</version>
+            <groupId>javax.cache</groupId>
+            <artifactId>cache-api</artifactId>
+            <version>1.0.0-PFD</version>
         </dependency>
         <dependency>
             <groupId>org.infinispan</groupId>

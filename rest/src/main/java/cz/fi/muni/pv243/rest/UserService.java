@@ -4,12 +4,10 @@ package cz.fi.muni.pv243.rest;
 import cz.fi.muni.pv243.entity.User;
 import cz.fi.muni.pv243.entity.UserManager;
 
-import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import java.util.List;
 
-@ApplicationScoped
 @Path("/users")
 public class UserService {
 
@@ -20,7 +18,6 @@ public class UserService {
     @Produces("application/json")
     public List<User> showAllUsers() {
         return userManager.getAllUsers();
-
     }
 
     @POST
@@ -30,6 +27,4 @@ public class UserService {
         userManager.addUser(user);
         return user;
     }
-
-
 }
