@@ -1,14 +1,22 @@
 package cz.fi.muni.pv243.entity;
 
+import javax.persistence.*;
 import java.io.Serializable;
 
-public class User implements Serializable{
+
+@Entity
+@Table(name = "USER")
+public class User implements Serializable {
 
     private static final long serialVersionUID = 188164481825309731L;
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     private String name;
     private int age;
+
 
     public User() {
     }
@@ -16,6 +24,14 @@ public class User implements Serializable{
     public User(String name, int age) {
         this.name = name;
         this.age = age;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {

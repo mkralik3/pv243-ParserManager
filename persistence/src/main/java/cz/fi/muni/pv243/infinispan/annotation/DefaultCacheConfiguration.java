@@ -1,4 +1,4 @@
-package cz.fi.muni.pv243.app;
+package cz.fi.muni.pv243.infinispan.annotation;
 
 import java.lang.annotation.*;
 
@@ -6,5 +6,5 @@ import java.lang.annotation.*;
 @Target({ElementType.FIELD, ElementType.PARAMETER, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface UserCache {
+public @interface DefaultCacheConfiguration {
 }
