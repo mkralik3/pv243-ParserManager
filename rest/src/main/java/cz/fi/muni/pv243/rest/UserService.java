@@ -2,7 +2,8 @@ package cz.fi.muni.pv243.rest;
 
 
 import cz.fi.muni.pv243.entity.User;
-import cz.fi.muni.pv243.entity.UserManager;
+import cz.fi.muni.pv243.infinispan.annotation.CachedStore;
+import cz.fi.muni.pv243.store.UserStore;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
@@ -12,19 +13,20 @@ import java.util.List;
 public class UserService {
 
     @Inject
-    private UserManager userManager;
+    @CachedStore
+    private UserStore userStore;
 
     @GET
     @Produces("application/json")
-    public List<User> showAllUsers() {
-        return userManager.getAllUsers();
+    public List<User> getAllUsers() {
+        return userStore.getAllUsers();
     }
 
     @POST
     @Consumes("application/json")
     @Produces("application/json")
-    public User consumeJSON(User user) {
-        userManager.addUser(user);
+    public User createUser(User user) {
+        userStore.addUser(user);
         return user;
     }
 }
