@@ -32,4 +32,9 @@ public class JPAParserStore implements ParserStore {
         em.persist(parser);
         return parser;
     }
+    
+    @Override
+    public Parser findParser(Long id) {
+        return em.find(Parser.class, id);
+    }
 }
