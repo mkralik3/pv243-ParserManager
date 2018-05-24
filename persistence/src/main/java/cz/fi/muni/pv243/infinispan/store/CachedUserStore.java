@@ -1,8 +1,8 @@
 package cz.fi.muni.pv243.infinispan.store;
 
 import cz.fi.muni.pv243.entity.User;
-import cz.fi.muni.pv243.infinispan.annotation.DefaultCacheConfiguration;
 import cz.fi.muni.pv243.infinispan.annotation.CachedStore;
+import cz.fi.muni.pv243.infinispan.annotation.DefaultCacheConfiguration;
 import cz.fi.muni.pv243.jpa.annotation.JPAStore;
 import cz.fi.muni.pv243.store.UserStore;
 import org.infinispan.Cache;
