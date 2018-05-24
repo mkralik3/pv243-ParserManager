@@ -9,4 +9,6 @@ public interface ParserStore {
     List<Parser> getAllParsers();
 
     Parser addParser(Parser parser);
+
+    Parser findParser(Long id);
 }
