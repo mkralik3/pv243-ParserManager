@@ -18,7 +18,7 @@ public interface ParserConfigurationService {
      * parser is used by system since it's confirmed by admin
      * @param parserId 
      */
-    void confirm(Long parserId);
+    void confirm(Parser parser);
 
     List<Parser> getAll();
     

@@ -19,6 +19,18 @@
             <artifactId>ParserManager-persistence</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
+        <dependency>
+        	<groupId>org.jboss.logging</groupId>
+        	<artifactId>jboss-logging-processor</artifactId>
+        	<version>2.0.1.Final</version>
+        	<scope>provided</scope>
+        </dependency>
+        <dependency>
+        	<groupId>org.jboss.logging</groupId>
+        	<artifactId>jboss-logging-annotations</artifactId>
+        	<version>2.0.1.Final</version>
+        	<scope>provided</scope>
+        </dependency>
     </dependencies>
     
 </project>
