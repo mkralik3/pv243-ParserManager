@@ -15,8 +15,6 @@ public class Parser implements Serializable {
     private Long id;
 
     private String xpath;
-    
-    private boolean valid;
 
     public Long getId() {
         return id;
@@ -32,14 +30,6 @@ public class Parser implements Serializable {
 
     public void setXpath(String xpath) {
         this.xpath = xpath;
-    }
-
-    public boolean isValid() {
-        return valid;
-    }
-
-    public void setValid(boolean valid) {
-        this.valid = valid;
     }
 
     @Override

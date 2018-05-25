@@ -6,8 +6,11 @@
 package cz.fi.muni.pv243.ws.endpoint;
 
 import cz.fi.muni.pv243.entity.Parser;
+import cz.fi.muni.pv243.entity.ParserConfiguration;
 import cz.fi.muni.pv243.service.ParserConfigurationService;
 import cz.fi.muni.pv243.service.ParserManagerLogger;
+import cz.fi.muni.pv243.ws.service.ParserConfigurationDecoder;
+import cz.fi.muni.pv243.ws.service.ParserConfigurationEncoder;
 import cz.fi.muni.pv243.ws.service.SessionStore;
 import cz.fi.muni.pv243.ws.service.WSJMSMessage;
 
@@ -28,30 +31,31 @@ import javax.websocket.server.ServerEndpoint;
  * @author Michaela Bocanova
  */
 @ApplicationScoped
-@ServerEndpoint(value = "/ws")
+@ServerEndpoint(value = "/ws", encoders = { ParserConfigurationEncoder.class }/*, decoders = { ParserConfigurationDecoder.class }*/)
 public class ParserConfigurationServerEndpoint {
     
     @Inject
-    private SessionStore sessions;
+    private SessionStore clients;
     
     @Inject
     private ParserConfigurationService service;
     
     @OnMessage
-    public void onMessage(String parser, Session session) {
-        //service.confirm(parser);
+    public void onMessage(final ParserConfiguration message, final Session session) {
+    	
+        service.confirm(message);
     }
 
     @OnOpen
-    public void onOpen(Session session) {
-        sessions.addSession(session);
+    public void onOpen(final Session session) {
+        clients.addSession(session);
         sendToSession(service.getAll(), session);
         ParserManagerLogger.LOGGER.logWebsocketConnect(getClass().getSimpleName());
     }
 
     @OnClose
-    public void onClose(Session session) {
-        sessions.removeSession(session);
+    public void onClose(final Session session) {
+        clients.removeSession(session.getId());
         ParserManagerLogger.LOGGER.logWebsocketDisconnect(getClass().getSimpleName());
     }
     
@@ -60,17 +64,17 @@ public class ParserConfigurationServerEndpoint {
     	ParserManagerLogger.LOGGER.logWebsocketError(getClass().getSimpleName(), error);
     }
     
-    public void onJMSMessage(@Observes @WSJMSMessage List<Parser> parsers) {
+    public void onJMSMessage(@Observes @WSJMSMessage List<ParserConfiguration> parsers) {
         sendToAllSessions(parsers);        
     }
     
-    private void sendToAllSessions(List<Parser> all) {
-        for (Session session : sessions.getSessions()) {
+    private void sendToAllSessions(List<ParserConfiguration> all) {
+        for (Session session : clients.getSessions()) {
             sendToSession(all, session);
         }
     }
 
-    private void sendToSession(List<Parser> all, Session session) {
+    private void sendToSession(List<ParserConfiguration> all, Session session) {
         session.getAsyncRemote().sendObject(all);
     }
     
