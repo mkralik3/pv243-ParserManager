@@ -8,6 +8,11 @@ import org.jboss.logging.annotations.MessageLogger;
 
 import cz.fi.muni.pv243.entity.Parser;
 
+/**
+ * 
+ * @author Michaela Bocanova
+ *
+ */
 @MessageLogger(projectCode = "PARSERMNG")
 public interface ParserManagerLogger extends BasicLogger {
 

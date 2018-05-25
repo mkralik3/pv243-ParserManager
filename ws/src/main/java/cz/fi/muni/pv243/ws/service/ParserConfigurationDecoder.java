@@ -13,7 +13,7 @@ import cz.fi.muni.pv243.entity.ParserConfiguration;
 
 /**
  * This class is responsible to "decode" the received String from clients in a Message object
- * @author windows_sucks
+ * @author Michaela Bocanova
  *
  */
 public class ParserConfigurationDecoder implements Decoder.Text<ParserConfiguration> {

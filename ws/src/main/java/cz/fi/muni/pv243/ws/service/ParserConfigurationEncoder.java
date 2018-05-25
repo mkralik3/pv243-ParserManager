@@ -15,7 +15,7 @@ import cz.fi.muni.pv243.entity.ParserConfiguration;
 
 /**
  * This class is responsible to encode the Parser object in a String that will be sent to clients
- * @author windows_sucks
+ * @author Michaela Bocanova
  *
  */
 public class ParserConfigurationEncoder implements Encoder.Text<List<ParserConfiguration>> {
