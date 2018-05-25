@@ -17,6 +17,11 @@ import cz.fi.muni.pv243.jpa.annotation.JPAStore;
 import cz.fi.muni.pv243.store.ParserConfigurationStore;
 import cz.fi.muni.pv243.store.ParserStore;
 
+/**
+ * 
+ * @author Michaela Bocanova
+ *
+ */
 @Named
 @ApplicationScoped
 @CachedStore
@@ -47,4 +52,11 @@ public class CachedParserConfigurationStore implements ParserConfigurationStore 
     public ParserConfiguration findParser(Long id) {
         return delegate.findParser(id);
     }
+
+	@Override
+	public ParserConfiguration updateParser(ParserConfiguration parser) {
+		parser = delegate.updateParser(parser);
+		parserCache.put(parser.getId(), parser);
+		return parser;
+	}
 }

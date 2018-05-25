@@ -5,9 +5,15 @@
  */
 package cz.fi.muni.pv243.ws.service;
 
+import javax.annotation.Resource;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 import javax.inject.Named;
+import javax.jms.JMSContext;
+import javax.jms.Queue;
+
+import cz.fi.muni.pv243.entity.ParserConfiguration;
 
 /**
  *
@@ -18,13 +24,13 @@ import javax.inject.Named;
 @Stateless
 public class QueueSenderSessionBean {
     
-	/*@Resource(mappedName="jms/myQueue")
+	@Resource(mappedName="jms/myQueue")
 	private Queue myQueue;
 	@Inject 
 	private JMSContext jmsContext;
 	
-	public void sendMessage(String message) {
+	public void sendMessage(ParserConfiguration message) {
+		jmsContext.createProducer().send(myQueue, message);
 		
-		
-	}*/
+	}
 }

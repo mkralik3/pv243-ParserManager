@@ -17,6 +17,7 @@ import javax.inject.Inject;
  *
  * @author Michaela Bocanova
  */
+//@Stateless
 public class ParserConfigurationServiceImpl implements ParserConfigurationService {
 
     @Inject
@@ -36,10 +37,11 @@ public class ParserConfigurationServiceImpl implements ParserConfigurationServic
     	}
     	else {
     		parser = new Parser();
-    		//parserStore.addParser(parser);
+    		//settery
+    		parserStore.addParser(parser);
     	}
     	config.setConfirmed(true);
-		//configStore.update();
+		configStore.updateParser(config);
     }
     
     @Override

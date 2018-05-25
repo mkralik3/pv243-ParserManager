@@ -14,6 +14,11 @@ import cz.fi.muni.pv243.entity.ParserConfiguration;
 import cz.fi.muni.pv243.jpa.annotation.JPAStore;
 import cz.fi.muni.pv243.store.ParserConfigurationStore;
 
+/**
+ * 
+ * @author Michaela Bocanova
+ *
+ */
 @Named
 @ApplicationScoped
 @JPAStore
@@ -38,5 +43,10 @@ public class JPAParserConfigurationStore implements ParserConfigurationStore {
     @Override
     public ParserConfiguration findParser(Long id) {
         return em.find(ParserConfiguration.class, id);
+    }
+    
+    @Override
+	public ParserConfiguration updateParser(ParserConfiguration parser) {
+    	return em.merge(parser);
     }
 }

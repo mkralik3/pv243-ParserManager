@@ -11,6 +11,7 @@ import cz.fi.muni.pv243.service.ParserConfigurationService;
 import cz.fi.muni.pv243.service.ParserManagerLogger;
 import cz.fi.muni.pv243.ws.service.ParserConfigurationDecoder;
 import cz.fi.muni.pv243.ws.service.ParserConfigurationEncoder;
+import cz.fi.muni.pv243.ws.service.QueueSenderSessionBean;
 import cz.fi.muni.pv243.ws.service.SessionStore;
 import cz.fi.muni.pv243.ws.service.WSJMSMessage;
 
@@ -18,6 +19,7 @@ import java.util.List;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.websocket.OnClose;
 import javax.websocket.OnError;
 import javax.websocket.OnMessage;
@@ -30,6 +32,7 @@ import javax.websocket.server.ServerEndpoint;
  *
  * @author Michaela Bocanova
  */
+@Named
 @ApplicationScoped
 @ServerEndpoint(value = "/ws", encoders = { ParserConfigurationEncoder.class }/*, decoders = { ParserConfigurationDecoder.class }*/)
 public class ParserConfigurationServerEndpoint {
@@ -40,10 +43,14 @@ public class ParserConfigurationServerEndpoint {
     @Inject
     private ParserConfigurationService service;
     
+    @Inject
+    private QueueSenderSessionBean senderBean;
+    
     @OnMessage
     public void onMessage(final ParserConfiguration message, final Session session) {
     	
         service.confirm(message);
+        senderBean.sendMessage(message);
     }
 
     @OnOpen
