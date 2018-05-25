@@ -9,8 +9,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**
- * This class represents the message from clients to the Websocket endpoint
- * @author windows_sucks
+ * 
+ * @author Michaela Bocanova
  *
  */
 @Entity

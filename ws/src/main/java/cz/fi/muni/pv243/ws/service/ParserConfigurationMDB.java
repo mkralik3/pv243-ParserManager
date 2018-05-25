@@ -5,12 +5,17 @@
  */
 package cz.fi.muni.pv243.ws.service;
 
+import java.util.List;
+
 import javax.ejb.MessageDriven;
 import javax.enterprise.event.Event;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.jms.Message;
 import javax.jms.MessageListener;
+
+import cz.fi.muni.pv243.entity.ParserConfiguration;
+import cz.fi.muni.pv243.service.ParserConfigurationService;
 
 /**
  *
@@ -22,11 +27,15 @@ public class ParserConfigurationMDB implements MessageListener {
 
 	@Inject
     @WSJMSMessage     
-    Event<Message> jmsEvent; 
+    //Event<Message> jmsEvent; 
+    private Event<List<ParserConfiguration>> jmsEvent;
+
+    @Inject
+    private ParserConfigurationService service;
 	
 	@Override
 	public void onMessage(Message message) {
-		jmsEvent.fire(message);		
+		jmsEvent.fire(service.getAll());		
 	}
     
 }
