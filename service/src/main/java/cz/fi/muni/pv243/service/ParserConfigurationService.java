@@ -6,6 +6,8 @@
 package cz.fi.muni.pv243.service;
 
 import cz.fi.muni.pv243.entity.Parser;
+import cz.fi.muni.pv243.entity.ParserConfiguration;
+
 import java.util.List;
 
 /**
@@ -18,8 +20,8 @@ public interface ParserConfigurationService {
      * parser is used by system since it's confirmed by admin
      * @param parserId 
      */
-    void confirm(Parser parser);
+    void confirm(ParserConfiguration config);
 
-    List<Parser> getAll();
+    List<ParserConfiguration> getAll();
     
 }

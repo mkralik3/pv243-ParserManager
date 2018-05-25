@@ -6,7 +6,9 @@
 package cz.fi.muni.pv243.service;
 
 import cz.fi.muni.pv243.entity.Parser;
+import cz.fi.muni.pv243.entity.ParserConfiguration;
 import cz.fi.muni.pv243.infinispan.annotation.CachedStore;
+import cz.fi.muni.pv243.infinispan.store.CachedParserConfigurationStore;
 import cz.fi.muni.pv243.infinispan.store.CachedParserStore;
 import java.util.List;
 import javax.inject.Inject;
@@ -21,16 +23,28 @@ public class ParserConfigurationServiceImpl implements ParserConfigurationServic
     @CachedStore
     private CachedParserStore parserStore;
     
+    @Inject
+    @CachedStore
+    private CachedParserConfigurationStore configStore;
+    
     @Override
-    public void confirm(Parser parser) {
-    	parser.setValid(true);
-    	parserStore.addParser(parser);//update
-        //Parser parser = parserStore.findParser(parserId);
+    public void confirm(ParserConfiguration config) {
+    	Parser parser = parserStore.findParser(config.getRestaurantId());
+    	if (parser != null) {    		
+    		parser.setXpath(config.getXpath());
+    		//parserStore.addParser(parser);//update
+    	}
+    	else {
+    		parser = new Parser();
+    		//parserStore.addParser(parser);
+    	}
+    	config.setConfirmed(true);
+		//configStore.update();
     }
     
     @Override
-    public List<Parser> getAll() {
-        return parserStore.getAllParsers();
+    public List<ParserConfiguration> getAll() {
+        return configStore.getAllParsers();
     }
     
 }
