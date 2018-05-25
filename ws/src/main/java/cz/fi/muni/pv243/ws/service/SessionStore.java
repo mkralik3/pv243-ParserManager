@@ -18,6 +18,7 @@ import javax.websocket.Session;
 @ApplicationScoped
 public class SessionStore {
     
+	//infinispan cache?
     private List<Session> sessions = Collections.synchronizedList(new LinkedList<Session>());
     
     public void addSession(Session session) {

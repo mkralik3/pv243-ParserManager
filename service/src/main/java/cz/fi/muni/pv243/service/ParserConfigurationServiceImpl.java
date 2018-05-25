@@ -22,9 +22,10 @@ public class ParserConfigurationServiceImpl implements ParserConfigurationServic
     private CachedParserStore parserStore;
     
     @Override
-    public void confirm(Long parserId) {
-        Parser parser = parserStore.findParser(parserId);
-        parser.setValid(true);
+    public void confirm(Parser parser) {
+    	parser.setValid(true);
+    	parserStore.addParser(parser);//update
+        //Parser parser = parserStore.findParser(parserId);
     }
     
     @Override
