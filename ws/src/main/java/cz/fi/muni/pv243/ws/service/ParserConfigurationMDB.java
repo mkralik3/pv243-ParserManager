@@ -5,10 +5,28 @@
  */
 package cz.fi.muni.pv243.ws.service;
 
+import javax.ejb.MessageDriven;
+import javax.enterprise.event.Event;
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.jms.Message;
+import javax.jms.MessageListener;
+
 /**
  *
  * @author Michaela Bocanova
  */
-public class ParserConfigurationMDB {
+@Named
+@MessageDriven(mappedName = "jms/myQueue")
+public class ParserConfigurationMDB implements MessageListener {
+
+	@Inject
+    @WSJMSMessage     
+    Event<Message> jmsEvent; 
+	
+	@Override
+	public void onMessage(Message message) {
+		jmsEvent.fire(message);		
+	}
     
 }
