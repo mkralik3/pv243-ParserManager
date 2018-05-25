@@ -5,6 +5,7 @@
  */
 
 var websocket = null;
+var parsers = [];
             
 function connect() {
     var wsProtocol = document.location.protocol === "https:" ? "wss" : "ws";
@@ -17,7 +18,9 @@ function connect() {
     };
     websocket.onmessage = function(event) {
     	var parser = JSON.parse(event.data);
-    	
+    	for (var item in parser) {
+    		parsers.push(item);
+    	}
         // log the event
         displayMessage('The response was received! ' + parser, 'success');
     };
