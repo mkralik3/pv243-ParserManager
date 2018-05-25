@@ -11,9 +11,6 @@
     <packaging>war</packaging>
     <name>WS</name>
 
-    <properties>
-        <failOnMissingWebXml>false</failOnMissingWebXml>
-    </properties>
     
     <dependencies>
         <dependency>

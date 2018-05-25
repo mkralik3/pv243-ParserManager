@@ -7,14 +7,14 @@ package cz.fi.muni.pv243.ws.endpoint;
 
 import cz.fi.muni.pv243.entity.Parser;
 import cz.fi.muni.pv243.service.ParserConfigurationService;
+import cz.fi.muni.pv243.ws.service.SessionStore;
 import cz.fi.muni.pv243.ws.service.WSJMSMessage;
 import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
-import javax.ejb.Singleton;
+import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;
 import javax.inject.Inject;
 import javax.websocket.OnClose;
+import javax.websocket.OnError;
 import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
@@ -25,11 +25,12 @@ import javax.websocket.server.ServerEndpoint;
  *
  * @author Michaela Bocanova
  */
-@Singleton
-@ServerEndpoint("/notifications")
-public class ParserConfigurationEndpoint {
+@ApplicationScoped
+@ServerEndpoint(value = "/ws")
+public class ParserConfigurationServerEndpoint {
     
-    private ConcurrentMap<String, Session> sessions = new ConcurrentHashMap<>();
+    @Inject
+    private SessionStore sessions;
     
     @Inject
     private ParserConfigurationService service;
@@ -42,29 +43,33 @@ public class ParserConfigurationEndpoint {
 
     @OnOpen
     public void onOpen(Session session) {
-        sessions.put(session.getUserPrincipal().getName(), session);
-        send(service.getAll(), session);
+        sessions.addSession(session);
+        sendToSession(service.getAll(), session);
         System.out.println("WebSocket opened: " + session.getId());
     }
 
     @OnClose
     public void onClose(Session session) {
-        sessions.remove(session.getUserPrincipal().getName());
+        sessions.removeSession(session);
         System.out.println("WebSocket connection closed: " + session.getId());
     }
     
-    public void onJMSMessage(@Observes @WSJMSMessage List<Parser> parsers) {
-        send(parsers);        
+    @OnError
+    public void onError(Throwable error) {
+        //log
     }
     
-    private void send(List<Parser> all) {
-        sessions.entrySet().stream()
-                .forEach(session -> {
-                    session.getValue().getAsyncRemote().sendObject(all);
-                });
+    public void onJMSMessage(@Observes @WSJMSMessage List<Parser> parsers) {
+        sendToAllSessions(parsers);        
+    }
+    
+    private void sendToAllSessions(List<Parser> all) {
+        for (Session session : sessions.getSessions()) {
+            sendToSession(all, session);
+        }
     }
 
-    private void send(List<Parser> all, Session session) {
+    private void sendToSession(List<Parser> all, Session session) {
         session.getAsyncRemote().sendObject(all);
     }
     
