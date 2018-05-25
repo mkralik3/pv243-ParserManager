@@ -7,8 +7,10 @@ package cz.fi.muni.pv243.ws.endpoint;
 
 import cz.fi.muni.pv243.entity.Parser;
 import cz.fi.muni.pv243.service.ParserConfigurationService;
+import cz.fi.muni.pv243.service.ParserManagerLogger;
 import cz.fi.muni.pv243.ws.service.SessionStore;
 import cz.fi.muni.pv243.ws.service.WSJMSMessage;
+
 import java.util.List;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;
@@ -36,27 +38,26 @@ public class ParserConfigurationServerEndpoint {
     private ParserConfigurationService service;
     
     @OnMessage
-    public void onMessage(String message, Session session) {
-        
-        System.out.println("Message: '" + message + "'");
+    public void onMessage(String parser, Session session) {
+        //service.confirm(parser);
     }
 
     @OnOpen
     public void onOpen(Session session) {
         sessions.addSession(session);
         sendToSession(service.getAll(), session);
-        System.out.println("WebSocket opened: " + session.getId());
+        ParserManagerLogger.LOGGER.logWebsocketConnect(getClass().getSimpleName());
     }
 
     @OnClose
     public void onClose(Session session) {
         sessions.removeSession(session);
-        System.out.println("WebSocket connection closed: " + session.getId());
+        ParserManagerLogger.LOGGER.logWebsocketDisconnect(getClass().getSimpleName());
     }
     
     @OnError
     public void onError(Throwable error) {
-        //log
+    	ParserManagerLogger.LOGGER.logWebsocketError(getClass().getSimpleName(), error);
     }
     
     public void onJMSMessage(@Observes @WSJMSMessage List<Parser> parsers) {
