@@ -8,5 +8,9 @@ public interface RestaurantStore {
 
     List<Restaurant> getAllRestaurants();
 
-    Restaurant addRestaurant(Restaurant parser);
+    Restaurant addRestaurant(Restaurant restaurant);
+
+    Restaurant findById(String googleID);
+
+    Restaurant updateRestaurant(Restaurant restaurant);
 }

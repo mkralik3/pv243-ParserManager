@@ -24,7 +24,7 @@ public class CachedRestaurantStore implements RestaurantStore {
 
     @Inject
     @DefaultCacheConfiguration
-    private Cache<Long, Restaurant> parserCache;
+    private Cache<String, Restaurant> parserCache;
 
     @Override
     public List<Restaurant> getAllRestaurants() {
@@ -35,7 +35,20 @@ public class CachedRestaurantStore implements RestaurantStore {
     @Transactional
     public Restaurant addRestaurant(Restaurant restaurant){
         restaurant = delegate.addRestaurant(restaurant);
-        parserCache.put(restaurant.getId(), restaurant);
+        parserCache.put(restaurant.getGooglePlaceID(), restaurant);
+        return restaurant;
+    }
+
+    @Override
+    public Restaurant findById(String googleID) {
+        return parserCache.computeIfAbsent(googleID,
+                s -> delegate.findById(s));
+    }
+
+    @Override
+    public Restaurant updateRestaurant(Restaurant restaurant) {
+        restaurant = delegate.updateRestaurant(restaurant);
+        parserCache.put(restaurant.getGooglePlaceID(), restaurant);
         return restaurant;
     }
 }
