@@ -30,6 +30,7 @@ public class JPAParserStore implements ParserStore {
     @Transactional
     public Parser addParser(Parser parser){
         em.persist(parser);
+        em.flush();
         return parser;
     }
     
