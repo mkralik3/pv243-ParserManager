@@ -13,7 +13,7 @@ import javax.inject.Named;
 import javax.jms.JMSContext;
 import javax.jms.Queue;
 
-import cz.fi.muni.pv243.entity.ParserConfiguration;
+import cz.fi.muni.pv243.entity.Parser;
 
 /**
  *
@@ -29,7 +29,7 @@ public class QueueSenderSessionBean {
 	@Inject 
 	private JMSContext jmsContext;
 	
-	public void sendMessage(ParserConfiguration message) {
+	public void sendMessage(Parser message) {
 		jmsContext.createProducer().send(myQueue, message);
 		
 	}

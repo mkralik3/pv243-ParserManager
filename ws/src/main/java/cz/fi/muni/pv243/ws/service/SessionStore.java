@@ -21,7 +21,6 @@ import javax.websocket.Session;
 @ApplicationScoped
 public class SessionStore {
 	
-	//infinispan cache?
     //private List<Session> sessions = Collections.synchronizedList(new LinkedList<Session>());
     private ConcurrentHashMap<String, Session> sessions = new ConcurrentHashMap<>();
     

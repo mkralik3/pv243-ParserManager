@@ -9,14 +9,14 @@ import javax.websocket.DecodeException;
 import javax.websocket.Decoder;
 import javax.websocket.EndpointConfig;
 
-import cz.fi.muni.pv243.entity.ParserConfiguration;
+import cz.fi.muni.pv243.entity.Parser;
 
 /**
  * This class is responsible to "decode" the received String from clients in a Message object
  * @author Michaela Bocanova
  *
  */
-public class ParserConfigurationDecoder implements Decoder.Text<ParserConfiguration> {
+public class ParserConfigurationDecoder implements Decoder.Text<Parser> {
 
 	@Override
 	public void init(EndpointConfig config) {
@@ -27,7 +27,7 @@ public class ParserConfigurationDecoder implements Decoder.Text<ParserConfigurat
 	}
 
 	@Override
-	public ParserConfiguration decode(String msg) throws DecodeException {
+	public Parser decode(String msg) throws DecodeException {
 		// It uses the JSON-P API to parse JSON content
         /*JsonReader reader = Json.createReader(new StringReader(msg));
         JsonObject jsonObject = reader.readObject();

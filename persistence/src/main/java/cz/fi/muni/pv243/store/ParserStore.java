@@ -11,4 +11,6 @@ public interface ParserStore {
     Parser addParser(Parser parser);
 
     Parser findParser(Long id);
+    
+    Parser updateParser(Parser parser);
 }
