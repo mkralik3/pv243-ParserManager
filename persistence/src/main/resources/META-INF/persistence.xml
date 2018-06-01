@@ -7,7 +7,6 @@
         <class>cz.fi.muni.pv243.entity.Parser</class>
         <class>cz.fi.muni.pv243.entity.Restaurant</class>
         <class>cz.fi.muni.pv243.entity.User</class>
-        <class>cz.fi.muni.pv243.entity.ParserConfiguration</class>
 
         <properties>
             <property name="hibernate.hbm2ddl.auto" value="create-drop"/>

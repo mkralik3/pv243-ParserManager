@@ -6,11 +6,12 @@
 package cz.fi.muni.pv243.service;
 
 import cz.fi.muni.pv243.entity.Parser;
-import cz.fi.muni.pv243.entity.ParserConfiguration;
+import cz.fi.muni.pv243.entity.Restaurant;
 import cz.fi.muni.pv243.infinispan.annotation.CachedStore;
-import cz.fi.muni.pv243.infinispan.store.CachedParserConfigurationStore;
 import cz.fi.muni.pv243.infinispan.store.CachedParserStore;
 import java.util.List;
+import java.util.stream.Collectors;
+
 import javax.inject.Inject;
 
 /**
@@ -24,29 +25,33 @@ public class ParserConfigurationServiceImpl implements ParserConfigurationServic
     @CachedStore
     private CachedParserStore parserStore;
     
-    @Inject
-    @CachedStore
-    private CachedParserConfigurationStore configStore;
-    
     @Override
-    public void confirm(ParserConfiguration config) {
-    	Parser parser = parserStore.findParser(config.getRestaurantId());
-    	if (parser != null) {    		
-    		parser.setXpath(config.getXpath());
-    		//parserStore.addParser(parser);//update
+    public void confirm(Parser parser) {
+    	Parser old = getConfirmedParser(parser.getRestaurant());
+    	if (old != null) {
+    		old.setConfirmed(false);
+    		parserStore.updateParser(old);
     	}
-    	else {
-    		parser = new Parser();
-    		//settery
-    		parserStore.addParser(parser);
-    	}
-    	config.setConfirmed(true);
-		configStore.updateParser(config);
+    	parser.setConfirmed(true);
+		parserStore.updateParser(parser);
     }
     
     @Override
-    public List<ParserConfiguration> getAll() {
-        return configStore.getAllParsers();
+    public List<Parser> getAll() {
+        return parserStore.getAllParsers();
+    }
+    
+    @Override
+    public List<Parser> getAll(boolean confirmed) {
+        return parserStore.getAllParsers().stream()
+        		.filter(p -> (p.isConfirmed() == confirmed))
+        		.collect(Collectors.toList());
+    }
+    
+    public Parser getConfirmedParser(Restaurant restaurant) {
+    	return  parserStore.getAllParsers().stream()
+    			.filter(p -> (p.getRestaurant().equals(restaurant) && p.isConfirmed()))
+    			.collect(Collectors.toList()).get(0);
     }
     
 }
