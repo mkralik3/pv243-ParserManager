@@ -14,7 +14,7 @@ import javax.inject.Named;
 import javax.jms.Message;
 import javax.jms.MessageListener;
 
-import cz.fi.muni.pv243.entity.ParserConfiguration;
+import cz.fi.muni.pv243.entity.Parser;
 import cz.fi.muni.pv243.service.ParserConfigurationService;
 
 /**
@@ -28,7 +28,7 @@ public class ParserConfigurationMDB implements MessageListener {
 	@Inject
     @WSJMSMessage     
     //Event<Message> jmsEvent; 
-    private Event<List<ParserConfiguration>> jmsEvent;
+    private Event<List<Parser>> jmsEvent;
 
     @Inject
     private ParserConfigurationService service;

@@ -11,14 +11,13 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import cz.fi.muni.pv243.entity.Parser;
-import cz.fi.muni.pv243.entity.ParserConfiguration;
 
 /**
- * This class is responsible to encode the Parser object in a String that will be sent to clients
+ * This class is responsible for encoding the Parser object in a String that will be sent to clients
  * @author Michaela Bocanova
  *
  */
-public class ParserConfigurationEncoder implements Encoder.Text<List<ParserConfiguration>> {
+public class ParserConfigurationEncoder implements Encoder.Text<List<Parser>> {
 
 	private ObjectMapper objectMapper;
 	
@@ -32,7 +31,7 @@ public class ParserConfigurationEncoder implements Encoder.Text<List<ParserConfi
 	}
 
 	@Override
-	public String encode(List<ParserConfiguration> object) throws EncodeException {
+	public String encode(List<Parser> object) throws EncodeException {
 		try {
             return objectMapper.writeValueAsString(object);
         } catch (JsonProcessingException e) {

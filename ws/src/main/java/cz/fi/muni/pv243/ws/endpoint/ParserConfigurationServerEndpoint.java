@@ -6,7 +6,6 @@
 package cz.fi.muni.pv243.ws.endpoint;
 
 import cz.fi.muni.pv243.entity.Parser;
-import cz.fi.muni.pv243.entity.ParserConfiguration;
 import cz.fi.muni.pv243.service.ParserConfigurationService;
 import cz.fi.muni.pv243.service.ParserManagerLogger;
 import cz.fi.muni.pv243.ws.service.ParserConfigurationDecoder;
@@ -47,8 +46,7 @@ public class ParserConfigurationServerEndpoint {
     private QueueSenderSessionBean senderBean;
     
     @OnMessage
-    public void onMessage(final ParserConfiguration message, final Session session) {
-    	
+    public void onMessage(final Parser message, final Session session) {	
         service.confirm(message);
         senderBean.sendMessage(message);
     }
@@ -71,17 +69,17 @@ public class ParserConfigurationServerEndpoint {
     	ParserManagerLogger.LOGGER.logWebsocketError(getClass().getSimpleName(), error);
     }
     
-    public void onJMSMessage(@Observes @WSJMSMessage List<ParserConfiguration> parsers) {
+    public void onJMSMessage(@Observes @WSJMSMessage List<Parser> parsers) {
         sendToAllSessions(parsers);        
     }
     
-    private void sendToAllSessions(List<ParserConfiguration> all) {
+    private void sendToAllSessions(List<Parser> all) {
         for (Session session : clients.getSessions()) {
             sendToSession(all, session);
         }
     }
 
-    private void sendToSession(List<ParserConfiguration> all, Session session) {
+    private void sendToSession(List<Parser> all, Session session) {
         session.getAsyncRemote().sendObject(all);
     }
     

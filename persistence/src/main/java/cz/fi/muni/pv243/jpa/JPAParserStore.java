@@ -38,4 +38,9 @@ public class JPAParserStore implements ParserStore {
     public Parser findParser(Long id) {
         return em.find(Parser.class, id);
     }
+    
+    @Override
+	public Parser updateParser(Parser parser) {
+    	return em.merge(parser);
+    }
 }

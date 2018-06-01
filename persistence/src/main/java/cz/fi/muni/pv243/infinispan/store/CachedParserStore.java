@@ -41,6 +41,14 @@ public class CachedParserStore implements ParserStore {
 
     @Override
     public Parser findParser(Long id) {
-        return delegate.findParser(id);
+    	Parser parser = parserCache.get(id);
+    	return parser == null ? delegate.findParser(id) : parser;
     }
+    
+    @Override
+	public Parser updateParser(Parser parser) {
+		parser = delegate.updateParser(parser);
+		parserCache.put(parser.getId(), parser);
+		return parser;
+	}
 }
