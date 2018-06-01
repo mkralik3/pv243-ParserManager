@@ -45,16 +45,12 @@ public class ParserConfigurationServiceImpl implements ParserConfigurationServic
     
     @Override
     public List<Parser> getAll(boolean confirmed) {
-        return parserStore.getAllParsers().stream()
-        		.filter(p -> (p.isConfirmed() == confirmed))
-        		.collect(Collectors.toList());
+        return parserStore.getAllParsers(confirmed);
     }
     
     @Override
     public Parser getConfirmedParser(Restaurant restaurant) {
-    	return  parserStore.getAllParsers().stream()
-    			.filter(p -> (p.getRestaurant().equals(restaurant) && p.isConfirmed()))
-    			.collect(Collectors.toList()).get(0);
+    	return  parserStore.getConfirmedParser(restaurant.getGooglePlaceID());
     }
     
     

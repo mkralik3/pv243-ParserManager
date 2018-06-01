@@ -13,4 +13,8 @@ public interface ParserStore {
     Parser findParser(Long id);
     
     Parser updateParser(Parser parser);
+
+	Parser getConfirmedParser(String restaurantId);
+
+	List<Parser> getAllParsers(boolean confirmed);
 }
