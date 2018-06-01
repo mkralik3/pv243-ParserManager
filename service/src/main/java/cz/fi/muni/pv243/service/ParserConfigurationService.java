@@ -6,6 +6,7 @@
 package cz.fi.muni.pv243.service;
 
 import cz.fi.muni.pv243.entity.Parser;
+import cz.fi.muni.pv243.entity.Restaurant;
 
 import java.util.List;
 
@@ -19,10 +20,12 @@ public interface ParserConfigurationService {
      * parser is used by system since it's confirmed by admin
      * @param parserId 
      */
-    void confirm(Parser parser);
+    void confirm(long parserId);
 
     List<Parser> getAll();
 
 	List<Parser> getAll(boolean confirmed);
+
+	Parser getConfirmedParser(Restaurant restaurant);
     
 }

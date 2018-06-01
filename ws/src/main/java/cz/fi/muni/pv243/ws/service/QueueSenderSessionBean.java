@@ -24,13 +24,13 @@ import cz.fi.muni.pv243.entity.Parser;
 @Stateless
 public class QueueSenderSessionBean {
     
-	@Resource(mappedName="jms/myQueue")
+	@Resource(mappedName="java:app/jms/myQueue")
 	private Queue myQueue;
 	@Inject 
 	private JMSContext jmsContext;
 	
-	public void sendMessage(Parser message) {
-		jmsContext.createProducer().send(myQueue, message);
+	public void sendMessage(long message) {
+		jmsContext.createProducer().send(myQueue, message/*jmsContext.createMessage()*/);
 		
 	}
 }
