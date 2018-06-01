@@ -51,4 +51,14 @@ public class CachedParserStore implements ParserStore {
 		parserCache.put(parser.getId(), parser);
 		return parser;
 	}
+
+	@Override
+	public Parser getConfirmedParser(String restaurantId) {
+		return delegate.getConfirmedParser(restaurantId);
+	}
+
+	@Override
+	public List<Parser> getAllParsers(boolean confirmed) {
+		return delegate.getAllParsers(confirmed);
+	}
 }

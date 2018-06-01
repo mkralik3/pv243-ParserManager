@@ -10,6 +10,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
@@ -18,6 +20,14 @@ import java.io.Serializable;
 @Entity
 @Table(name = "PARSER", uniqueConstraints = {
 		@UniqueConstraint(columnNames = {"CONFIRMED"})})
+@NamedQueries({
+    @NamedQuery(name= "findConfirmedParserForRestaurant", 
+    		query="SELECT p FROM Parser p WHERE p.restaurant.googlePlaceID = :restaurantId AND p.confirmed IS NOT NULL"),
+    @NamedQuery(name= "findConfirmedParsers", 
+    query="SELECT p FROM Parser p WHERE p.confirmed IS NOT NULL"),
+    @NamedQuery(name= "findUnconfirmedParsers", 
+    query="SELECT p FROM Parser p WHERE p.confirmed IS NULL"),
+})
 public class Parser implements Serializable {
 
     private static final long serialVersionUID = 188164481825309731L;

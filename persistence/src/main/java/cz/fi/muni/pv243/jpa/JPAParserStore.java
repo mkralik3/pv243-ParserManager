@@ -1,6 +1,7 @@
 package cz.fi.muni.pv243.jpa;
 
 import cz.fi.muni.pv243.entity.Parser;
+import cz.fi.muni.pv243.entity.Restaurant;
 import cz.fi.muni.pv243.jpa.annotation.JPAStore;
 import cz.fi.muni.pv243.store.ParserStore;
 
@@ -11,6 +12,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Named
 @ApplicationScoped
@@ -42,5 +44,24 @@ public class JPAParserStore implements ParserStore {
     @Override
 	public Parser updateParser(Parser parser) {
     	return em.merge(parser);
+    }
+    
+    @Override
+    public Parser getConfirmedParser(String restaurantId) {
+    	return  (Parser) em.createNamedQuery("findConfirmedParserForRestaurant")
+    			.setParameter(restaurantId, restaurantId)
+    			.getSingleResult();
+    }
+    
+    @Override
+    public List<Parser> getAllParsers(boolean confirmed) {
+    	Query q;
+    	if (confirmed) {
+    		q = em.createNamedQuery("findConfirmedParsers");
+    	}
+    	else {
+    		q = em.createNamedQuery("findUnconfirmedParsers");
+    	}
+    	return (List<Parser>) q.getResultList();
     }
 }
