@@ -6,10 +6,15 @@
 package cz.fi.muni.pv243.ws.endpoint;
 
 import cz.fi.muni.pv243.entity.Parser;
+import cz.fi.muni.pv243.infinispan.annotation.CachedStore;
+import cz.fi.muni.pv243.infinispan.store.CachedParserStore;
 import cz.fi.muni.pv243.service.ParserConfigurationService;
 import cz.fi.muni.pv243.service.ParserManagerLogger;
-import cz.fi.muni.pv243.ws.service.ParserConfigurationDecoder;
-import cz.fi.muni.pv243.ws.service.ParserConfigurationEncoder;
+import cz.fi.muni.pv243.ws.service.Action;
+import cz.fi.muni.pv243.ws.service.ActionMessage;
+import cz.fi.muni.pv243.ws.service.ActionMessageDecoder;
+import cz.fi.muni.pv243.ws.service.ParserEncoder;
+import cz.fi.muni.pv243.ws.service.ParsersEncoder;
 import cz.fi.muni.pv243.ws.service.QueueSenderSessionBean;
 import cz.fi.muni.pv243.ws.service.SessionStore;
 import cz.fi.muni.pv243.ws.service.WSJMSMessage;
@@ -33,7 +38,7 @@ import javax.websocket.server.ServerEndpoint;
  */
 @Named
 @ApplicationScoped
-@ServerEndpoint(value = "/ws", encoders = { ParserConfigurationEncoder.class }/*, decoders = { ParserConfigurationDecoder.class }*/)
+@ServerEndpoint(value = "/ws", encoders = { ParsersEncoder.class, ParserEncoder.class }, decoders = { ActionMessageDecoder.class })
 public class ParserConfigurationServerEndpoint {
     
     @Inject
@@ -43,18 +48,36 @@ public class ParserConfigurationServerEndpoint {
     private ParserConfigurationService service;
     
     @Inject
+    @CachedStore
+    private CachedParserStore parserStore;
+    
+    @Inject
     private QueueSenderSessionBean senderBean;
     
     @OnMessage
-    public void onMessage(final Parser message, final Session session) {	
-        service.confirm(message);
-        senderBean.sendMessage(message);
+    public void onMessage(ActionMessage msg, final Session session) {	
+        
+    	long parserId = Long.valueOf(msg.getId());
+	    if (msg.getAction().equals(Action.DETAIL)) {
+	    	Parser parser = parserStore.findParser(parserId);
+	    	Parser confirmed = service.getConfirmedParser(parser.getRestaurant());
+	    	
+	    	sendToSession(confirmed, session);
+	    }
+	    else if (msg.getAction().equals(Action.CONFIRM)) {
+	    	service.confirm(parserId);
+	       	senderBean.sendMessage(parserId);
+	    }
     }
 
-    @OnOpen
+    private void sendToSession(Parser confirmed, Session session) {
+    	session.getAsyncRemote().sendObject(confirmed);
+	}
+
+	@OnOpen
     public void onOpen(final Session session) {
         clients.addSession(session);
-        sendToSession(service.getAll(), session);
+        sendToSession(service.getAll(false), session);
         ParserManagerLogger.LOGGER.logWebsocketConnect(getClass().getSimpleName());
     }
 

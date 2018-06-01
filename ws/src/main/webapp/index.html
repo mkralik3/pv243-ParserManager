@@ -18,11 +18,16 @@
                         <input type="button" id="disconnect" onclick="disconnect();" value="Close Connection" />
                     </fieldset>
                 </div>
-                <div>
+                <div><!-- userrole == admin -->
                     <fieldset>
-                        <legend></legend>
-                        <input id="name" type="text" size="40" style="width: 40%"/>
-                        <input type="button" id="confirm" onclick="sendMessage();" value="Confirm" disabled="disabled"/>
+                        <legend>Unconfirmed parsers</legend>
+                        <!-- foreach unconfirmed parser -->
+                        <output id="parser.xpath"/>
+                        <input type="button" id="detail" onclick="" value="Detail" disabled="disabled"/>
+                        <output id="parser.restaurant.name"/>
+                        <output id="parser.restaurant.description"/>
+                        <output id="parser.restaurant.confirmedParser"/><!-- parser.restaurant.id -> parserconfigurationservice.getconfirmedparser(restaurant) -->
+                        <input type="button" id="confirm" onclick="sendMessage(parserId);" value="Confirm" disabled="disabled"/>
                     </fieldset>
                 </div>
                 <div>Current WebSocket Connection Status: <output id="currentstatus" class="message">Closed</output></div>
