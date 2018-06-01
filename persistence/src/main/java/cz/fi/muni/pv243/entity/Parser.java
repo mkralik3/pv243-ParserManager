@@ -38,7 +38,6 @@ public class Parser implements Serializable {
     
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name="RESTAURANT_ID")
-    @Column(nullable = false)
     Restaurant restaurant;
 
     private String xpath;
