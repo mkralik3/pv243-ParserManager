@@ -43,10 +43,9 @@ function disconnect() {
     message.value = 'WebSocket closed.';
     // log the event
 }
-function sendMessage() {
+function sendMessage(msg) {
     if (websocket !== null) {
-        var content = document.getElementById('name').value;
-        websocket.send(content);
+        websocket.send(msg);
     } else {
         displayMessage('WebSocket connection is not established. Please click the Open Connection button.', 'error');
     }

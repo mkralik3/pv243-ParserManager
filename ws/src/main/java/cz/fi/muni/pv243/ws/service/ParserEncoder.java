@@ -1,7 +1,6 @@
 package cz.fi.muni.pv243.ws.service;
 
 import java.io.IOException;
-import java.util.List;
 
 import javax.websocket.EncodeException;
 import javax.websocket.Encoder;
@@ -12,14 +11,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import cz.fi.muni.pv243.entity.Parser;
 
-/**
- * This class is responsible for encoding the Parser object in a String that will be sent to clients
- * @author Michaela Bocanova
- *
- */
-public class ParserConfigurationEncoder implements Encoder.Text<List<Parser>> {
+public class ParserEncoder implements Encoder.Text<Parser> {
 
-	private ObjectMapper objectMapper;
+private ObjectMapper objectMapper;
 	
 	@Override
 	public void init(EndpointConfig config) {
@@ -31,7 +25,7 @@ public class ParserConfigurationEncoder implements Encoder.Text<List<Parser>> {
 	}
 
 	@Override
-	public String encode(List<Parser> object) throws EncodeException {
+	public String encode(Parser object) throws EncodeException {
 		try {
             return objectMapper.writeValueAsString(object);
         } catch (JsonProcessingException e) {
@@ -40,5 +34,4 @@ public class ParserConfigurationEncoder implements Encoder.Text<List<Parser>> {
         	throw new EncodeException(object, e.getMessage(), e);
 		}
 	}
-
 }

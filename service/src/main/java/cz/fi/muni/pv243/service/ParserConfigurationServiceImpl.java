@@ -26,7 +26,9 @@ public class ParserConfigurationServiceImpl implements ParserConfigurationServic
     private CachedParserStore parserStore;
     
     @Override
-    public void confirm(Parser parser) {
+    public void confirm(long parserId) {
+    	Parser parser = parserStore.findParser(parserId);
+    	
     	Parser old = getConfirmedParser(parser.getRestaurant());
     	if (old != null) {
     		old.setConfirmed(false);
@@ -48,10 +50,13 @@ public class ParserConfigurationServiceImpl implements ParserConfigurationServic
         		.collect(Collectors.toList());
     }
     
+    @Override
     public Parser getConfirmedParser(Restaurant restaurant) {
     	return  parserStore.getAllParsers().stream()
     			.filter(p -> (p.getRestaurant().equals(restaurant) && p.isConfirmed()))
     			.collect(Collectors.toList()).get(0);
     }
+    
+    
     
 }

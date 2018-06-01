@@ -11,6 +11,7 @@ import javax.ejb.MessageDriven;
 import javax.enterprise.event.Event;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.jms.JMSDestinationDefinition;
 import javax.jms.Message;
 import javax.jms.MessageListener;
 
@@ -22,12 +23,16 @@ import cz.fi.muni.pv243.service.ParserConfigurationService;
  * @author Michaela Bocanova
  */
 @Named
-@MessageDriven(mappedName = "jms/myQueue")
+@JMSDestinationDefinition(
+        name = "java:app/jms/myQueue",
+        interfaceName = "javax.jms.Queue",
+        destinationName = "myQueue"
+)
+@MessageDriven(mappedName = "java:app/jms/myQueue")
 public class ParserConfigurationMDB implements MessageListener {
 
 	@Inject
-    @WSJMSMessage     
-    //Event<Message> jmsEvent; 
+    @WSJMSMessage
     private Event<List<Parser>> jmsEvent;
 
     @Inject
@@ -35,7 +40,7 @@ public class ParserConfigurationMDB implements MessageListener {
 	
 	@Override
 	public void onMessage(Message message) {
-		jmsEvent.fire(service.getAll());		
+		jmsEvent.fire(service.getAll(false));		
 	}
     
 }
