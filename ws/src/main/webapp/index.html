@@ -23,11 +23,11 @@
                         <legend>Unconfirmed parsers</legend>
                         <!-- foreach unconfirmed parser -->
                         <output id="parser.xpath"/>
-                        <input type="button" id="detail" onclick="" value="Detail" disabled="disabled"/>
+                        <input type="button" id="detail" onclick="sendMessage(parserId, detail);" value="Detail" disabled="disabled"/>
                         <output id="parser.restaurant.name"/>
                         <output id="parser.restaurant.description"/>
                         <output id="parser.restaurant.confirmedParser"/><!-- parser.restaurant.id -> parserconfigurationservice.getconfirmedparser(restaurant) -->
-                        <input type="button" id="confirm" onclick="sendMessage(parserId);" value="Confirm" disabled="disabled"/>
+                        <input type="button" id="confirm" onclick="sendMessage(parserId, confirm);" value="Confirm" disabled="disabled"/>
                     </fieldset>
                 </div>
                 <div>Current WebSocket Connection Status: <output id="currentstatus" class="message">Closed</output></div>

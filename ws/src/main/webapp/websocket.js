@@ -43,8 +43,10 @@ function disconnect() {
     message.value = 'WebSocket closed.';
     // log the event
 }
-function sendMessage(msg) {
+function sendMessage(id, command) {
     if (websocket !== null) {
+    	var msg;
+		msg=JSON.stringify({ id: id, command: command });
         websocket.send(msg);
     } else {
         displayMessage('WebSocket connection is not established. Please click the Open Connection button.', 'error');
