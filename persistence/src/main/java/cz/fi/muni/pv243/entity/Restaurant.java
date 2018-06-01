@@ -27,7 +27,7 @@ public class Restaurant {
     private List<RestaurantWeekData> menuForWeeks;
     
     @JsonIgnore
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "restaurant", orphanRemoval=true)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "restaurant", orphanRemoval=true)
     private List<Parser> parsers;
 
     public String getGooglePlaceID() {
