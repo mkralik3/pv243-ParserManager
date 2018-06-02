@@ -3,7 +3,9 @@ package cz.fi.muni.pv243.ws.service;
 public class ActionMessage {
 
 	private String id;
+	
 	private Action action;
+	
 	public String getId() {
 		return id;
 	}

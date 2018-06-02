@@ -11,7 +11,6 @@ function connect() {
     var wsProtocol = document.location.protocol === "https:" ? "wss" : "ws";
     var wsURI = wsProtocol + '://' + document.location.host  + document.location.pathname + 'ws';
     websocket = new WebSocket(wsURI);
-    displayMessage('wsuri: ' + wsURI);
     
     websocket.onopen = function() {
         displayStatus('Open');
@@ -47,10 +46,11 @@ function disconnect() {
     message.value = 'WebSocket closed.';
     // log the event
 }
-function sendMessage(id, command) {
+function sendMessage() {
     if (websocket !== null) {
     	var msg;
-		msg=JSON.stringify({ id: id, command: command });
+		msg=JSON.stringify({ id: '1', action: 'CONFIRM' });
+		displayMessage(msg);
         websocket.send(msg);
     } else {
         displayMessage('WebSocket connection is not established. Please click the Open Connection button.', 'error');
