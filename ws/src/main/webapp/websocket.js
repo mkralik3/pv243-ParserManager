@@ -9,12 +9,15 @@ var parsers = [];
             
 function connect() {
     var wsProtocol = document.location.protocol === "https:" ? "wss" : "ws";
-    var wsURI = wsProtocol + '://' + document.location.host + '/ParserManager/ws';
+    var wsURI = wsProtocol + '://' + document.location.host  + document.location.pathname + 'ws';
     websocket = new WebSocket(wsURI);
+    displayMessage('wsuri: ' + wsURI);
+    
     websocket.onopen = function() {
         displayStatus('Open');
         document.getElementById('confirm').disabled = false;
-        displayMessage('Connection is now open. Type a name and click Say Hello to send a message.');
+        document.getElementById('detail').disabled = false;
+        displayMessage('Connection is now open.');
     };
     websocket.onmessage = function(event) {
     	var parser = JSON.parse(event.data);
@@ -32,6 +35,7 @@ function connect() {
         displayStatus('Closed');
         displayMessage('The connection was closed or timed out. Please click the Open Connection button to reconnect.');
         document.getElementById('confirm').disabled = true;
+        document.getElementById('detail').disabled = true;
     };
 }
 function disconnect() {

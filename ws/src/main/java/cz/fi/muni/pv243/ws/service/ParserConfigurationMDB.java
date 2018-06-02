@@ -7,6 +7,7 @@ package cz.fi.muni.pv243.ws.service;
 
 import java.util.List;
 
+import javax.ejb.ActivationConfigProperty;
 import javax.ejb.MessageDriven;
 import javax.enterprise.event.Event;
 import javax.inject.Inject;
@@ -19,16 +20,17 @@ import cz.fi.muni.pv243.entity.Parser;
 import cz.fi.muni.pv243.service.ParserConfigurationService;
 
 /**
+ * message-driven bean to process messages asynchronously
  *
  * @author Michaela Bocanova
  */
 @Named
-@JMSDestinationDefinition(
-        name = "java:app/jms/myQueue",
-        interfaceName = "javax.jms.Queue",
-        destinationName = "myQueue"
-)
-@MessageDriven(mappedName = "java:app/jms/myQueue")
+@MessageDriven(name = "ParserConfigurationHandler",
+activationConfig = {
+		@ActivationConfigProperty(propertyName = "destinationType", propertyValue = "javax.jms.Queue"),
+        @ActivationConfigProperty(propertyName = "destination", propertyValue = "java:jboss/exported/jms/queue/myQueue"),
+        @ActivationConfigProperty(propertyName = "acknowledgeMode", propertyValue = "Auto-acknowledge")
+        /*mappedName = "jms/myQueue"*/})
 public class ParserConfigurationMDB implements MessageListener {
 
 	@Inject
