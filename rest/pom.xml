@@ -28,4 +28,8 @@
         </dependency>
     </dependencies>
 
+    <build>
+        <finalName>ParserManager-rest</finalName>
+    </build>
+
 </project>

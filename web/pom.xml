@@ -22,24 +22,9 @@
     <name>WEB</name>
     <packaging>war</packaging>
 
-    <dependencies>
-        <dependency>
-            <groupId>cz.fi.muni.pv243</groupId>
-            <artifactId>ParserManager-rest</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-    </dependencies>
-
     <build>
+        <finalName>ParserManager-react</finalName>
         <plugins>
-            <plugin>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>2.3.2</version>
-                <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
-                </configuration>
-            </plugin>
             <plugin>
                 <groupId>com.github.eirslett</groupId>
                 <artifactId>frontend-maven-plugin</artifactId>
@@ -89,13 +74,6 @@
                             <directory>src/frontend/build</directory>
                         </resource>
                     </webResources>
-                </configuration>
-            </plugin>
-            <plugin>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
                 </configuration>
             </plugin>
         </plugins>
