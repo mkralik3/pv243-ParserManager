@@ -31,6 +31,8 @@ export default class AllRestaurantsComponent extends Component {
     }
 
     render() {
+        const {match} = this.props;
+
         if (this.state.isLoading) {
             return <p>Loading ...</p>;
         }
@@ -39,15 +41,15 @@ export default class AllRestaurantsComponent extends Component {
 
         if (this.state.restaurants.length) {
             restaurants = this.state.restaurants.map(
-                (obj) => (<Link to={`/ParserManager-react/restaurant/${obj.googlePlaceID}`}>{obj.googlePlaceID}</Link>)
+                (obj) => (<Link class="list-group-item list-group-item-action" to={match.url.replace(/\/$/, "") + "/" + obj.googlePlaceID}>{obj.googlePlaceID}</Link>)
             );
         } else {
-            restaurants = <h1>Working</h1>;
+            restaurants = <h1>No Restaurant in DB</h1>;
         }
 
 
         console.log(restaurants);
-        return <div>
+        return <div class="list-group">
             {restaurants}
         </div>
     }
