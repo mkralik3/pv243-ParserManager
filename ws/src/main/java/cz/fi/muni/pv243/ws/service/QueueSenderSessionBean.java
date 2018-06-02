@@ -24,7 +24,7 @@ import cz.fi.muni.pv243.entity.Parser;
 @Stateless
 public class QueueSenderSessionBean {
     
-	@Resource(mappedName="java:app/jms/myQueue")
+	@Resource(mappedName="java:jboss/exported/jms/queue/myQueue")
 	private Queue myQueue;
 	@Inject 
 	private JMSContext jmsContext;

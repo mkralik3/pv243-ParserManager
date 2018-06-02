@@ -18,8 +18,7 @@ import javax.persistence.UniqueConstraint;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "PARSER", uniqueConstraints = {
-		@UniqueConstraint(columnNames = {"CONFIRMED"})})
+@Table(name = "PARSER")
 @NamedQueries({
     @NamedQuery(name= "findConfirmedParserForRestaurant", 
     		query="SELECT p FROM Parser p WHERE p.restaurant.googlePlaceID = :restaurantId AND p.confirmed IS NOT NULL"),
