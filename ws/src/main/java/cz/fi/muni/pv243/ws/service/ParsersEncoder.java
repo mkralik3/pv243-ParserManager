@@ -19,26 +19,26 @@ import cz.fi.muni.pv243.entity.Parser;
  */
 public class ParsersEncoder implements Encoder.Text<List<Parser>> {
 
-	private ObjectMapper objectMapper;
-	
-	@Override
-	public void init(EndpointConfig config) {
-		objectMapper = new ObjectMapper();
-	}
+    private ObjectMapper objectMapper;
 
-	@Override
-	public void destroy() {
-	}
+    @Override
+    public void init(EndpointConfig config) {
+        objectMapper = new ObjectMapper();
+    }
 
-	@Override
-	public String encode(List<Parser> object) throws EncodeException {
-		try {
+    @Override
+    public void destroy() {
+    }
+
+    @Override
+    public String encode(List<Parser> object) throws EncodeException {
+        try {
             return objectMapper.writeValueAsString(object);
         } catch (JsonProcessingException e) {
             throw new EncodeException(object, e.getMessage(), e);
         } catch (IOException e) {
-        	throw new EncodeException(object, e.getMessage(), e);
-		}
-	}
+            throw new EncodeException(object, e.getMessage(), e);
+        }
+    }
 
 }

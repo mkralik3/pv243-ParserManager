@@ -40,41 +40,41 @@ import javax.websocket.server.ServerEndpoint;
 @ApplicationScoped
 @ServerEndpoint(value = "/ws", encoders = { ParsersEncoder.class, ParserEncoder.class }, decoders = { ActionMessageDecoder.class })
 public class ParserConfigurationServerEndpoint {
-    
+
     @Inject
     private SessionStore clients;
-    
+
     @Inject
     private ParserConfigurationService service;
-    
+
     @Inject
     @CachedStore
     private CachedParserStore parserStore;
-    
+
     @Inject
     private QueueSenderSessionBean senderBean;
-    
+
     @OnMessage
     public void onMessage(ActionMessage msg, final Session session) {	
-        
-    	long parserId = Long.valueOf(msg.getId());
-	    if (msg.getAction().equals(Action.DETAIL)) {
-	    	Parser parser = parserStore.findParser(parserId);
-	    	Parser confirmed = service.getConfirmedParser(parser.getRestaurant(), parser.getDay());
-	    	
-	    	sendToSession(confirmed, session);
-	    }
-	    else if (msg.getAction().equals(Action.CONFIRM)) {
-	    	service.confirm(parserId);
-	       	senderBean.sendMessage(parserId);
-	    }
+
+        long parserId = Long.valueOf(msg.getId());
+        if (msg.getAction().equals(Action.DETAIL)) {
+            Parser parser = parserStore.findParser(parserId);
+            Parser confirmed = service.getConfirmedParser(parser.getRestaurant(), parser.getDay());
+
+            sendToSession(confirmed, session);
+        }
+        else if (msg.getAction().equals(Action.CONFIRM)) {
+            service.confirm(parserId);
+            senderBean.sendMessage(parserId);
+        }
     }
 
     private void sendToSession(Parser confirmed, Session session) {
-    	session.getAsyncRemote().sendObject(confirmed);
-	}
+        session.getAsyncRemote().sendObject(confirmed);
+    }
 
-	@OnOpen
+    @OnOpen
     public void onOpen(final Session session) {
         clients.addSession(session);
         sendToSession(service.getAll(false), session);
@@ -86,16 +86,16 @@ public class ParserConfigurationServerEndpoint {
         clients.removeSession(session.getId());
         ParserManagerLogger.LOGGER.logWebsocketDisconnect(getClass().getSimpleName());
     }
-    
+
     @OnError
     public void onError(Throwable error) {
-    	ParserManagerLogger.LOGGER.logWebsocketError(getClass().getSimpleName(), error);
+        ParserManagerLogger.LOGGER.logWebsocketError(getClass().getSimpleName(), error);
     }
-    
+
     public void onJMSMessage(@Observes @WSJMSMessage List<Parser> parsers) {
         sendToAllSessions(parsers);        
     }
-    
+
     private void sendToAllSessions(List<Parser> all) {
         for (Session session : clients.getSessions()) {
             sendToSession(all, session);
@@ -105,5 +105,5 @@ public class ParserConfigurationServerEndpoint {
     private void sendToSession(List<Parser> all, Session session) {
         session.getAsyncRemote().sendObject(all);
     }
-    
+
 }
