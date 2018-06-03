@@ -8,3 +8,6 @@ test:
 
 jdk:
 - oraclejdk8
+
+script:
+- CI=false npm run build

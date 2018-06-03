@@ -115,6 +115,7 @@
                                 <java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager>
                                 <!-- the maven dependency plugin will have already downloaded the server on /target -->
                                 <jboss.home>${project.basedir}/target/wildfly-11.0.0.Final</jboss.home>
+                                <port.offset>100</port.offset>
                             </systemPropertyVariables>
                             <redirectTestOutputToFile>false</redirectTestOutputToFile>
                         </configuration>

@@ -28,7 +28,7 @@ public class ParserServiceTest {
 
     private static final Logger log = Logger.getLogger( ParserServiceTest.class.getName() );
 
-    private static final String BASE_URL = "http://localhost:8080/" + Configuration.WAR_NAME + "/rest";
+    private static final String BASE_URL = Configuration.BASE_URL;
 
     private Parser parser;
     private static boolean initialized = false;

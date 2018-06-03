@@ -12,10 +12,15 @@ import java.io.File;
 
 public class Configuration {
 
+    public final static int PORT = (System.getProperty("port.offset") == null)
+            ? 8080
+            : 8080 + Integer.valueOf(System.getProperty("port.offset"));
+
+    public final static String BASE_URL = "http://localhost:" + PORT + "/" + Configuration.WAR_NAME + "/rest";
+
     public static final String WAR_NAME = "test-rest";
 
     public static WebArchive deployment() {
-
 
         MavenResolverSystem resolver = Maven.resolver();
         MavenFormatStage dependencies = resolver
