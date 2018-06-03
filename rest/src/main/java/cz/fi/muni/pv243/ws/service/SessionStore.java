@@ -5,14 +5,11 @@
  */
 package cz.fi.muni.pv243.ws.service;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
-
 import javax.enterprise.context.ApplicationScoped;
 import javax.websocket.Session;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  *

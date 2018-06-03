@@ -80,7 +80,7 @@ export default class RestaurantComponent extends Component {
             <label htmlFor={"name"}>Name</label>
 
             <input type={"text"} id={"name"}
-                   value={restaurant.name}
+                   value={this.state.restaurant.name}
                    onChange={(e) => {
                        restaurant.name = e.target.value;
                        this.setState({restaurant})
@@ -90,7 +90,7 @@ export default class RestaurantComponent extends Component {
             <label htmlFor={"description"}>Description</label>
 
             <input type={"text"} id={"description"}
-                   value={restaurant.description}
+                   value={this.state.restaurant.description}
                    onChange={(e) => {
                        restaurant.description = e.target.value;
                        this.setState({restaurant});

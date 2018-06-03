@@ -1,15 +1,13 @@
 package cz.fi.muni.pv243.ws.service;
 
-import java.io.IOException;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import cz.fi.muni.pv243.entity.Parser;
 
 import javax.websocket.EncodeException;
 import javax.websocket.Encoder;
 import javax.websocket.EndpointConfig;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import cz.fi.muni.pv243.entity.Parser;
+import java.io.IOException;
 
 public class ParserEncoder implements Encoder.Text<Parser> {
 

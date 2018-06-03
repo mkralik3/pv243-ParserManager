@@ -1,15 +1,13 @@
 package cz.fi.muni.pv243.ws.service;
 
-import java.io.IOException;
-
-import javax.websocket.DecodeException;
-import javax.websocket.Decoder;
-import javax.websocket.EncodeException;
-import javax.websocket.EndpointConfig;
-
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import javax.websocket.DecodeException;
+import javax.websocket.Decoder;
+import javax.websocket.EndpointConfig;
+import java.io.IOException;
 
 public class ActionMessageDecoder implements Decoder.Text<ActionMessage> {
 

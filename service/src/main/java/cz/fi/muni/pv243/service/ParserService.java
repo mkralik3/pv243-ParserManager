@@ -15,7 +15,7 @@ import java.util.List;
  *
  * @author Michaela Bocanova
  */
-public interface ParserConfigurationService {
+public interface ParserService {
 
     /**
      * parser is used by system since it's confirmed by admin
@@ -23,10 +23,13 @@ public interface ParserConfigurationService {
      */
     void confirm(long parserId);
 
-    List<Parser> getAll();
+    Parser addParser(Parser parser);
 
-    List<Parser> getAll(boolean confirmed);
+    List<Parser> getAllParsers();
+
+    List<Parser> getAllParsers(boolean confirmed);
 
     Parser getConfirmedParser(Restaurant restaurant, Day day);
 
+    Parser updateParser(Parser parser);
 }

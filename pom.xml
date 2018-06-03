@@ -12,7 +12,6 @@
         <module>rest</module>
         <module>web</module>
         <module>service</module>
-        <module>ws</module>
     </modules>
 
     <dependencies>
