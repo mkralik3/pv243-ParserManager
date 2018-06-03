@@ -5,6 +5,7 @@
  */
 package cz.fi.muni.pv243.service;
 
+import cz.fi.muni.pv243.entity.Day;
 import cz.fi.muni.pv243.entity.Parser;
 import cz.fi.muni.pv243.entity.Restaurant;
 
@@ -26,6 +27,6 @@ public interface ParserConfigurationService {
 
 	List<Parser> getAll(boolean confirmed);
 
-	Parser getConfirmedParser(Restaurant restaurant);
+	Parser getConfirmedParser(Restaurant restaurant, Day day);
     
 }

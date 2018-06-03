@@ -4,6 +4,8 @@ package cz.fi.muni.pv243.entity;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -20,8 +22,8 @@ import java.io.Serializable;
 @Entity
 @Table(name = "PARSER")
 @NamedQueries({
-    @NamedQuery(name= "findConfirmedParserForRestaurant", 
-    		query="SELECT p FROM Parser p WHERE p.restaurant.googlePlaceID = :restaurantId AND p.confirmed IS NOT NULL"),
+    @NamedQuery(name= "findConfirmedParserForRestaurantAndDay", 
+    		query="SELECT p FROM Parser p WHERE p.restaurant.googlePlaceID = :restaurantId AND p.day = :day AND p.confirmed IS NOT NULL"),
     @NamedQuery(name= "findConfirmedParsers", 
     query="SELECT p FROM Parser p WHERE p.confirmed IS NOT NULL"),
     @NamedQuery(name= "findUnconfirmedParsers", 
@@ -72,6 +74,17 @@ public class Parser implements Serializable {
                 '}';
     }
     
+	@Enumerated(EnumType.STRING)
+	private Day day;
+		
+	public Day getDay() {
+		return day;
+	}
+
+	public void setDay(Day day) {
+		this.day = day;
+	}
+
 	@Column(name = "CONFIRMED", nullable = true)
     private String confirmed;
 

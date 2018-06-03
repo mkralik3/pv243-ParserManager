@@ -5,6 +5,7 @@
  */
 package cz.fi.muni.pv243.service;
 
+import cz.fi.muni.pv243.entity.Day;
 import cz.fi.muni.pv243.entity.Parser;
 import cz.fi.muni.pv243.entity.Restaurant;
 import cz.fi.muni.pv243.infinispan.annotation.CachedStore;
@@ -29,7 +30,7 @@ public class ParserConfigurationServiceImpl implements ParserConfigurationServic
     public void confirm(long parserId) {
     	Parser parser = parserStore.findParser(parserId);
     	
-    	Parser old = getConfirmedParser(parser.getRestaurant());
+    	Parser old = getConfirmedParser(parser.getRestaurant(), parser.getDay());
     	if (old != null) {
     		old.setConfirmed(false);
     		parserStore.updateParser(old);
@@ -49,8 +50,8 @@ public class ParserConfigurationServiceImpl implements ParserConfigurationServic
     }
     
     @Override
-    public Parser getConfirmedParser(Restaurant restaurant) {
-    	return  parserStore.getConfirmedParser(restaurant.getGooglePlaceID());
+    public Parser getConfirmedParser(Restaurant restaurant, Day day) {
+    	return  parserStore.getConfirmedParser(restaurant.getGooglePlaceID(), day);
     }
     
     

@@ -60,7 +60,7 @@ public class ParserConfigurationServerEndpoint {
     	long parserId = Long.valueOf(msg.getId());
 	    if (msg.getAction().equals(Action.DETAIL)) {
 	    	Parser parser = parserStore.findParser(parserId);
-	    	Parser confirmed = service.getConfirmedParser(parser.getRestaurant());
+	    	Parser confirmed = service.getConfirmedParser(parser.getRestaurant(), parser.getDay());
 	    	
 	    	sendToSession(confirmed, session);
 	    }
