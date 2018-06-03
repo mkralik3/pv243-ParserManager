@@ -71,6 +71,7 @@ public class Parser implements Serializable {
     @Override
     public String toString() {
         return "Parser{" +
+                "id='" + id + '\'' +
                 "xpath='" + xpath + '\'' +
                 '}';
     }

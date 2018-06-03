@@ -2,7 +2,6 @@ package cz.fi.muni.pv243.jpa;
 
 import cz.fi.muni.pv243.entity.Day;
 import cz.fi.muni.pv243.entity.Parser;
-import cz.fi.muni.pv243.entity.Restaurant;
 import cz.fi.muni.pv243.jpa.annotation.JPAStore;
 import cz.fi.muni.pv243.store.ParserStore;
 
@@ -15,7 +14,6 @@ import javax.persistence.Query;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 @Named
 @ApplicationScoped
@@ -29,12 +27,6 @@ public class JPAParserStore implements ParserStore {
     private EntityManager em;
 
     @Override
-    public List<Parser> getAllParsers() {
-        Query query = em.createQuery("SELECT p FROM Parser p");
-        return (List<Parser>) query.getResultList();
-    }
-
-    @Override
     @Transactional
     public Parser addParser(Parser parser){
         em.persist(parser);
@@ -43,16 +35,34 @@ public class JPAParserStore implements ParserStore {
     }
 
     @Override
-    public Parser findParser(Long id) {
-        return em.find(Parser.class, id);
-    }
-
-    @Override
     @Transactional
     public Parser updateParser(Parser parser) {
         em.merge(parser);
         em.flush();
         return parser;
+    }
+
+    @Override
+    @Transactional
+    public void deleteParser(Parser parser) {
+        em.remove(parser);
+    }
+
+    @Override
+    public List<Parser> getAllParsers(boolean confirmed) {
+        Query q;
+        if (confirmed) {
+            q = em.createNamedQuery("findConfirmedParsers");
+        }
+        else {
+            q = em.createNamedQuery("findUnconfirmedParsers");
+        }
+        return (List<Parser>) q.getResultList();
+    }
+
+    @Override
+    public Parser findParser(Long id) {
+        return em.find(Parser.class, id);
     }
 
     @Override
@@ -66,17 +76,5 @@ public class JPAParserStore implements ParserStore {
             LOGGER.info("Parser not found for restaurant: " + restaurantId + " and day " + day);
             return null;
         }
-    }
-
-    @Override
-    public List<Parser> getAllParsers(boolean confirmed) {
-        Query q;
-        if (confirmed) {
-            q = em.createNamedQuery("findConfirmedParsers");
-        }
-        else {
-            q = em.createNamedQuery("findUnconfirmedParsers");
-        }
-        return (List<Parser>) q.getResultList();
     }
 }

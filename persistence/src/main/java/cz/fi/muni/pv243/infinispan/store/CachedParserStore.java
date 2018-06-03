@@ -28,11 +28,6 @@ public class CachedParserStore implements ParserStore {
     private Cache<Long, Parser> parserCache;
 
     @Override
-    public List<Parser> getAllParsers() {
-        return delegate.getAllParsers();
-    }
-
-    @Override
     @Transactional
     public Parser addParser(Parser parser){
         parser = delegate.addParser(parser);
@@ -40,11 +35,6 @@ public class CachedParserStore implements ParserStore {
         return parser;
     }
 
-    @Override
-    public Parser findParser(Long id) {
-        return parserCache.computeIfAbsent(id,
-                s -> delegate.findParser(s));
-    }
 
     @Override
     public Parser updateParser(Parser parser) {
@@ -54,12 +44,25 @@ public class CachedParserStore implements ParserStore {
     }
 
     @Override
-    public Parser getConfirmedParser(String restaurantId, Day day) {
-        return delegate.getConfirmedParser(restaurantId, day);
+    public void deleteParser(Parser parser) {
+        delegate.deleteParser(parser);
+        parserCache.remove(parser.getId(), parser);
     }
 
     @Override
     public List<Parser> getAllParsers(boolean confirmed) {
         return delegate.getAllParsers(confirmed);
     }
+
+    @Override
+    public Parser findParser(Long id) {
+        return parserCache.computeIfAbsent(id,
+                s -> delegate.findParser(s));
+    }
+
+    @Override
+    public Parser getConfirmedParser(String restaurantId, Day day) {
+        return delegate.getConfirmedParser(restaurantId, day);
+    }
+
 }
