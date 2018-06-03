@@ -25,6 +25,10 @@ public class Restaurant {
     @JsonIgnore
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "restaurant", orphanRemoval=true)
     private List<RestaurantWeekData> menuForWeeks;
+    
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "restaurant", orphanRemoval=true)
+    private List<Parser> parsers;
 
     public String getGooglePlaceID() {
         return googlePlaceID;
@@ -60,5 +64,17 @@ public class Restaurant {
 
     public void addMenuForWeek(RestaurantWeekData weekData) {
         this.menuForWeeks.add(weekData);
+    }
+
+	public List<Parser> getParsers() {
+		return parsers;
+	}
+
+	public void setParsers(List<Parser> parsers) {
+		this.parsers = parsers;
+	}
+
+    public void addParser(Parser parser) {
+        this.parsers.add(parser);
     }
 }

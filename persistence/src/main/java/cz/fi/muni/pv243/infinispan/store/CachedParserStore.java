@@ -1,5 +1,6 @@
 package cz.fi.muni.pv243.infinispan.store;
 
+import cz.fi.muni.pv243.entity.Day;
 import cz.fi.muni.pv243.entity.Parser;
 import cz.fi.muni.pv243.infinispan.annotation.CachedStore;
 import cz.fi.muni.pv243.infinispan.annotation.DefaultCacheConfiguration;
@@ -37,5 +38,28 @@ public class CachedParserStore implements ParserStore {
         parser = delegate.addParser(parser);
         parserCache.put(parser.getId(), parser);
         return parser;
+    }
+
+    @Override
+    public Parser findParser(Long id) {
+        return parserCache.computeIfAbsent(id,
+                s -> delegate.findParser(s));
+    }
+
+    @Override
+    public Parser updateParser(Parser parser) {
+        parser = delegate.updateParser(parser);
+        parserCache.put(parser.getId(), parser);
+        return parser;
+    }
+
+    @Override
+    public Parser getConfirmedParser(String restaurantId, Day day) {
+        return delegate.getConfirmedParser(restaurantId, day);
+    }
+
+    @Override
+    public List<Parser> getAllParsers(boolean confirmed) {
+        return delegate.getAllParsers(confirmed);
     }
 }
