@@ -36,34 +36,34 @@ public class JPAParserStore implements ParserStore {
         em.flush();
         return parser;
     }
-    
+
     @Override
     public Parser findParser(Long id) {
         return em.find(Parser.class, id);
     }
-    
+
     @Override
-	public Parser updateParser(Parser parser) {
-    	return em.merge(parser);
+    public Parser updateParser(Parser parser) {
+        return em.merge(parser);
     }
-    
+
     @Override
     public Parser getConfirmedParser(String restaurantId, Day day) {
-    	return  (Parser) em.createNamedQuery("findConfirmedParserForRestaurant")
-    			.setParameter("restaurantId", restaurantId)
-    			.setParameter("day", day)
-    			.getSingleResult();
+        return  (Parser) em.createNamedQuery("findConfirmedParserForRestaurant")
+                .setParameter("restaurantId", restaurantId)
+                .setParameter("day", day)
+                .getSingleResult();
     }
-    
+
     @Override
     public List<Parser> getAllParsers(boolean confirmed) {
-    	Query q;
-    	if (confirmed) {
-    		q = em.createNamedQuery("findConfirmedParsers");
-    	}
-    	else {
-    		q = em.createNamedQuery("findUnconfirmedParsers");
-    	}
-    	return (List<Parser>) q.getResultList();
+        Query q;
+        if (confirmed) {
+            q = em.createNamedQuery("findConfirmedParsers");
+        }
+        else {
+            q = em.createNamedQuery("findUnconfirmedParsers");
+        }
+        return (List<Parser>) q.getResultList();
     }
 }

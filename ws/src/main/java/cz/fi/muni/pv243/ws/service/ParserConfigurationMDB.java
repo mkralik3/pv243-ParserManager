@@ -27,22 +27,22 @@ import cz.fi.muni.pv243.service.ParserConfigurationService;
 @Named
 @MessageDriven(name = "ParserConfigurationHandler",
 activationConfig = {
-		@ActivationConfigProperty(propertyName = "destinationType", propertyValue = "javax.jms.Queue"),
+        @ActivationConfigProperty(propertyName = "destinationType", propertyValue = "javax.jms.Queue"),
         @ActivationConfigProperty(propertyName = "destination", propertyValue = "java:jboss/exported/jms/queue/myQueue"),
         @ActivationConfigProperty(propertyName = "acknowledgeMode", propertyValue = "Auto-acknowledge")
-        /*mappedName = "jms/myQueue"*/})
+/*mappedName = "jms/myQueue"*/})
 public class ParserConfigurationMDB implements MessageListener {
 
-	@Inject
+    @Inject
     @WSJMSMessage
     private Event<List<Parser>> jmsEvent;
 
     @Inject
     private ParserConfigurationService service;
-	
-	@Override
-	public void onMessage(Message message) {
-		jmsEvent.fire(service.getAll(false));		
-	}
-    
+
+    @Override
+    public void onMessage(Message message) {
+        jmsEvent.fire(service.getAll(false));		
+    }
+
 }

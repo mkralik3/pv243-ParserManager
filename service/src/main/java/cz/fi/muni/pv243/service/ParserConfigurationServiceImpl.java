@@ -25,35 +25,35 @@ public class ParserConfigurationServiceImpl implements ParserConfigurationServic
     @Inject
     @CachedStore
     private CachedParserStore parserStore;
-    
+
     @Override
     public void confirm(long parserId) {
-    	Parser parser = parserStore.findParser(parserId);
-    	
-    	Parser old = getConfirmedParser(parser.getRestaurant(), parser.getDay());
-    	if (old != null) {
-    		old.setConfirmed(false);
-    		parserStore.updateParser(old);
-    	}
-    	parser.setConfirmed(true);
-		parserStore.updateParser(parser);
+        Parser parser = parserStore.findParser(parserId);
+
+        Parser old = getConfirmedParser(parser.getRestaurant(), parser.getDay());
+        if (old != null) {
+            old.setConfirmed(false);
+            parserStore.updateParser(old);
+        }
+        parser.setConfirmed(true);
+        parserStore.updateParser(parser);
     }
-    
+
     @Override
     public List<Parser> getAll() {
         return parserStore.getAllParsers();
     }
-    
+
     @Override
     public List<Parser> getAll(boolean confirmed) {
         return parserStore.getAllParsers(confirmed);
     }
-    
+
     @Override
     public Parser getConfirmedParser(Restaurant restaurant, Day day) {
-    	return  parserStore.getConfirmedParser(restaurant.getGooglePlaceID(), day);
+        return  parserStore.getConfirmedParser(restaurant.getGooglePlaceID(), day);
     }
-    
-    
-    
+
+
+
 }

@@ -13,32 +13,32 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class ActionMessageDecoder implements Decoder.Text<ActionMessage> {
 
-	private ObjectMapper objectMapper;
-	
-	@Override
-	public void init(EndpointConfig config) {
-		objectMapper = new ObjectMapper();
-	}
+    private ObjectMapper objectMapper;
 
-	@Override
-	public void destroy() {
-	}
+    @Override
+    public void init(EndpointConfig config) {
+        objectMapper = new ObjectMapper();
+    }
 
-	@Override
-	public ActionMessage decode(String object) throws DecodeException {
-		try {
-			return objectMapper.readValue(object, ActionMessage.class);
-		} catch (JsonParseException e) {
-			throw new DecodeException(object, e.getMessage(), e);
-		} catch (JsonMappingException e) {
-			throw new DecodeException(object, e.getMessage(), e);
-		} catch (IOException e) {
-			throw new DecodeException(object, e.getMessage(), e);
-		}
-	}
+    @Override
+    public void destroy() {
+    }
 
-	@Override
-	public boolean willDecode(String s) {
-		return true;
-	}
+    @Override
+    public ActionMessage decode(String object) throws DecodeException {
+        try {
+            return objectMapper.readValue(object, ActionMessage.class);
+        } catch (JsonParseException e) {
+            throw new DecodeException(object, e.getMessage(), e);
+        } catch (JsonMappingException e) {
+            throw new DecodeException(object, e.getMessage(), e);
+        } catch (IOException e) {
+            throw new DecodeException(object, e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public boolean willDecode(String s) {
+        return true;
+    }
 }
