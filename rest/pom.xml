@@ -3,16 +3,15 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <packaging>war</packaging>
-
     <parent>
         <artifactId>ParserManager-parent</artifactId>
         <groupId>cz.fi.muni.pv243</groupId>
     	<version>1.0-SNAPSHOT</version>
     </parent>
-	
+
     <artifactId>ParserManager-rest</artifactId>
     <name>REST</name>
+    <packaging>war</packaging>
 
     <dependencies>
         <dependency>
@@ -25,6 +24,12 @@
             <groupId>cz.fi.muni.pv243</groupId>
             <artifactId>ParserManager-persistence</artifactId>
             <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
+
+    <build>
+        <finalName>ParserManager-rest</finalName>
+    </build>
+
 </project>
