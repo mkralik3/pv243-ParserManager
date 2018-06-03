@@ -13,13 +13,16 @@ import cz.fi.muni.pv243.infinispan.store.CachedParserStore;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.inject.Named;
 
 /**
  *
  * @author Michaela Bocanova
  */
-//@Stateless
+@Named
+@ApplicationScoped
 public class ParserConfigurationServiceImpl implements ParserConfigurationService {
 
     @Inject

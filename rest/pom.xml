@@ -22,7 +22,7 @@
         </dependency>
         <dependency>
             <groupId>cz.fi.muni.pv243</groupId>
-            <artifactId>ParserManager-persistence</artifactId>
+            <artifactId>ParserManager-service</artifactId>
             <version>1.0-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
