@@ -1,5 +1,8 @@
 language: java
 
+env:
+  - CI=false
+
 install:
   - mvn install -DskipTests=true -B -V
 
@@ -8,6 +11,3 @@ test:
 
 jdk:
 - oraclejdk8
-
-script:
-- CI=false npm run build
