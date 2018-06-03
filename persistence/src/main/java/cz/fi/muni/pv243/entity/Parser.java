@@ -23,7 +23,7 @@ import java.io.Serializable;
 @Table(name = "PARSER")
 @NamedQueries({
     @NamedQuery(name= "findConfirmedParserForRestaurantAndDay", 
-    		query="SELECT p FROM Parser p WHERE p.restaurant.googlePlaceID = :restaurantId AND p.day = :day AND p.confirmed IS NOT NULL"),
+            query="SELECT p FROM Parser p WHERE p.restaurant.googlePlaceID = :restaurantId AND p.day = :day AND p.confirmed IS NOT NULL"),
     @NamedQuery(name= "findConfirmedParsers", 
     query="SELECT p FROM Parser p WHERE p.confirmed IS NOT NULL"),
     @NamedQuery(name= "findUnconfirmedParsers", 
@@ -36,7 +36,7 @@ public class Parser implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
+
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name="RESTAURANT_ID")
     Restaurant restaurant;
@@ -60,43 +60,43 @@ public class Parser implements Serializable {
     }
 
     public Restaurant getRestaurant() {
-		return restaurant;
-	}
+        return restaurant;
+    }
 
-	public void setRestaurant(Restaurant restaurant) {
-		this.restaurant = restaurant;
-	}
+    public void setRestaurant(Restaurant restaurant) {
+        this.restaurant = restaurant;
+    }
 
-	@Override
+    @Override
     public String toString() {
         return "Parser{" +
                 "xpath='" + xpath + '\'' +
                 '}';
     }
-    
-	@Enumerated(EnumType.STRING)
-	private Day day;
-		
-	public Day getDay() {
-		return day;
-	}
 
-	public void setDay(Day day) {
-		this.day = day;
-	}
+    @Enumerated(EnumType.STRING)
+    private Day day;
 
-	@Column(name = "CONFIRMED", nullable = true)
+    public Day getDay() {
+        return day;
+    }
+
+    public void setDay(Day day) {
+        this.day = day;
+    }
+
+    @Column(name = "CONFIRMED", nullable = true)
     private String confirmed;
 
-	public boolean isConfirmed() {
-		return confirmed == null ? false : true;
-	}
+    public boolean isConfirmed() {
+        return confirmed == null ? false : true;
+    }
 
-	public void setConfirmed(boolean confirmed) {
-		if (confirmed)
-			this.confirmed = String.valueOf(restaurant.getGooglePlaceID());
-		else
-			this.confirmed = null;
-	}
-    
+    public void setConfirmed(boolean confirmed) {
+        if (confirmed)
+            this.confirmed = String.valueOf(restaurant.getGooglePlaceID());
+        else
+            this.confirmed = null;
+    }
+
 }

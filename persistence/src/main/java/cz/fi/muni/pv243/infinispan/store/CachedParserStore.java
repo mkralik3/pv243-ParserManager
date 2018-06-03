@@ -42,24 +42,24 @@ public class CachedParserStore implements ParserStore {
 
     @Override
     public Parser findParser(Long id) {
-    	return parserCache.computeIfAbsent(id,
+        return parserCache.computeIfAbsent(id,
                 s -> delegate.findParser(s));
     }
-    
+
     @Override
-	public Parser updateParser(Parser parser) {
-		parser = delegate.updateParser(parser);
-		parserCache.put(parser.getId(), parser);
-		return parser;
-	}
+    public Parser updateParser(Parser parser) {
+        parser = delegate.updateParser(parser);
+        parserCache.put(parser.getId(), parser);
+        return parser;
+    }
 
-	@Override
-	public Parser getConfirmedParser(String restaurantId, Day day) {
-		return delegate.getConfirmedParser(restaurantId, day);
-	}
+    @Override
+    public Parser getConfirmedParser(String restaurantId, Day day) {
+        return delegate.getConfirmedParser(restaurantId, day);
+    }
 
-	@Override
-	public List<Parser> getAllParsers(boolean confirmed) {
-		return delegate.getAllParsers(confirmed);
-	}
+    @Override
+    public List<Parser> getAllParsers(boolean confirmed) {
+        return delegate.getAllParsers(confirmed);
+    }
 }

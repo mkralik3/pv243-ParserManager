@@ -20,18 +20,18 @@ import javax.websocket.Session;
  */
 @ApplicationScoped
 public class SessionStore {
-	
+
     //private List<Session> sessions = Collections.synchronizedList(new LinkedList<Session>());
     private ConcurrentHashMap<String, Session> sessions = new ConcurrentHashMap<>();
-    
+
     public void addSession(Session session) {
         sessions.put(session.getId(), session);
     }
-    
+
     public void removeSession(String id) {
         sessions.remove(id);
     }
-    
+
     public Session getSession(String id) {
         return sessions.get(id);
     }
@@ -39,5 +39,5 @@ public class SessionStore {
     public Collection<Session> getSessions() {
         return Collections.unmodifiableCollection(sessions.values());
     }
-    
+
 }

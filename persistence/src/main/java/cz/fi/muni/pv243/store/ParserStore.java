@@ -12,10 +12,10 @@ public interface ParserStore {
     Parser addParser(Parser parser);
 
     Parser findParser(Long id);
-    
+
     Parser updateParser(Parser parser);
 
-	Parser getConfirmedParser(String restaurantId, Day day);
+    Parser getConfirmedParser(String restaurantId, Day day);
 
-	List<Parser> getAllParsers(boolean confirmed);
+    List<Parser> getAllParsers(boolean confirmed);
 }
