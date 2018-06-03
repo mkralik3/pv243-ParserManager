@@ -1,5 +1,6 @@
 package cz.fi.muni.pv243.jpa;
 
+import cz.fi.muni.pv243.entity.Day;
 import cz.fi.muni.pv243.entity.Parser;
 import cz.fi.muni.pv243.entity.Restaurant;
 import cz.fi.muni.pv243.jpa.annotation.JPAStore;
@@ -47,9 +48,10 @@ public class JPAParserStore implements ParserStore {
     }
     
     @Override
-    public Parser getConfirmedParser(String restaurantId) {
+    public Parser getConfirmedParser(String restaurantId, Day day) {
     	return  (Parser) em.createNamedQuery("findConfirmedParserForRestaurant")
-    			.setParameter(restaurantId, restaurantId)
+    			.setParameter("restaurantId", restaurantId)
+    			.setParameter("day", day)
     			.getSingleResult();
     }
     
