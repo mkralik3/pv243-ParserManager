@@ -9,16 +9,21 @@ import cz.fi.muni.pv243.store.ParserStore;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 @Named
 @ApplicationScoped
 @JPAStore
 public class JPAParserStore implements ParserStore {
+
+    private static final Logger LOGGER = Logger.getLogger( JPAParserStore.class.getName() );
+
 
     @PersistenceContext(unitName = "ParserManager")
     private EntityManager em;
@@ -43,16 +48,24 @@ public class JPAParserStore implements ParserStore {
     }
 
     @Override
+    @Transactional
     public Parser updateParser(Parser parser) {
-        return em.merge(parser);
+        em.merge(parser);
+        em.flush();
+        return parser;
     }
 
     @Override
     public Parser getConfirmedParser(String restaurantId, Day day) {
-        return  (Parser) em.createNamedQuery("findConfirmedParserForRestaurant")
-                .setParameter("restaurantId", restaurantId)
-                .setParameter("day", day)
-                .getSingleResult();
+        try {
+            return (Parser) em.createNamedQuery("findConfirmedParserForRestaurantAndDay")
+                    .setParameter("restaurantId", restaurantId)
+                    .setParameter("day", day)
+                    .getSingleResult();
+        } catch (NoResultException ex) {
+            LOGGER.info("Parser not found for restaurant: " + restaurantId + " and day " + day);
+            return null;
+        }
     }
 
     @Override

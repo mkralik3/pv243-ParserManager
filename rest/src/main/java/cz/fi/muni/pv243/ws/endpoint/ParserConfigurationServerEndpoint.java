@@ -8,18 +8,17 @@ package cz.fi.muni.pv243.ws.endpoint;
 import cz.fi.muni.pv243.entity.Parser;
 import cz.fi.muni.pv243.infinispan.annotation.CachedStore;
 import cz.fi.muni.pv243.infinispan.store.CachedParserStore;
-import cz.fi.muni.pv243.service.ParserConfigurationService;
+import cz.fi.muni.pv243.service.ParserService;
 import cz.fi.muni.pv243.service.ParserManagerLogger;
+import cz.fi.muni.pv243.service.QueueSenderSessionBean;
 import cz.fi.muni.pv243.ws.service.Action;
 import cz.fi.muni.pv243.ws.service.ActionMessage;
 import cz.fi.muni.pv243.ws.service.ActionMessageDecoder;
 import cz.fi.muni.pv243.ws.service.ParserEncoder;
 import cz.fi.muni.pv243.ws.service.ParsersEncoder;
-import cz.fi.muni.pv243.ws.service.QueueSenderSessionBean;
 import cz.fi.muni.pv243.ws.service.SessionStore;
 import cz.fi.muni.pv243.ws.service.WSJMSMessage;
 
-import java.util.List;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;
 import javax.inject.Inject;
@@ -30,6 +29,7 @@ import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
+import java.util.List;
 
 
 /**
@@ -45,7 +45,7 @@ public class ParserConfigurationServerEndpoint {
     private SessionStore clients;
 
     @Inject
-    private ParserConfigurationService service;
+    private ParserService service;
 
     @Inject
     @CachedStore
@@ -55,7 +55,7 @@ public class ParserConfigurationServerEndpoint {
     private QueueSenderSessionBean senderBean;
 
     @OnMessage
-    public void onMessage(ActionMessage msg, final Session session) {	
+    public void onMessage(ActionMessage msg, final Session session) {
 
         long parserId = Long.valueOf(msg.getId());
         if (msg.getAction().equals(Action.DETAIL)) {
@@ -63,10 +63,8 @@ public class ParserConfigurationServerEndpoint {
             Parser confirmed = service.getConfirmedParser(parser.getRestaurant(), parser.getDay());
 
             sendToSession(confirmed, session);
-        }
-        else if (msg.getAction().equals(Action.CONFIRM)) {
+        } else if (msg.getAction().equals(Action.CONFIRM)) {
             service.confirm(parserId);
-            senderBean.sendMessage(parserId);
         }
     }
 
@@ -77,7 +75,7 @@ public class ParserConfigurationServerEndpoint {
     @OnOpen
     public void onOpen(final Session session) {
         clients.addSession(session);
-        sendToSession(service.getAll(false), session);
+        sendToSession(service.getAllParsers(false), session);
         ParserManagerLogger.LOGGER.logWebsocketConnect(getClass().getSimpleName());
     }
 
@@ -88,7 +86,7 @@ public class ParserConfigurationServerEndpoint {
     }
 
     @OnError
-    public void onError(Throwable error) {
+    public void onError(Throwable error) throws Throwable {
         ParserManagerLogger.LOGGER.logWebsocketError(getClass().getSimpleName(), error);
     }
 

@@ -1,16 +1,14 @@
 package cz.fi.muni.pv243.ws.service;
 
-import java.io.IOException;
-import java.util.List;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import cz.fi.muni.pv243.entity.Parser;
 
 import javax.websocket.EncodeException;
 import javax.websocket.Encoder;
 import javax.websocket.EndpointConfig;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import cz.fi.muni.pv243.entity.Parser;
+import java.io.IOException;
+import java.util.List;
 
 /**
  * This class is responsible for encoding the Parser object in a String that will be sent to clients

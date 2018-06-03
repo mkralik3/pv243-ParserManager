@@ -10,10 +10,12 @@ import cz.fi.muni.pv243.entity.Parser;
 import cz.fi.muni.pv243.entity.Restaurant;
 import cz.fi.muni.pv243.infinispan.annotation.CachedStore;
 import cz.fi.muni.pv243.infinispan.store.CachedParserStore;
+
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.enterprise.context.ApplicationScoped;
+
+import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -23,11 +25,15 @@ import javax.inject.Named;
  */
 @Named
 @ApplicationScoped
-public class ParserConfigurationServiceImpl implements ParserConfigurationService {
+public class ParserServiceImpl implements ParserService {
 
     @Inject
     @CachedStore
     private CachedParserStore parserStore;
+
+    @Inject
+    @RequestScoped
+    private QueueSenderSessionBean senderSessionBean;
 
     @Override
     public void confirm(long parserId) {
@@ -38,17 +44,27 @@ public class ParserConfigurationServiceImpl implements ParserConfigurationServic
             old.setConfirmed(false);
             parserStore.updateParser(old);
         }
+
         parser.setConfirmed(true);
         parserStore.updateParser(parser);
+
+        senderSessionBean.sendMessage("confirm: " + String.valueOf(parser.getId()));
     }
 
     @Override
-    public List<Parser> getAll() {
+    public Parser addParser(Parser parser) {
+        Parser p = parserStore.addParser(parser);
+        senderSessionBean.sendMessage("create: " + String.valueOf(parser.getId()));
+        return p;
+    }
+
+    @Override
+    public List<Parser> getAllParsers() {
         return parserStore.getAllParsers();
     }
 
     @Override
-    public List<Parser> getAll(boolean confirmed) {
+    public List<Parser> getAllParsers(boolean confirmed) {
         return parserStore.getAllParsers(confirmed);
     }
 
@@ -57,6 +73,20 @@ public class ParserConfigurationServiceImpl implements ParserConfigurationServic
         return  parserStore.getConfirmedParser(restaurant.getGooglePlaceID(), day);
     }
 
+    @Override
+    public Parser updateParser(Parser p) {
+        Parser parser = parserStore.findParser(p.getId());
+
+        parser.setDay(p.getDay());
+        parser.setConfirmed(p.isConfirmed());
+        parser.setXpath(p.getXpath());
+
+        parserStore.updateParser(parser);
+
+        senderSessionBean.sendMessage("updated: " + String.valueOf(parser.getId()));
+
+        return parser;
+    }
 
 
 }
