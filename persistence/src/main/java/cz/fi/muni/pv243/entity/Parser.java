@@ -20,7 +20,8 @@ import javax.persistence.UniqueConstraint;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "PARSER")
+@Table(name = "PARSER"/*, uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"RESTAURANT_ID", "DAY", "CONFIRMED"})}*/)
 @NamedQueries({
     @NamedQuery(name= "findConfirmedParserForRestaurantAndDay", 
             query="SELECT p FROM Parser p WHERE p.restaurant.googlePlaceID = :restaurantId AND p.day = :day AND p.confirmed IS NOT NULL"),
@@ -75,6 +76,7 @@ public class Parser implements Serializable {
     }
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "DAY")
     private Day day;
 
     public Day getDay() {
@@ -85,18 +87,15 @@ public class Parser implements Serializable {
         this.day = day;
     }
 
-    @Column(name = "CONFIRMED", nullable = true)
-    private String confirmed;
+    @Column(name = "CONFIRMED", nullable = false)
+    private boolean confirmed = false;
 
     public boolean isConfirmed() {
-        return confirmed == null ? false : true;
+        return confirmed;
     }
 
     public void setConfirmed(boolean confirmed) {
-        if (confirmed)
-            this.confirmed = String.valueOf(restaurant.getGooglePlaceID());
-        else
-            this.confirmed = null;
+        this.confirmed = confirmed;
     }
 
 }
