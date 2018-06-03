@@ -25,7 +25,11 @@
             <artifactId>infinispan-embedded</artifactId>
             <version>9.1.0.Final</version>
         </dependency>
-
+        <dependency>
+            <groupId>org.infinispan</groupId>
+            <artifactId>infinispan-query</artifactId>
+            <version>9.1.0.Final</version>
+        </dependency>
         <dependency>
             <groupId>org.hibernate.javax.persistence</groupId>
             <artifactId>hibernate-jpa-2.1-api</artifactId>

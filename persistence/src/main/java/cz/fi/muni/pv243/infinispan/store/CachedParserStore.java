@@ -64,5 +64,4 @@ public class CachedParserStore implements ParserStore {
     public Parser getConfirmedParser(String restaurantId, Day day) {
         return delegate.getConfirmedParser(restaurantId, day);
     }
-
 }

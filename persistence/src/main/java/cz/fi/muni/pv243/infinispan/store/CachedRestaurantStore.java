@@ -27,11 +27,6 @@ public class CachedRestaurantStore implements RestaurantStore {
     private Cache<String, Restaurant> parserCache;
 
     @Override
-    public List<Restaurant> getAllRestaurants() {
-        return delegate.getAllRestaurants();
-    }
-
-    @Override
     @Transactional
     public Restaurant addRestaurant(Restaurant restaurant){
         restaurant = delegate.addRestaurant(restaurant);
@@ -40,15 +35,28 @@ public class CachedRestaurantStore implements RestaurantStore {
     }
 
     @Override
-    public Restaurant findById(String googleID) {
-        return parserCache.computeIfAbsent(googleID,
-                s -> delegate.findById(s));
+    @Transactional
+    public Restaurant updateRestaurant(Restaurant restaurant) {
+        restaurant = delegate.updateRestaurant(restaurant);
+        parserCache.replace(restaurant.getGooglePlaceID(), restaurant);
+        return restaurant;
     }
 
     @Override
-    public Restaurant updateRestaurant(Restaurant restaurant) {
-        restaurant = delegate.updateRestaurant(restaurant);
-        parserCache.put(restaurant.getGooglePlaceID(), restaurant);
-        return restaurant;
+    @Transactional
+    public void deleteRestaurant(Restaurant restaurant) {
+        delegate.deleteRestaurant(restaurant);
+        parserCache.remove(restaurant.getGooglePlaceID(), restaurant);
+    }
+
+    @Override
+    public List<Restaurant> getAllRestaurants() {
+        return delegate.getAllRestaurants();
+    }
+
+    @Override
+    public Restaurant findById(String googleID) {
+        return parserCache.computeIfAbsent(googleID,
+                s -> delegate.findById(s));
     }
 }
