@@ -1,4 +1,4 @@
-package cz.fi.muni.pv243.service;
+package cz.fi.muni.pv243.service.logging;
 
 import org.jboss.logging.BasicLogger;
 import org.jboss.logging.Logger;
