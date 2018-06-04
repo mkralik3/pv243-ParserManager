@@ -24,11 +24,11 @@ import java.io.Serializable;
         @UniqueConstraint(columnNames = {"RESTAURANT_ID", "DAY", "CONFIRMED"})}*/)
 @NamedQueries({
     @NamedQuery(name= "findConfirmedParserForRestaurantAndDay", 
-            query="SELECT p FROM Parser p WHERE p.restaurant.googlePlaceID = :restaurantId AND p.day = :day AND p.confirmed IS NOT NULL"),
+            query="SELECT p FROM Parser p WHERE p.restaurant.googlePlaceID = :restaurantId AND p.day = :day AND p.confirmed = true"),
     @NamedQuery(name= "findConfirmedParsers", 
-    query="SELECT p FROM Parser p WHERE p.confirmed IS NOT NULL"),
+    query="SELECT p FROM Parser p WHERE p.confirmed = true"),
     @NamedQuery(name= "findUnconfirmedParsers", 
-    query="SELECT p FROM Parser p WHERE p.confirmed IS NULL"),
+    query="SELECT p FROM Parser p WHERE p.confirmed = false"),
 })
 public class Parser implements Serializable {
 
@@ -38,9 +38,9 @@ public class Parser implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JoinColumn(name="RESTAURANT_ID")
-    Restaurant restaurant;
+    private Restaurant restaurant;
 
     private String xpath;
 
@@ -97,5 +97,4 @@ public class Parser implements Serializable {
     public void setConfirmed(boolean confirmed) {
         this.confirmed = confirmed;
     }
-
 }

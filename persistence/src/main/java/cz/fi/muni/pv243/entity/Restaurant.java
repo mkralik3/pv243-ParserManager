@@ -9,7 +9,7 @@ import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "RESTAURANT")
@@ -24,11 +24,11 @@ public class Restaurant {
 
     @JsonIgnore
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "restaurant", orphanRemoval=true)
-    private List<RestaurantWeekData> menuForWeeks;
+    private Set<RestaurantWeekData> menuForWeeks;
     
     @JsonIgnore
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "restaurant", orphanRemoval=true)
-    private List<Parser> parsers;
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "restaurant", orphanRemoval=true)
+    private Set<Parser> parsers;
 
     public String getGooglePlaceID() {
         return googlePlaceID;
@@ -54,11 +54,11 @@ public class Restaurant {
         this.description = description;
     }
 
-    public List<RestaurantWeekData> getMenuForWeeks() {
+    public Set<RestaurantWeekData> getMenuForWeeks() {
         return menuForWeeks;
     }
 
-    public void setMenuForWeeks(List<RestaurantWeekData> menuForWeeks) {
+    public void setMenuForWeeks(Set<RestaurantWeekData> menuForWeeks) {
         this.menuForWeeks = menuForWeeks;
     }
 
@@ -66,11 +66,11 @@ public class Restaurant {
         this.menuForWeeks.add(weekData);
     }
 
-	public List<Parser> getParsers() {
+	public Set<Parser> getParsers() {
 		return parsers;
 	}
 
-	public void setParsers(List<Parser> parsers) {
+	public void setParsers(Set<Parser> parsers) {
 		this.parsers = parsers;
 	}
 

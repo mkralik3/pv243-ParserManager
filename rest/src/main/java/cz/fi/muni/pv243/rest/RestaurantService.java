@@ -10,7 +10,9 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Response;
 import java.util.List;
 
 @Path("/restaurants")
@@ -29,8 +31,32 @@ public class RestaurantService {
     @POST
     @Consumes("application/json")
     @Produces("application/json")
-    public Restaurant createRestaurant(Restaurant restaurant) {
-        restaurantStore.addRestaurant(restaurant);
-        return restaurant;
+    public Response updateRestaurant(Restaurant restaurant) {
+        Restaurant toUpdate = restaurantStore.findById(restaurant.getGooglePlaceID());
+
+        if (toUpdate == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+
+        toUpdate.setName(restaurant.getName());
+        toUpdate.setDescription(restaurant.getDescription());
+        restaurantStore.updateRestaurant(toUpdate);
+
+        return Response.ok().entity(toUpdate).build();
+    }
+
+
+
+    @GET
+    @Path("{googleID}")
+    @Produces("application/json")
+    public Response getRestaurant(@PathParam("googleID") String googleId) {
+        Restaurant data = restaurantStore.findById(googleId);
+
+        if (data == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+
+        return Response.status(Response.Status.OK).entity(data).build();
     }
 }

@@ -1,0 +1,14 @@
+body {
+    margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+}
+
+.container {
+    width: inherit !important;
+}
+
+#root {
+    margin: auto;
+    max-width: 980px;
+}

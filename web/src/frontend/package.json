@@ -1,0 +1,28 @@
+{
+  "name": "web",
+  "version": "0.1.0",
+  "private": true,
+  "homepage": "/ParserManager-react/",
+  "dependencies": {
+    "bootstrap": "3.3.7",
+    "prop-types": "^15.5.7",
+    "react": "^16.4.0",
+    "react-bootstrap": "^0.32.1",
+    "react-bootstrap-navbar": "^1.1.0",
+    "react-bootstrap-table": "^4.3.1",
+    "react-dom": "^16.4.0",
+    "react-edit-inline": "^1.0.8",
+    "react-editable-text": "0.0.9",
+    "react-notifications": "^1.4.3",
+    "react-router": "^4.2.0",
+    "react-router-dom": "^4.2.2",
+    "react-scripts": "1.1.4",
+    "react-toastify": "^4.0.1"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  }
+}
