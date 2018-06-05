@@ -27,14 +27,14 @@ public class ParserRestService {
         return parserService.getAllParsers();
     }
 
-    @PUT
+    @POST
     @Consumes("application/json")
     @Produces("application/json")
     public Parser createParser(Parser parser) {
         return parserService.addParser(parser);
     }
 
-    @POST
+    @PUT
     @Consumes("application/json")
     @Produces("application/json")
     public Parser updateParser(Parser parser) {

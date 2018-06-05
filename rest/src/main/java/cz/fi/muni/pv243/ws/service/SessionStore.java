@@ -7,6 +7,9 @@ package cz.fi.muni.pv243.ws.service;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.websocket.Session;
+
+import cz.fi.muni.pv243.service.logging.ParserManagerLogger;
+
 import java.util.Collection;
 import java.util.Collections;
 import java.util.concurrent.ConcurrentHashMap;
@@ -23,10 +26,12 @@ public class SessionStore {
 
     public void addSession(Session session) {
         sessions.put(session.getId(), session);
+        ParserManagerLogger.LOGGER.logAddSession(session.getId(), sessions.size());
     }
 
     public void removeSession(String id) {
         sessions.remove(id);
+        ParserManagerLogger.LOGGER.logRemoveSession(id, sessions.size());
     }
 
     public Session getSession(String id) {

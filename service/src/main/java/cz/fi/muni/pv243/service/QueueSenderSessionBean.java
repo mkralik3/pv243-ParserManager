@@ -11,7 +11,11 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.jms.JMSContext;
+import javax.jms.JMSException;
 import javax.jms.Queue;
+
+import cz.fi.muni.pv243.service.logging.ParserManagerLogger;
+
 import java.io.Serializable;
 
 /**
@@ -30,6 +34,10 @@ public class QueueSenderSessionBean {
 
     public void sendMessage(Serializable message) {
         jmsContext.createProducer().send(myQueue, message/*jmsContext.createMessage()*/);
-
+        try {
+            ParserManagerLogger.LOGGER.logMessageQueued(myQueue.getQueueName(), message.toString());
+        } catch (JMSException e) {
+            ParserManagerLogger.LOGGER.logMessageQueueError(e);
+        }
     }
 }
