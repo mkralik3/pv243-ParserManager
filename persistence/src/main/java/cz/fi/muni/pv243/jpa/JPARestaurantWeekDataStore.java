@@ -36,6 +36,7 @@ public class JPARestaurantWeekDataStore implements RestaurantWeekDataStore {
     @Transactional
     public RestaurantWeekData updateWeekData(RestaurantWeekData data) {
         em.merge(data);
+        em.flush();
         return data;
     }
 

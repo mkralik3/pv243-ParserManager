@@ -84,8 +84,8 @@
                         <version>2.8</version>
                         <executions>
                             <execution>
-                                <id>unpack</id>
-                                <phase>process-test-classes</phase>
+                                <id>unpack-wildfly</id>
+                                <phase>generate-test-resources</phase>
                                 <goals>
                                     <goal>unpack</goal>
                                 </goals>
@@ -97,9 +97,33 @@
                                             <version>11.0.0.Final</version>
                                             <type>zip</type>
                                             <overWrite>false</overWrite>
-                                            <outputDirectory>target</outputDirectory>
+                                            <outputDirectory>${pom.basedir}/target</outputDirectory>
                                         </artifactItem>
                                     </artifactItems>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <artifactId>maven-resources-plugin</artifactId>
+                        <version>3.1.0</version>
+                        <executions>
+                            <execution>
+                                <id>copy-standalone-with-jms</id>
+                                <phase>process-test-resources</phase>
+                                <goals>
+                                    <goal>copy-resources</goal>
+                                </goals>
+                                <configuration>
+                                    <outputDirectory>${pom.basedir}/target/wildfly-11.0.0.Final/standalone/configuration</outputDirectory>
+                                    <resources>
+                                        <resource>
+                                        <directory>${pom.basedir}/src/test/resources</directory>
+                                            <includes>
+                                                <include>standalone-full.xml</include>
+                                            </includes>
+                                        </resource>
+                                    </resources>
                                 </configuration>
                             </execution>
                         </executions>
@@ -114,7 +138,7 @@
                             <systemPropertyVariables>
                                 <java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager>
                                 <!-- the maven dependency plugin will have already downloaded the server on /target -->
-                                <jboss.home>${project.basedir}/target/wildfly-11.0.0.Final</jboss.home>
+                                <jboss.home>${pom.basedir}/target/wildfly-11.0.0.Final</jboss.home>
                                 <port.offset>100</port.offset>
                             </systemPropertyVariables>
                             <redirectTestOutputToFile>false</redirectTestOutputToFile>

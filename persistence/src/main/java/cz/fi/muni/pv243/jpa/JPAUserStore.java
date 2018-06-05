@@ -28,6 +28,7 @@ public class JPAUserStore implements UserStore {
     @Transactional
     public User addUser(User parser){
         em.persist(parser);
+        em.flush();
         return parser;
     }
 
@@ -35,6 +36,7 @@ public class JPAUserStore implements UserStore {
     @Transactional
     public User updateUser(User user) {
         em.merge(user);
+        em.flush();
         return user;
     }
 

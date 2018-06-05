@@ -59,11 +59,6 @@ public class ParserServiceImpl implements ParserService {
     }
 
     @Override
-    public List<Parser> getAllParsers() {
-        return parserStore.getAllParsers();
-    }
-
-    @Override
     public List<Parser> getAllParsers(boolean confirmed) {
         return parserStore.getAllParsers(confirmed);
     }

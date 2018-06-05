@@ -9,6 +9,7 @@ import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -24,11 +25,11 @@ public class Restaurant {
 
     @JsonIgnore
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "restaurant", orphanRemoval=true)
-    private Set<RestaurantWeekData> menuForWeeks;
+    private Set<RestaurantWeekData> menuForWeeks = new HashSet<>();
 
     @JsonIgnore
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "restaurant", orphanRemoval=true)
-    private Set<Parser> parsers;
+    private Set<Parser> parsers = new HashSet<>();
 
     public String getGooglePlaceID() {
         return googlePlaceID;

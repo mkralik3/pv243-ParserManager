@@ -36,6 +36,7 @@ public class JPARestaurantStore implements RestaurantStore {
     @Transactional
     public Restaurant updateRestaurant(Restaurant restaurant) {
         em.merge(restaurant);
+        em.flush();
         return restaurant;
     }
 

@@ -7,6 +7,9 @@ import cz.fi.muni.pv243.infinispan.annotation.DefaultCacheConfiguration;
 import cz.fi.muni.pv243.jpa.annotation.JPAStore;
 import cz.fi.muni.pv243.store.ParserStore;
 import org.infinispan.Cache;
+import org.infinispan.query.Search;
+import org.infinispan.query.dsl.Query;
+import org.infinispan.query.dsl.QueryFactory;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -62,6 +65,27 @@ public class CachedParserStore implements ParserStore {
 
     @Override
     public Parser getConfirmedParser(String restaurantId, Day day) {
-        return delegate.getConfirmedParser(restaurantId, day);
+        QueryFactory queryFactory = Search.getQueryFactory(parserCache);
+        Query query = queryFactory
+                .from(Parser.class)
+                .having("restaurant.googlePlaceID")
+                .eq(restaurantId)
+                .and()
+                .having("day")
+                .eq(day)
+                .and()
+                .having("confirmed")
+                .eq(true)
+                .toBuilder().build();
+        List<Parser> result = query.list();
+        if(result.isEmpty()){
+            Parser inDB = delegate.getConfirmedParser(restaurantId, day);
+            if(inDB!=null){
+                parserCache.put(inDB.getId(),inDB);
+            }
+            return inDB;
+        }else{
+            return result.get(0);
+        }
     }
 }

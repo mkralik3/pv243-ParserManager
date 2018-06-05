@@ -83,7 +83,7 @@ public class ParserServiceTest {
         response.then()
                 .statusCode(200)
                 .body("xpath", is(newParser.getXpath()));
-        assertThat(store.getAllParsers())
+        assertThat(store.getAllParsers(false))
                 .hasSize(2);
     }
 }
