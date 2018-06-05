@@ -32,7 +32,7 @@ public interface ParserService {
     Parser getConfirmedParser(Restaurant restaurant, Day day);
 
     Parser updateParser(Parser parser);
-    
+
     void execute(Parser parser);
-    
+
 }

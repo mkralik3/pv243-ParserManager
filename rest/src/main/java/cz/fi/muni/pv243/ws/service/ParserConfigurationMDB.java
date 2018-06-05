@@ -30,14 +30,14 @@ import java.util.List;
             interfaceName = "javax.jms.Topic",
             destinationName = "ChangedParsersTopic"
     )
-})*/ // topic alebo queue?
+})*/ 
 @MessageDriven(name = "ParserConfigurationHandler",
 activationConfig = {
         @ActivationConfigProperty(propertyName = "destinationType", propertyValue = "javax.jms.Queue"),
         @ActivationConfigProperty(propertyName = "destination", propertyValue = "java:jboss/exported/jms/queue/ChangedParsersQueue"),
         @ActivationConfigProperty(propertyName = "acknowledgeMode", propertyValue = "Auto-acknowledge")
         /*@ActivationConfigProperty(propertyName = "subscriptionName", propertyValue = "ParserConfigurationMDB"*/
-/*mappedName = "jms/myQueue"*/})
+})
 public class ParserConfigurationMDB implements MessageListener {
 
     @Inject
