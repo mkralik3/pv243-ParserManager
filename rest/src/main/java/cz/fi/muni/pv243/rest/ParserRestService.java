@@ -7,12 +7,7 @@ import cz.fi.muni.pv243.infinispan.store.CachedParserStore;
 import cz.fi.muni.pv243.service.ParserService;
 
 import javax.inject.Inject;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import java.util.List;
 
 @Path("/parsers")
@@ -23,8 +18,10 @@ public class ParserRestService {
 
     @GET
     @Produces("application/json")
-    public List<Parser> getAllParsers() {
-        return parserService.getAllParsers();
+    public List<Parser> getAllParsers(@DefaultValue("false")
+                                      @QueryParam(value = "confirmed")
+                                      boolean confirmed){
+        return parserService.getAllParsers(confirmed);
     }
 
     @POST

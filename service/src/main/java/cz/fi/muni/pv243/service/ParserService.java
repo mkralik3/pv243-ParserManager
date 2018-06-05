@@ -25,8 +25,6 @@ public interface ParserService {
 
     Parser addParser(Parser parser);
 
-    List<Parser> getAllParsers();
-
     List<Parser> getAllParsers(boolean confirmed);
 
     Parser getConfirmedParser(Restaurant restaurant, Day day);

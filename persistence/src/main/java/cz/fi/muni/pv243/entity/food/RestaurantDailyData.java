@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -26,11 +27,11 @@ public class RestaurantDailyData {
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "FK_DAILY_DATA_ID_MENU")
-    private Set<FoodEntity> menu;
+    private Set<FoodEntity> menu = new HashSet<>();
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "FK_DAILY_DATA_ID_SOUP")
-    private Set<FoodEntity> soup;
+    private Set<FoodEntity> soup = new HashSet<>();
 
 
     public Set<FoodEntity> getMenu() {
@@ -57,5 +58,11 @@ public class RestaurantDailyData {
         this.id = id;
     }
 
+    public void addMenuToDay(FoodEntity menu) {
+        this.menu.add(menu);
+    }
 
+    public void addSoupToDay(FoodEntity soup) {
+        this.soup.add(soup);
+    }
 }

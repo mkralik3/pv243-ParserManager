@@ -18,6 +18,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -48,7 +49,7 @@ public class RestaurantWeekData {
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "FK_WEEK_DATA_ID")
-    private Set<RestaurantDailyData> menuForDays;
+    private Set<RestaurantDailyData> menuForDays = new HashSet<>();
 
     public long getId() {
         return id;
@@ -88,5 +89,9 @@ public class RestaurantWeekData {
 
     public void setRestaurant(Restaurant restaurant) {
         this.restaurant = restaurant;
+    }
+
+    public void addMenuForDay(RestaurantDailyData dailyData) {
+        this.menuForDays.add(dailyData);
     }
 }

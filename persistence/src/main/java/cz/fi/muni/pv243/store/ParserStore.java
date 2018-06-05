@@ -7,15 +7,15 @@ import java.util.List;
 
 public interface ParserStore {
 
-    List<Parser> getAllParsers();
-
     Parser addParser(Parser parser);
-
-    Parser findParser(Long id);
 
     Parser updateParser(Parser parser);
 
-    Parser getConfirmedParser(String restaurantId, Day day);
+    void deleteParser(Parser parser);
 
     List<Parser> getAllParsers(boolean confirmed);
+
+    Parser findParser(Long id);
+
+    Parser getConfirmedParser(String restaurantId, Day day);
 }

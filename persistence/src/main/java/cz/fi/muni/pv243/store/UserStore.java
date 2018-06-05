@@ -6,7 +6,14 @@ import java.util.List;
 
 public interface UserStore {
 
+    User addUser(User user);
+
+    User updateUser(User user);
+
+    void deleteUser(User user);
+
+    User findById(Long id);
+
     List<User> getAllUsers();
 
-    User addUser(User user);
 }

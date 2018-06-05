@@ -6,11 +6,14 @@ import java.util.List;
 
 public interface RestaurantStore {
 
-    List<Restaurant> getAllRestaurants();
-
     Restaurant addRestaurant(Restaurant restaurant);
+
+    Restaurant updateRestaurant(Restaurant restaurant);
+
+    void deleteRestaurant(Restaurant restaurant);
+
+    List<Restaurant> getAllRestaurants();
 
     Restaurant findById(String googleID);
 
-    Restaurant updateRestaurant(Restaurant restaurant);
 }

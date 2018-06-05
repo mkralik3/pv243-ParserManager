@@ -24,16 +24,32 @@ public class JPARestaurantWeekDataStore implements RestaurantWeekDataStore {
     @PersistenceContext(unitName = "ParserManager")
     private EntityManager em;
 
-    public List<RestaurantWeekData> getAllWeekData() {
-        Query query = em.createQuery("SELECT r FROM RestaurantWeekData r");
-        return (List<RestaurantWeekData>) query.getResultList();
-    }
-
+    @Override
     @Transactional
     public RestaurantWeekData addWeekData(RestaurantWeekData data){
         em.persist(data);
         em.flush();
         return data;
+    }
+
+    @Override
+    @Transactional
+    public RestaurantWeekData updateWeekData(RestaurantWeekData data) {
+        em.merge(data);
+        em.flush();
+        return data;
+    }
+
+    @Override
+    @Transactional
+    public void deleteWeekData(RestaurantWeekData data) {
+        em.remove(data);
+    }
+
+    @Override
+    public List<RestaurantWeekData> getAllWeekData() {
+        Query query = em.createQuery("SELECT r FROM RestaurantWeekData r");
+        return (List<RestaurantWeekData>) query.getResultList();
     }
 
     @Override
@@ -47,7 +63,5 @@ public class JPARestaurantWeekDataStore implements RestaurantWeekDataStore {
             LOGGER.info("There was not result for restaurant with google id: " + googlePlaceID + " and week number: " + weekNumber);
             return null;
         }
-
-
     }
 }

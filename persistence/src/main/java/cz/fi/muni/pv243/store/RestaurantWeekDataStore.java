@@ -6,9 +6,13 @@ import java.util.List;
 
 public interface RestaurantWeekDataStore {
 
-    List<RestaurantWeekData> getAllWeekData();
-
     RestaurantWeekData addWeekData(RestaurantWeekData data);
 
+    RestaurantWeekData updateWeekData(RestaurantWeekData data);
+
+    void deleteWeekData(RestaurantWeekData data);
+
     RestaurantWeekData getThisWeekData(String googlePlaceID, int weekNumber);
+
+    List<RestaurantWeekData> getAllWeekData();
 }

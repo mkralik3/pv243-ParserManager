@@ -1,0 +1,13 @@
+language: java
+
+env:
+  - CI=false
+
+install:
+  - mvn install -DskipTests=true -B -V
+
+test:
+  - mvn test -B
+
+jdk:
+- oraclejdk8

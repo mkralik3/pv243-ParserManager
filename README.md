@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/mkralik3/pv243-ParserManager.svg?branch=master)](https://travis-ci.org/mkralik3/pv243-ParserManager)
+
 ## Parser Manager project for PV243 course
 
 ### Run wildfly:
