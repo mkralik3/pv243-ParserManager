@@ -1,6 +1,7 @@
 package cz.fi.muni.pv243.infinispan;
 
 import cz.fi.muni.pv243.Configuration;
+import cz.fi.muni.pv243.TestFactory;
 import cz.fi.muni.pv243.entity.Parser;
 import cz.fi.muni.pv243.infinispan.annotation.CachedStore;
 import cz.fi.muni.pv243.jpa.annotation.JPAStore;
@@ -44,12 +45,10 @@ public class CachedParserStoreTest {
 
     @Before
     public void init() {
-        firstParser = new Parser();
-        firstParser.setXpath("/A/B/C");
+        firstParser = TestFactory.createParser("/a/b/c");
         manager.persist(firstParser);
 
-        secondParser = new Parser();
-        secondParser.setXpath("/x/y/z");
+        secondParser = TestFactory.createParser("/x/y/z");
     }
 
     @Test

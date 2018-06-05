@@ -2,6 +2,7 @@ package cz.fi.muni.pv243.jpa;
 
 import static org.assertj.core.api.Assertions.*;
 import cz.fi.muni.pv243.Configuration;
+import cz.fi.muni.pv243.TestFactory;
 import cz.fi.muni.pv243.entity.Parser;
 import cz.fi.muni.pv243.jpa.annotation.JPAStore;
 import cz.fi.muni.pv243.store.ParserStore;
@@ -39,12 +40,10 @@ public class JPAParserStoreTest {
 
     @Before
     public void init() {
-        firstParser = new Parser();
-        firstParser.setXpath("/A/B/C");
+        firstParser = TestFactory.createParser("/a/b/c");
         manager.persist(firstParser);
 
-        secondParser = new Parser();
-        secondParser.setXpath("/x/y/z");
+        secondParser = TestFactory.createParser("/x/y/z");
     }
 
     @Test

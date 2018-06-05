@@ -25,7 +25,7 @@ public class Restaurant {
     @JsonIgnore
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "restaurant", orphanRemoval=true)
     private Set<RestaurantWeekData> menuForWeeks;
-    
+
     @JsonIgnore
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "restaurant", orphanRemoval=true)
     private Set<Parser> parsers;
