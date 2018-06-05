@@ -38,7 +38,7 @@ public class CachedRestaurantStore implements RestaurantStore {
     @Transactional
     public Restaurant updateRestaurant(Restaurant restaurant) {
         restaurant = delegate.updateRestaurant(restaurant);
-        parserCache.replace(restaurant.getGooglePlaceID(), restaurant);
+        parserCache.put(restaurant.getGooglePlaceID(), restaurant);
         return restaurant;
     }
 
@@ -46,7 +46,7 @@ public class CachedRestaurantStore implements RestaurantStore {
     @Transactional
     public void deleteRestaurant(Restaurant restaurant) {
         delegate.deleteRestaurant(restaurant);
-        parserCache.remove(restaurant.getGooglePlaceID(), restaurant);
+        parserCache.remove(restaurant.getGooglePlaceID());
     }
 
     @Override

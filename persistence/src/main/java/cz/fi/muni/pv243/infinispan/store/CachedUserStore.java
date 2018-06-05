@@ -38,7 +38,7 @@ public class CachedUserStore implements UserStore {
     @Transactional
     public User updateUser(User user) {
         user = delegate.updateUser(user);
-        userCache.replace(user.getId(), user);
+        userCache.put(user.getId(), user);
         return user;
     }
 
@@ -46,7 +46,7 @@ public class CachedUserStore implements UserStore {
     @Transactional
     public void deleteUser(User user) {
         delegate.deleteUser(user);
-        userCache.remove(user.getId(), user);
+        userCache.remove(user.getId());
     }
 
     @Override

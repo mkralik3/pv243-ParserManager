@@ -49,7 +49,7 @@ public class CachedParserStore implements ParserStore {
     @Override
     public void deleteParser(Parser parser) {
         delegate.deleteParser(parser);
-        parserCache.remove(parser.getId(), parser);
+        parserCache.remove(parser.getId());
     }
 
     @Override

@@ -42,7 +42,7 @@ public class CachedRestaurantWeekDataStore implements RestaurantWeekDataStore {
     @Transactional
     public RestaurantWeekData updateWeekData(RestaurantWeekData data) {
         data = delegate.updateWeekData(data);
-        restaurantWeekDataCache.replace(data.getId(), data);
+        restaurantWeekDataCache.put(data.getId(), data);
         return data;
     }
 
@@ -50,7 +50,7 @@ public class CachedRestaurantWeekDataStore implements RestaurantWeekDataStore {
     @Transactional
     public void deleteWeekData(RestaurantWeekData data) {
         delegate.deleteWeekData(data);
-        restaurantWeekDataCache.remove(data.getId(), data);
+        restaurantWeekDataCache.remove(data.getId());
     }
 
     @Override

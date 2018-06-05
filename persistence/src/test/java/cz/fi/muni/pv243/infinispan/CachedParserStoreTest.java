@@ -99,6 +99,7 @@ public class CachedParserStoreTest {
     @Transactional(TransactionMode.ROLLBACK)
     public void testDelete(){
         manager.persist(secondParser);
+        cachedParserStore.findParser(secondParser.getId()); //add parser to cache
         cachedParserStore.deleteParser(secondParser);
 
         assertThat(manager.contains(secondParser)).isFalse();
