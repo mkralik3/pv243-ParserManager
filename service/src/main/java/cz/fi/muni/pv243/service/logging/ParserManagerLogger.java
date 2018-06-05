@@ -1,4 +1,4 @@
-package cz.fi.muni.pv243.service;
+package cz.fi.muni.pv243.service.logging;
 
 import org.jboss.logging.BasicLogger;
 import org.jboss.logging.Logger;
@@ -46,4 +46,12 @@ public interface ParserManagerLogger extends BasicLogger {
     @LogMessage(level = Logger.Level.INFO)
     @Message(id = BASE + 135, value = "Batch job running: id = {0}", format = Message.Format.MESSAGE_FORMAT)
     void logBatchJobRunning(long jobId);
+    
+    @LogMessage(level = Logger.Level.INFO)
+    @Message(id = BASE + 140, value = "Message: {0} in queue: {1}.", format = Message.Format.MESSAGE_FORMAT)
+    void logMessageQueued(String queue, String msg);
+    
+    @LogMessage(level = Logger.Level.WARN)
+    @Message(id = BASE + 145, value = "JMS queue encountered error: {0}", format = Message.Format.MESSAGE_FORMAT)
+    void logMessageQueueError(Throwable error);
 }

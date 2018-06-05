@@ -15,6 +15,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.jms.Message;
 import javax.jms.MessageListener;
+
 import java.util.List;
 
 /**
@@ -23,12 +24,20 @@ import java.util.List;
  * @author Michaela Bocanova
  */
 @Named
+/*@JMSDestinationDefinitions({
+    @JMSDestinationDefinition(
+            name = "java:jboss/exported/jms/topic/",
+            interfaceName = "javax.jms.Topic",
+            destinationName = "ChangedParsersTopic"
+    )
+})*/ 
 @MessageDriven(name = "ParserConfigurationHandler",
 activationConfig = {
         @ActivationConfigProperty(propertyName = "destinationType", propertyValue = "javax.jms.Queue"),
         @ActivationConfigProperty(propertyName = "destination", propertyValue = "java:jboss/exported/jms/queue/ChangedParsersQueue"),
         @ActivationConfigProperty(propertyName = "acknowledgeMode", propertyValue = "Auto-acknowledge")
-/*mappedName = "jms/myQueue"*/})
+        /*@ActivationConfigProperty(propertyName = "subscriptionName", propertyValue = "ParserConfigurationMDB"*/
+})
 public class ParserConfigurationMDB implements MessageListener {
 
     @Inject

@@ -24,6 +24,7 @@
 
     <build>
         <finalName>ParserManager-react</finalName>
+        
         <plugins>
             <plugin>
                 <groupId>com.github.eirslett</groupId>

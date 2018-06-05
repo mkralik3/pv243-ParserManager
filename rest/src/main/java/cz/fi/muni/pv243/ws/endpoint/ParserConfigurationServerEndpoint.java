@@ -9,8 +9,7 @@ import cz.fi.muni.pv243.entity.Parser;
 import cz.fi.muni.pv243.infinispan.annotation.CachedStore;
 import cz.fi.muni.pv243.infinispan.store.CachedParserStore;
 import cz.fi.muni.pv243.service.ParserService;
-import cz.fi.muni.pv243.service.ParserManagerLogger;
-import cz.fi.muni.pv243.service.QueueSenderSessionBean;
+import cz.fi.muni.pv243.service.logging.ParserManagerLogger;
 import cz.fi.muni.pv243.ws.service.Action;
 import cz.fi.muni.pv243.ws.service.ActionMessage;
 import cz.fi.muni.pv243.ws.service.ActionMessageDecoder;
@@ -50,9 +49,6 @@ public class ParserConfigurationServerEndpoint {
     @Inject
     @CachedStore
     private CachedParserStore parserStore;
-
-    @Inject
-    private QueueSenderSessionBean senderBean;
 
     @OnMessage
     public void onMessage(ActionMessage msg, final Session session) {
