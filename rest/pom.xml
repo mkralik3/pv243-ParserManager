@@ -46,6 +46,6 @@
     </dependencies>
     
     <build>
-        <finalName>${project.artifactId}</finalName>
+        <finalName>ParserManager-rest</finalName>
     </build>
 </project>
