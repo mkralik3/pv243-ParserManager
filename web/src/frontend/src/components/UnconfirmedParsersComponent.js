@@ -80,7 +80,9 @@ export default class AllRestaurantsComponent extends Component {
                                dataFormat={AllRestaurantsComponent.xpathFormater}>XPath</TableHeaderColumn>
             <TableHeaderColumn width={150} dataField='day'>Day</TableHeaderColumn>
             <TableHeaderColumn width={150} dataField='restaurant'
-                               dataFormat={(cell) => <div style={{pointerEvents: "none"}}>{cell.name}</div>}>Restaurant</TableHeaderColumn>
+                               dataFormat={(cell) => {if(cell!==null){ return <div style={{pointerEvents: "none"}}>{cell.name}</div>}
+                               else{ return "Restaurant is null" }
+                               }}>Restaurant</TableHeaderColumn>
             <TableHeaderColumn width={150} dataField='confirmParser' dataFormat={(cell) => <div style={{pointerEvents: "none"}}>Approve parser</div>}
                                tdStyle={{cursor: 'pointer', width: 'inherit'}} tdAttr={{'class': 'btn-default'}}>Confirm
                 Parser</TableHeaderColumn>

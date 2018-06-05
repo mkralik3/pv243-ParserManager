@@ -70,6 +70,9 @@ public class ParserServiceImpl implements ParserService {
 
     @Override
     public Parser getConfirmedParser(Restaurant restaurant, Day day) {
+        if(restaurant==null){
+            throw new IllegalArgumentException("Restaurant is null");
+        }
         return  parserStore.getConfirmedParser(restaurant.getGooglePlaceID(), day);
     }
 

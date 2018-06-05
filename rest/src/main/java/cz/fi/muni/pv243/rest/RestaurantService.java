@@ -6,12 +6,7 @@ import cz.fi.muni.pv243.infinispan.annotation.CachedStore;
 import cz.fi.muni.pv243.store.RestaurantStore;
 
 import javax.inject.Inject;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
 import java.util.List;
 
@@ -28,7 +23,7 @@ public class RestaurantService {
         return restaurantStore.getAllRestaurants();
     }
 
-    @POST
+    @PUT
     @Consumes("application/json")
     @Produces("application/json")
     public Response updateRestaurant(Restaurant restaurant) {
