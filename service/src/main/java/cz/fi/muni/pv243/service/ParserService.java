@@ -31,6 +31,4 @@ public interface ParserService {
 
     Parser updateParser(Parser parser);
     
-    void execute(Parser parser);
-    
 }

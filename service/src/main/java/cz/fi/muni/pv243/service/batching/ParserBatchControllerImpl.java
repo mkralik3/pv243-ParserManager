@@ -9,7 +9,7 @@ import java.util.Properties;
 import javax.batch.operations.JobOperator;
 import javax.batch.runtime.BatchRuntime;
 import javax.ejb.Schedule;
-import javax.enterprise.context.ApplicationScoped;
+import javax.ejb.Singleton;
 
 import cz.fi.muni.pv243.service.logging.ParserManagerLogger;
 
@@ -17,7 +17,7 @@ import cz.fi.muni.pv243.service.logging.ParserManagerLogger;
  *
  * @author Michaela Bocanova
  */
-@ApplicationScoped
+@Singleton
 public class ParserBatchControllerImpl implements ParserBatchController {
 
     private final String parserJobName = "parser-job";
@@ -26,7 +26,7 @@ public class ParserBatchControllerImpl implements ParserBatchController {
      * @see cz.fi.muni.pv243.service.batching.ParserBatchController#startJob()
      */
     @Override
-    @Schedule(dayOfWeek = "Mon", hour = "0"/*, persistent = "false"*/)
+    @Schedule(hour = "*", minute = "*", second = "*/10"/*dayOfWeek="Mon", hour="0"*/)
     public void startJob() {
         
         JobOperator jobOperator = BatchRuntime.getJobOperator();
