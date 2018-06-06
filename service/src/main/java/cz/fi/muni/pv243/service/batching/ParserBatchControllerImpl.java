@@ -26,12 +26,19 @@ public class ParserBatchControllerImpl implements ParserBatchController {
      * @see cz.fi.muni.pv243.service.batching.ParserBatchController#startJob()
      */
     @Override
-    @Schedule(hour = "*", minute = "*", second = "*/10"/*dayOfWeek="Mon", hour="0"*/)
-    public void startJob() {
-        
+    @Schedule(hour = "*", minute = "*", second = "*/10"/*dayOfWeek="Mon", hour="0"*/, persistent = false)
+    public void startJob() {        
         JobOperator jobOperator = BatchRuntime.getJobOperator();
         Properties jobParameters = new Properties();
-        long execID = jobOperator.start(parserJobName, jobParameters);
-        ParserManagerLogger.LOGGER.logBatchJobRunning(execID);
+        long executionId = jobOperator.start(parserJobName, jobParameters);
+    }
+    
+    @Override
+    public void restartJob(int executionId) {
+        JobOperator jobOperator = BatchRuntime.getJobOperator();
+        Properties jobParameters = jobOperator.getParameters(executionId);
+        jobParameters.setProperty("restarted", "true");
+        long newExecutionId = jobOperator.restart(executionId, jobParameters);
+        
     }
 }

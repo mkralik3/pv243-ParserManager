@@ -4,4 +4,6 @@ public interface ParserBatchController {
 
     void startJob();
 
+    void restartJob(int executionId);
+
 }
