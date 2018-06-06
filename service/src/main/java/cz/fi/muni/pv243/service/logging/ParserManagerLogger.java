@@ -44,8 +44,16 @@ public interface ParserManagerLogger extends BasicLogger {
     void logRemoveSession(String sessionId, int size);
 
     @LogMessage(level = Logger.Level.INFO)
-    @Message(id = BASE + 135, value = "Batch job running: id = {0}", format = Message.Format.MESSAGE_FORMAT)
-    void logBatchJobRunning(long jobId);
+    @Message(id = BASE + 135, value = "Starting batch job {0}: with execution id = {1}", format = Message.Format.MESSAGE_FORMAT)
+    void logBatchJobStart(String jobName, long jobId);
+    
+    @LogMessage(level = Logger.Level.INFO)
+    @Message(id = BASE + 136, value = "Stopping batch job {0}: with execution id = {1} and status: {2}", format = Message.Format.MESSAGE_FORMAT)
+    void logBatchJobStop(String jobName, long jobId, String status);
+    
+    @LogMessage(level = Logger.Level.INFO)
+    @Message(id = BASE + 137, value = "Abandonig batch job {0}: with execution id = {1} and status: {2}", format = Message.Format.MESSAGE_FORMAT)
+    void logBatchJobAbandon(String jobName, long jobId, String status);
     
     @LogMessage(level = Logger.Level.INFO)
     @Message(id = BASE + 140, value = "Message: {0} in queue: {1}.", format = Message.Format.MESSAGE_FORMAT)

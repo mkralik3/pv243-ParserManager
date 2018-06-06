@@ -6,16 +6,11 @@
 package cz.fi.muni.pv243.service.batching;
 
 import cz.fi.muni.pv243.entity.Parser;
-import cz.fi.muni.pv243.entity.Restaurant;
-import cz.fi.muni.pv243.infinispan.annotation.CachedStore;
-import cz.fi.muni.pv243.infinispan.store.CachedParserStore;
-import cz.fi.muni.pv243.infinispan.store.CachedRestaurantStore;
 import cz.fi.muni.pv243.service.ParserService;
 import cz.fi.muni.pv243.service.ParserUtil;
-
 import java.util.List;
 import javax.batch.api.Batchlet;
-import static javax.batch.runtime.BatchStatus.COMPLETED;
+import javax.batch.runtime.BatchStatus;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -38,12 +33,11 @@ public class ParserBatchlet implements Batchlet {
         for (Parser parser : parsers) {
         	ParserUtil.execute(parser);
         }
-        return COMPLETED.toString();
+        return BatchStatus.COMPLETED.toString();
     }
 
     @Override
     public void stop() throws Exception {
-        //log
     }
     
 }
