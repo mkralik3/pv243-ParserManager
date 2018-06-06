@@ -11,6 +11,7 @@ import cz.fi.muni.pv243.infinispan.annotation.CachedStore;
 import cz.fi.muni.pv243.infinispan.store.CachedParserStore;
 import cz.fi.muni.pv243.infinispan.store.CachedRestaurantStore;
 import cz.fi.muni.pv243.service.ParserService;
+import cz.fi.muni.pv243.service.ParserUtil;
 
 import java.util.List;
 import javax.batch.api.Batchlet;
@@ -35,7 +36,7 @@ public class ParserBatchlet implements Batchlet {
         
         List<Parser> parsers = parserService.getAllParsers(true);
         for (Parser parser : parsers) {
-        	parserService.execute(parser);
+        	ParserUtil.execute(parser);
         }
         return COMPLETED.toString();
     }
