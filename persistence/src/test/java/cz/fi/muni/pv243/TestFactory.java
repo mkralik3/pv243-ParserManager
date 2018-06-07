@@ -1,5 +1,6 @@
 package cz.fi.muni.pv243;
 
+import cz.fi.muni.pv243.entity.Day;
 import cz.fi.muni.pv243.entity.Parser;
 import cz.fi.muni.pv243.entity.Restaurant;
 import cz.fi.muni.pv243.entity.food.FoodEntity;
@@ -12,9 +13,11 @@ import java.util.Set;
 
 public class TestFactory {
 
-    public static Parser createParser(String xpath){
+    public static Parser createParser(String xpath, Boolean confirmed, Day day){
         Parser result = new Parser();
         result.setXpath(xpath);
+        result.setConfirmed(confirmed);
+        result.setDay(day);
         return result;
     }
 

@@ -2,7 +2,9 @@ package cz.fi.muni.pv243.infinispan;
 
 import cz.fi.muni.pv243.Configuration;
 import cz.fi.muni.pv243.TestFactory;
+import cz.fi.muni.pv243.entity.Day;
 import cz.fi.muni.pv243.entity.Parser;
+import cz.fi.muni.pv243.entity.Restaurant;
 import cz.fi.muni.pv243.infinispan.annotation.CachedStore;
 import cz.fi.muni.pv243.jpa.annotation.JPAStore;
 import cz.fi.muni.pv243.store.ParserStore;
@@ -42,25 +44,31 @@ public class CachedParserStoreTest {
 
     private Parser firstParser;
     private Parser secondParser;
+    private Restaurant restaurant;
 
     @Before
     public void init() {
-        firstParser = TestFactory.createParser("/a/b/c");
+        firstParser = TestFactory.createParser("/a/b/c", false, Day.MONDAY);
         manager.persist(firstParser);
 
-        secondParser = TestFactory.createParser("/x/y/z");
+        secondParser = TestFactory.createParser("/x/y/z", true, Day.FRIDAY);
+        restaurant = TestFactory.createRestaurant("testName", "idPlac", null,null);
+        secondParser.setRestaurant(restaurant);
+        restaurant.addParser(secondParser);
     }
 
     @Test
     @Transactional(TransactionMode.ROLLBACK)
-    public void testGet(){
+    public void findParserTest(){
         assertThat(cachedParserStore.findParser(firstParser.getId())).isEqualTo(firstParser);
+        jpaParserStore.deleteParser(firstParser);
+        assertThat(cachedParserStore.findParser(firstParser.getId())).isEqualTo(firstParser);//still in cache
         assertThat(cachedParserStore.findParser(20l)).isNull();
     }
 
     @Test
     @Transactional(TransactionMode.ROLLBACK)
-    public void testCreate() {
+    public void createParserTest() {
         cachedParserStore.addParser(secondParser);
 
         assertThat(manager.contains(secondParser)).isTrue();
@@ -73,10 +81,18 @@ public class CachedParserStoreTest {
 
     @Test
     @Transactional(TransactionMode.ROLLBACK)
-    public void testGetAll(){
-        manager.persist(firstParser);
+    public void getAllParsersTest(){
         manager.persist(secondParser);
 
+        assertThat(cachedParserStore.getAllParsers(false))
+                .hasSize(1)
+                .contains(firstParser);
+        assertThat(cachedParserStore.getAllParsers(true))
+                .hasSize(1)
+                .contains(secondParser);
+
+        secondParser.setConfirmed(false);
+        manager.persist(secondParser);
         assertThat(cachedParserStore.getAllParsers(false))
                 .hasSize(2)
                 .contains(firstParser, secondParser);
@@ -84,7 +100,7 @@ public class CachedParserStoreTest {
 
     @Test
     @Transactional(TransactionMode.ROLLBACK)
-    public void testUpdate(){
+    public void updateParserTest(){
         Parser updated = cachedParserStore.findParser(firstParser.getId());
         updated.setXpath("/c/d/e");
         cachedParserStore.updateParser(updated);
@@ -97,7 +113,7 @@ public class CachedParserStoreTest {
 
     @Test
     @Transactional(TransactionMode.ROLLBACK)
-    public void testDelete(){
+    public void deleteParserTest(){
         manager.persist(secondParser);
         cachedParserStore.findParser(secondParser.getId()); //add parser to cache
         cachedParserStore.deleteParser(secondParser);
@@ -108,5 +124,17 @@ public class CachedParserStoreTest {
 
         assertThat(jpaParserStore.findParser(secondParser.getId())).isNull();
         assertThat(jpaParserStore.findParser(firstParser.getId())).isEqualTo(firstParser);
+    }
+
+    @Test
+    @Transactional(TransactionMode.ROLLBACK)
+    public void getConfirmedParserTest(){
+        manager.persist(secondParser);
+        manager.persist(restaurant);
+
+        assertThat(cachedParserStore.getConfirmedParser(restaurant.getGooglePlaceID(), Day.FRIDAY))
+                .isEqualTo(secondParser);
+        assertThat(cachedParserStore.getConfirmedParser(restaurant.getGooglePlaceID(), Day.MONDAY))
+                .isNull();
     }
 }
