@@ -6,8 +6,9 @@ import cz.fi.muni.pv243.entity.Day;
 import cz.fi.muni.pv243.entity.Parser;
 import cz.fi.muni.pv243.entity.Restaurant;
 import cz.fi.muni.pv243.infinispan.annotation.CachedStore;
-import cz.fi.muni.pv243.jpa.annotation.JPAStore;
+import cz.fi.muni.pv243.infinispan.annotation.DefaultCacheConfiguration;
 import cz.fi.muni.pv243.store.ParserStore;
+import org.infinispan.Cache;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.transaction.api.annotation.TransactionMode;
@@ -33,11 +34,11 @@ public class CachedParserStoreTest {
 
     @Inject
     @CachedStore
-    private ParserStore cachedParserStore;
+    private ParserStore parserStore;
 
     @Inject
-    @JPAStore
-    private ParserStore jpaParserStore;
+    @DefaultCacheConfiguration
+    private Cache<Long, Parser> parserCache;
 
     @PersistenceContext
     private EntityManager manager;
@@ -55,28 +56,38 @@ public class CachedParserStoreTest {
         restaurant = TestFactory.createRestaurant("testName", "idPlac", null,null);
         secondParser.setRestaurant(restaurant);
         restaurant.addParser(secondParser);
+
+        manager.remove(secondParser);
+        if(secondParser.getId()!=null){
+            parserCache.remove(secondParser.getId());
+        }
     }
 
     @Test
     @Transactional(TransactionMode.ROLLBACK)
     public void findParserTest(){
-        assertThat(cachedParserStore.findParser(firstParser.getId())).isEqualTo(firstParser);
-        jpaParserStore.deleteParser(firstParser);
-        assertThat(cachedParserStore.findParser(firstParser.getId())).isEqualTo(firstParser);//still in cache
-        assertThat(cachedParserStore.findParser(20l)).isNull();
+        assertThat(parserStore.findParser(firstParser.getId()))
+                .isEqualTo(firstParser);
+        assertThat(parserCache.containsKey(firstParser.getId()))
+                .isTrue();
+        manager.remove(firstParser);
+        assertThat(parserStore.findParser(firstParser.getId())).isEqualTo(firstParser);//still in cache
+        assertThat(parserStore.findParser(20l)).isNull();
     }
 
     @Test
     @Transactional(TransactionMode.ROLLBACK)
     public void createParserTest() {
-        cachedParserStore.addParser(secondParser);
+        parserStore.addParser(secondParser);
 
+        assertThat(parserCache.containsKey(secondParser.getId()))
+                .isTrue(); //is in the cache
+        assertThat(parserStore.findParser(secondParser.getId()))
+                .isEqualTo(secondParser)
+                .isNotEqualTo(firstParser);
         assertThat(manager.contains(secondParser)).isTrue();
-        assertThat(cachedParserStore.findParser(secondParser.getId())).isEqualTo(secondParser);
-        assertThat(cachedParserStore.findParser(secondParser.getId())).isNotEqualTo(firstParser);
-
-        assertThat(jpaParserStore.findParser(secondParser.getId())).isEqualTo(secondParser);
-        assertThat(jpaParserStore.findParser(secondParser.getId())).isNotEqualTo(firstParser);
+        assertThat(manager.find(Parser.class, secondParser.getId()))
+                .isEqualTo(secondParser); //is in the persistence
     }
 
     @Test
@@ -84,16 +95,16 @@ public class CachedParserStoreTest {
     public void getAllParsersTest(){
         manager.persist(secondParser);
 
-        assertThat(cachedParserStore.getAllParsers(false))
+        assertThat(parserStore.getAllParsers(false))
                 .hasSize(1)
                 .contains(firstParser);
-        assertThat(cachedParserStore.getAllParsers(true))
+        assertThat(parserStore.getAllParsers(true))
                 .hasSize(1)
                 .contains(secondParser);
 
         secondParser.setConfirmed(false);
         manager.persist(secondParser);
-        assertThat(cachedParserStore.getAllParsers(false))
+        assertThat(parserStore.getAllParsers(false))
                 .hasSize(2)
                 .contains(firstParser, secondParser);
     }
@@ -101,29 +112,40 @@ public class CachedParserStoreTest {
     @Test
     @Transactional(TransactionMode.ROLLBACK)
     public void updateParserTest(){
-        Parser updated = cachedParserStore.findParser(firstParser.getId());
+        Parser updated = parserStore.findParser(firstParser.getId());
+        assertThat(parserCache.containsKey(firstParser.getId()))
+                .isTrue();
+
         updated.setXpath("/c/d/e");
-        cachedParserStore.updateParser(updated);
+        parserStore.updateParser(updated);
 
-        assertThat(manager.contains(updated)).isTrue();
-        assertThat(cachedParserStore.findParser(firstParser.getId())).isEqualTo(updated);
-
-        assertThat(jpaParserStore.findParser(firstParser.getId())).isEqualTo(updated);
+        assertThat(parserCache.containsKey(updated.getId()))
+                .isTrue();
+        assertThat(parserCache.get(updated.getId()))
+                .isEqualTo(updated); //updated in the cache
+        assertThat(manager.contains(updated))
+                .isTrue();
+        assertThat(manager.find(Parser.class, updated.getId()))
+                .isEqualTo(updated); //updated in the persistence
     }
 
     @Test
     @Transactional(TransactionMode.ROLLBACK)
     public void deleteParserTest(){
         manager.persist(secondParser);
-        cachedParserStore.findParser(secondParser.getId()); //add parser to cache
-        cachedParserStore.deleteParser(secondParser);
+        assertThat(parserStore.findParser(secondParser.getId()))
+                .isEqualTo(secondParser);
 
-        assertThat(manager.contains(secondParser)).isFalse();
-        assertThat(cachedParserStore.findParser(secondParser.getId())).isNull();
-        assertThat(cachedParserStore.findParser(firstParser.getId())).isEqualTo(firstParser);
+        parserStore.deleteParser(secondParser);
 
-        assertThat(jpaParserStore.findParser(secondParser.getId())).isNull();
-        assertThat(jpaParserStore.findParser(firstParser.getId())).isEqualTo(firstParser);
+        assertThat(parserCache.containsKey(secondParser.getId()))
+                .isFalse(); //parser was deleted from cache
+        assertThat(parserStore.findParser(secondParser.getId()))
+                .isNull();
+        assertThat(parserStore.findParser(firstParser.getId()))
+                .isEqualTo(firstParser); //first is still there
+        assertThat(manager.contains(secondParser))
+                .isFalse();
     }
 
     @Test
@@ -132,9 +154,9 @@ public class CachedParserStoreTest {
         manager.persist(secondParser);
         manager.persist(restaurant);
 
-        assertThat(cachedParserStore.getConfirmedParser(restaurant.getGooglePlaceID(), Day.FRIDAY))
+        assertThat(parserStore.getConfirmedParser(restaurant.getGooglePlaceID(), Day.FRIDAY))
                 .isEqualTo(secondParser);
-        assertThat(cachedParserStore.getConfirmedParser(restaurant.getGooglePlaceID(), Day.MONDAY))
+        assertThat(parserStore.getConfirmedParser(restaurant.getGooglePlaceID(), Day.MONDAY))
                 .isNull();
     }
 }
