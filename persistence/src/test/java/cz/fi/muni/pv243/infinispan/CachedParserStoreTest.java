@@ -14,6 +14,7 @@ import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.transaction.api.annotation.TransactionMode;
 import org.jboss.arquillian.transaction.api.annotation.Transactional;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -56,13 +57,13 @@ public class CachedParserStoreTest {
         restaurant = TestFactory.createRestaurant("testName", "idPlac", null,null);
         secondParser.setRestaurant(restaurant);
         restaurant.addParser(secondParser);
-
         manager.remove(secondParser);
-        if(secondParser.getId()!=null){
-            parserCache.remove(secondParser.getId());
-        }
     }
 
+    @After
+    public void cleanUp(){
+        parserCache.clear();
+    }
     @Test
     @Transactional(TransactionMode.ROLLBACK)
     public void findParserTest(){

@@ -76,6 +76,8 @@ public class JPARestaurantStoreTest {
         manager.persist(secondRestaurant);
         Restaurant updatedRestaurant = restaurantStore.findById(secondRestaurant.getGooglePlaceID());
         updatedRestaurant.setName("newName");
+        assertThat(manager.find(Restaurant.class,secondRestaurant.getGooglePlaceID()))
+                .hasFieldOrPropertyWithValue("name","newName");
         assertThat(restaurantStore.findById(secondRestaurant.getGooglePlaceID()))
                 .isEqualTo(updatedRestaurant)
                 .isNotEqualTo(firstRestaurant);
@@ -85,7 +87,9 @@ public class JPARestaurantStoreTest {
     @Transactional(TransactionMode.ROLLBACK)
     public void deleteRestaurantTest(){
         manager.persist(secondRestaurant);
-        restaurantStore.deleteRestaurant(secondRestaurant);
+        assertThat(manager.contains(secondRestaurant))
+                .isTrue();
+                restaurantStore.deleteRestaurant(secondRestaurant);
         assertThat(restaurantStore.findById(secondRestaurant.getGooglePlaceID()))
                 .isNull();
         assertThat(manager.contains(secondRestaurant))
