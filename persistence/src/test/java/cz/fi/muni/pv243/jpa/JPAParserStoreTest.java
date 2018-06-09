@@ -96,7 +96,8 @@ public class JPAParserStoreTest {
         updated.setXpath("/c/d/e");
         parserStore.updateParser(updated);
 
-        assertThat(manager.contains(updated)).isTrue();
+        assertThat(manager.find(Parser.class, firstParser.getId()))
+                .hasFieldOrPropertyWithValue("xpath", "/c/d/e");
         assertThat(parserStore.findParser(firstParser.getId())).isEqualTo(updated);
     }
 
@@ -104,8 +105,8 @@ public class JPAParserStoreTest {
     @Transactional(TransactionMode.ROLLBACK)
     public void deleteParserTest(){
         manager.persist(secondParser);
+        assertThat(manager.contains(secondParser)).isTrue();
         parserStore.deleteParser(secondParser);
-
         assertThat(manager.contains(secondParser)).isFalse();
         assertThat(parserStore.findParser(secondParser.getId())).isNull();
         assertThat(parserStore.findParser(firstParser.getId())).isEqualTo(firstParser);

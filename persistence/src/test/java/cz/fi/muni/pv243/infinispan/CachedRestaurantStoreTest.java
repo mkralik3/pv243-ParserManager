@@ -15,6 +15,7 @@ import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.transaction.api.annotation.TransactionMode;
 import org.jboss.arquillian.transaction.api.annotation.Transactional;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -63,7 +64,11 @@ public class CachedRestaurantStoreTest {
 
         secondRestaurant = TestFactory.createRestaurant("res2", "id2", null, null);
         manager.remove(secondRestaurant);
-        restaurantCache.remove(secondRestaurant.getGooglePlaceID());
+    }
+
+    @After
+    public void cleanUp(){
+        restaurantCache.clear();
     }
 
     @Test
