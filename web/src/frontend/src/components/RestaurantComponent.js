@@ -1,11 +1,10 @@
 import React, {Component} from 'react';
 import { toast } from 'react-toastify';
+import axios from 'axios'
+import {NotificationManager} from "react-notifications"
+
 
 export default class RestaurantComponent extends Component {
-    toastId = null;
-
-    notify = () => this.toastId = toast("Updating restaurant", { autoClose: false });
-    update = () => toast.update(this.toastId, {render: "Restauraunt was updated", type: toast.TYPE.INFO, autoClose: 5000 });
 
     constructor(props) {
         super(props);
@@ -22,15 +21,8 @@ export default class RestaurantComponent extends Component {
     fetchRestaurantData() {
         this.setState({isLoading: true});
 
-        fetch("http://localhost:8080/ParserManager-rest/rest/restaurants/" + this.state.restaurant.googlePlaceID)
-            .then(response => {
-                if (response.ok) {
-                    return response.json();
-                } else {
-                    throw new Error('Something went wrong ...');
-                }
-            })
-            .then(restaurant => this.setState({restaurant, isLoading: false}))
+        axios.get("http://localhost:8080/ParserManager-rest/rest/restaurants/" + this.state.restaurant.googlePlaceID)
+            .then(response => this.setState({restaurant: response.data, isLoading: false}))
             .catch(error => this.setState({error, isLoading: false}));
     }
 
@@ -39,27 +31,12 @@ export default class RestaurantComponent extends Component {
 
         let restaurant = this.state.restaurant;
 
-        const settings = {
-            crossDomain: true,
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Cache-Control": "no-cache"
-            },
-            body: `{"name":"${restaurant.name}", "description":"${restaurant.description}", "googlePlaceID": "${restaurant.googlePlaceID}"}`
-        };
+        const settings = {"name": restaurant.name, "description": restaurant.description, "googlePlaceID": restaurant.googlePlaceID};
 
-        fetch("http://localhost:8080/ParserManager-rest/rest/restaurants", settings)
+        axios.put("http://localhost:8080/ParserManager-rest/rest/restaurants", settings)
             .then(response => {
-                if (response.ok) {
-                    return response.json();
-                } else {
-                    throw new Error('Something went wrong ...');
-                }
-            })
-            .then(restaurant => {
-                this.setState({restaurant, isLoading: false});
-                this.update();
+                this.setState({restaurant: response.data, isLoading: false});
+                NotificationManager.success("INFO", "Restaurant was updated", 3000);
             })
             .catch(error => this.setState({error, isLoading: false}));
     }
@@ -100,7 +77,7 @@ export default class RestaurantComponent extends Component {
                    value={"Send"}
                    onClick={(e) => {
                        e.preventDefault();
-                       this.notify();
+                       NotificationManager.info("INFO", "Updating restaurant", 3000);
                        this.insertRestaurant();
                    }}
             />
