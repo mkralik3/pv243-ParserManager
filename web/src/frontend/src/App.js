@@ -13,10 +13,11 @@ import UnconfirmedParsersComponent from "./components/UnconfirmedParsersComponen
 import {NotificationContainer} from "react-notifications";
 import 'react-notifications/lib/notifications.css';
 
-
 class App extends Component {
+
     render() {
         const {match} = this.props;
+        const kc = this.props.kc;
 
         return (
             <div className="App">
@@ -42,12 +43,25 @@ class App extends Component {
                             </NavItem>
                         </Nav>
                         <Nav pullRight>
-                            <NavItem eventKey={1} href="#">
+                            <NavItem eventKey={1} onClick={kc.accountManagement}>
                                 Account
                             </NavItem>
-                            <NavItem eventKey={2} href="#">
-                                Logout
-                            </NavItem>
+                            {kc.authenticated &&
+                                <NavItem eventKey={2} onClick={() => {
+                                    localStorage.clear();
+                                    kc.logout();
+                                }}>
+                                    Logout ({kc.tokenParsed.preferred_username})
+                                </NavItem>
+                            }
+
+                            {!kc.authenticated &&
+                                <NavItem eventKey={3} onClick={() => {
+                                    kc.login();
+                                }}>
+                                    Sign in
+                                </NavItem>
+                            }
                         </Nav>
                     </Navbar.Collapse>
                 </Navbar>
@@ -56,9 +70,17 @@ class App extends Component {
                     <ToastContainer/>
                     <NotificationContainer/>
                     <Switch>
-                        <Route exact path={`${match.url.replace(/\/$/, "")}/restaurants`} component={AllRestaurantsComponent}/>
+                        <Route exact path={`${match.url.replace(/\/$/, "")}/restaurants`} render={(props) => {return <AllRestaurantsComponent
+                            kc={kc}
+                            {...props}
+                        />}}/>
                         <Route path={`${match.url.replace(/\/$/, "")}/restaurants/:googlePlaceID`} component={RestaurantComponent}/>
-                        <Route path={`${match.url.replace(/\/$/, "")}/parsers`} component={UnconfirmedParsersComponent}/>
+                        <Route path={`${match.url.replace(/\/$/, "")}/parsers`} render={(props) => {
+                            return <UnconfirmedParsersComponent
+                                kc={kc}
+                                {...props}
+                            />
+                        }}/>
                     </Switch>
                 </div>
             </div>

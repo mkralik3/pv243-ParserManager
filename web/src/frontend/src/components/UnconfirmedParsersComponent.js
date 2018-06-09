@@ -17,7 +17,13 @@ export default class AllRestaurantsComponent extends Component {
     }
 
     componentDidMount() {
-        this.websocket = new WebSocket("ws://localhost:8080/ParserManager-rest/ws");
+        const kc = this.props.kc;
+        this.websocket = new WebSocket("ws://mitko:admin@localhost:8080/ParserManager-rest/ws");
+
+        var msg = {
+            type: 'authenticate',
+            payload: { token:  kc.token}
+        };
 
         this.websocket.onopen = function () {
             NotificationManager.success("SUCCESS", "Connected to websocket");
@@ -25,7 +31,6 @@ export default class AllRestaurantsComponent extends Component {
 
         this.websocket.onmessage = function (event) {
             let parsers = JSON.parse(event.data);
-            console.log("Parser:" + parsers);
             this.setState({parsers});
             NotificationManager.success("SUCCESS", "Successfully processed message from server", 3000);
         }.bind(this);
@@ -54,14 +59,12 @@ export default class AllRestaurantsComponent extends Component {
     }
 
     render() {
-        console.log(this.state.parsers);
         const {match} = this.props;
 
         return <BootstrapTable data={this.state.parsers}
                                options={{
                                    noDataText: 'No unconfirmed parsers',
                                    onRowClick: (row, columnIndex) => {
-                                       console.log(row);
                                        switch (columnIndex) {
                                            case 3:
                                                this.props.history.push("/ParserManager-react/restaurants/" + row.restaurant.googlePlaceID);
@@ -84,7 +87,7 @@ export default class AllRestaurantsComponent extends Component {
                                else{ return "Restaurant is null" }
                                }}>Restaurant</TableHeaderColumn>
             <TableHeaderColumn width={150} dataField='confirmParser' dataFormat={(cell) => <div style={{pointerEvents: "none"}}>Approve parser</div>}
-                               tdStyle={{cursor: 'pointer', width: 'inherit'}} tdAttr={{'class': 'btn-default'}}>Confirm
+                               tdStyle={{cursor: 'pointer', width: 'inherit'}} tdAttr={{'className': 'btn-default'}}>Confirm
                 Parser</TableHeaderColumn>
         </BootstrapTable>;
     }
