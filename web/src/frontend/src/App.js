@@ -29,16 +29,16 @@ class App extends Component {
                 <Navbar inverse collapseOnSelect>
                     <Navbar.Header>
                         <Navbar.Brand>
-                            <a href={`${match.url}`}>Parser-Manager</a>
+                            <a href={`#`}>Parser-Manager</a>
                         </Navbar.Brand>
                         <Navbar.Toggle />
                     </Navbar.Header>
                     <Navbar.Collapse>
                         <Nav>
-                            <NavItem eventKey={1} href={`${match.url.replace(/\/$/, "")}/restaurants`}>
+                            <NavItem eventKey={1} href={`#/restaurants`}>
                                 Restaurants
                             </NavItem>
-                            <NavItem eventKey={1} href={`${match.url.replace(/\/$/, "")}/parsers`}>
+                            <NavItem eventKey={1} href={`#/parsers`}>
                                 Parsers
                             </NavItem>
                         </Nav>
@@ -70,12 +70,12 @@ class App extends Component {
                     <ToastContainer/>
                     <NotificationContainer/>
                     <Switch>
-                        <Route exact path={`${match.url.replace(/\/$/, "")}/restaurants`} render={(props) => {return <AllRestaurantsComponent
+                        <Route exact path={`/restaurants`} render={(props) => {return <AllRestaurantsComponent
                             kc={kc}
                             {...props}
                         />}}/>
-                        <Route path={`${match.url.replace(/\/$/, "")}/restaurants/:googlePlaceID`} component={RestaurantComponent}/>
-                        <Route path={`${match.url.replace(/\/$/, "")}/parsers`} render={(props) => {
+                        <Route path={`/restaurants/:googlePlaceID`} component={RestaurantComponent}/>
+                        <Route path={`/parsers`} render={(props) => {
                             return <UnconfirmedParsersComponent
                                 kc={kc}
                                 {...props}

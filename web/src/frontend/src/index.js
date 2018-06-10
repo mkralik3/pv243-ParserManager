@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
-import {BrowserRouter, Switch, Route} from "react-router-dom";
+import {Switch, Route, HashRouter} from "react-router-dom";
 import Keycloak from "keycloak-js";
 import axios from 'axios'
 import {NotificationManager} from "react-notifications"
@@ -49,12 +49,12 @@ kc.init({onLoad: 'login-required'})
         NotificationManager.success("SUCCESS", "Keycloak initialized authenticated: " + authenticated);
         if (authenticated) {
             ReactDOM.render(
-                <BrowserRouter>
+                <HashRouter>
                     <Switch>
-                        <Route path="/ParserManager-react" render={MyAppPage}/>
+                        <Route path="/" render={MyAppPage}/>
                         <Route render={() => "Path not found"}/>
                     </Switch>
-                </BrowserRouter>,
+                </HashRouter>,
                 document.getElementById('root'));
         } else {
             NotificationManager.error("ERROR", "Not able to authenticate" + authenticated);
