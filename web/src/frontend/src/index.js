@@ -69,6 +69,19 @@ axios.interceptors.request.use(function (config) {
     return Promise.reject(err);
 });
 
+
+axios.interceptors.response.use(function (response) {
+    return response;
+}, function (error) {
+    if (error.response.status === 403) {
+        NotificationManager.error("ERROR", "You are not allowed to do this operation")
+    } else if (error.response.status === 401) {
+        kc.updateToken(30).error(() => kc.login());
+    }
+
+    return Promise.reject(error);
+});
+
 const updateLocalStorage = () => {
     localStorage.setItem('kc_token', kc.token);
     localStorage.setItem('kc_refreshToken', kc.refreshToken);

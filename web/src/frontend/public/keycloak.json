@@ -1,0 +1,8 @@
+{
+  "realm": "ParserManager",
+  "auth-server-url": "http://keycloak-openshift3-keycloak-idp.a3c1.starter-us-west-1.openshiftapps.com/auth",
+  "ssl-required": "none",
+  "resource": "ParserManager-react",
+  "public-client": true,
+  "confidential-port": 0
+}
