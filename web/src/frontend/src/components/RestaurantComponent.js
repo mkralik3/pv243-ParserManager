@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import { toast } from 'react-toastify';
 import axios from 'axios'
 import {NotificationManager} from "react-notifications"
 
@@ -31,9 +30,9 @@ export default class RestaurantComponent extends Component {
 
         let restaurant = this.state.restaurant;
 
-        const settings = {"name": restaurant.name, "description": restaurant.description, "googlePlaceID": restaurant.googlePlaceID};
+        const data = {"name": restaurant.name, "description": restaurant.description, "googlePlaceID": restaurant.googlePlaceID};
 
-        axios.put("http://localhost:8080/ParserManager-rest/rest/restaurants", settings)
+        axios.put("http://localhost:8080/ParserManager-rest/rest/restaurants", data)
             .then(response => {
                 this.setState({restaurant: response.data, isLoading: false});
                 NotificationManager.success("INFO", "Restaurant was updated", 3000);

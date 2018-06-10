@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {NotificationManager} from "react-notifications"
 import {BootstrapTable, TableHeaderColumn} from "react-bootstrap-table"
 import EditableText from './EditableText';
+import axios from 'axios';
 
 export default class AllRestaurantsComponent extends Component {
 
@@ -47,13 +48,11 @@ export default class AllRestaurantsComponent extends Component {
         return <EditableText value={cell} callback={(newValue) => {
             row.xpath = newValue;
 
-            fetch('http://localhost:8080/ParserManager-rest/rest/parsers/', {
-                method: 'POST',
+            axios.post('http://localhost:8080/ParserManager-rest/rest/parsers/', row, {
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(row)
+                }
             })
         }}/>
     }
@@ -70,9 +69,13 @@ export default class AllRestaurantsComponent extends Component {
                                                this.props.history.push("/ParserManager-react/restaurants/" + row.restaurant.googlePlaceID);
                                                break;
                                            case 4:
-                                               let msg = JSON.stringify({id: row.id, action: 'CONFIRM'});
-                                               this.websocket.send(msg);
-                                               NotificationManager.info("INFO", "Parser was marked for confirmation", 3000);
+                                               axios.post('http://localhost:8080/ParserManager-rest/rest/parsers/accept/' + row.id, {
+                                                   headers: {
+                                                       'Accept': 'application/json',
+                                                       'Content-Type': 'application/json',
+                                                   }
+                                               });
+
                                                break;
                                        }
                                    },
