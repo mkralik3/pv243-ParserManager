@@ -15,6 +15,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 
 import java.io.Serializable;
 
@@ -39,8 +41,11 @@ public class Parser implements Serializable {
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JoinColumn(name="RESTAURANT_ID")
+    @NotNull
+    @Valid //valid object in the object in the rest layer
     private Restaurant restaurant;
 
+    @NotNull
     private String xpath;
 
     public Long getId() {

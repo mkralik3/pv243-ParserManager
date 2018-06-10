@@ -6,6 +6,7 @@ import cz.fi.muni.pv243.infinispan.annotation.CachedStore;
 import cz.fi.muni.pv243.store.RestaurantStore;
 
 import javax.inject.Inject;
+import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
 import java.util.List;
@@ -26,7 +27,7 @@ public class RestaurantService {
     @PUT
     @Consumes("application/json")
     @Produces("application/json")
-    public Response updateRestaurant(Restaurant restaurant) {
+    public Response updateRestaurant(@Valid Restaurant restaurant) {
         Restaurant toUpdate = restaurantStore.findById(restaurant.getGooglePlaceID());
 
         if (toUpdate == null) {

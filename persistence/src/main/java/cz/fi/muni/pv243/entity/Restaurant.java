@@ -9,6 +9,8 @@ import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -17,10 +19,14 @@ import java.util.Set;
 public class Restaurant {
 
     @Id
+    @NotNull
     private String googlePlaceID;
 
+    @NotNull
+    @Size(min = 1, max = 50)
     private String name;
 
+    @Size(max=500)
     private String description;
 
     @JsonIgnore
