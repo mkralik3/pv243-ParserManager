@@ -78,4 +78,34 @@ public class Restaurant {
     public void addParser(Parser parser) {
         this.parsers.add(parser);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Restaurant)) return false;
+
+        Restaurant that = (Restaurant) o;
+
+        if (getGooglePlaceID() != null ? !getGooglePlaceID().equals(that.getGooglePlaceID()) : that.getGooglePlaceID() != null)
+            return false;
+        return getName() != null ? getName().equals(that.getName()) : that.getName() == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getGooglePlaceID() != null ? getGooglePlaceID().hashCode() : 0;
+        result = 31 * result + (getName() != null ? getName().hashCode() : 0);
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Restaurant{" +
+                "googlePlaceID='" + googlePlaceID + '\'' +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", menuForWeeks=" + menuForWeeks +
+                ", parsers=" + parsers +
+                '}';
+    }
 }

@@ -66,4 +66,34 @@ public class FoodEntity {
     public void setId(long id) {
         this.id = id;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof FoodEntity)) return false;
+
+        FoodEntity that = (FoodEntity) o;
+
+        if (getName() != null ? !getName().equals(that.getName()) : that.getName() != null) return false;
+        if (getPrice() != null ? !getPrice().equals(that.getPrice()) : that.getPrice() != null) return false;
+        return getTags() != null ? getTags().equals(that.getTags()) : that.getTags() == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getName() != null ? getName().hashCode() : 0;
+        result = 31 * result + (getPrice() != null ? getPrice().hashCode() : 0);
+        result = 31 * result + (getTags() != null ? getTags().hashCode() : 0);
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "FoodEntity{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", price=" + price +
+                ", tags=" + tags +
+                '}';
+    }
 }

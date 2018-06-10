@@ -137,7 +137,6 @@ public class CachedRestaurantWeekDataStoreTest {
         assertThat(weekDataStore.getThisWeekData(restaurant.getGooglePlaceID(), WEEK_NUMBER))
                 .isEqualTo(firstWeekData)
                 .isNotEqualTo(secondWeekData);
-        System.out.println("----------------in test ----------" + firstWeekData.getWeekNumber() + "------------" + firstWeekData.getId());
         assertThat(weekDataCache.containsKey(firstWeekData.getId()))
                 .isTrue();
         assertThat(weekDataStore.getThisWeekData(restaurant.getGooglePlaceID(), ANOTHER_WEEK_NUMBER))
