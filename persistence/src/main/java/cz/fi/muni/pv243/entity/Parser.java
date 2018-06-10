@@ -67,14 +67,6 @@ public class Parser implements Serializable {
         this.restaurant = restaurant;
     }
 
-    @Override
-    public String toString() {
-        return "Parser{" +
-                "id='" + id + '\'' +
-                "xpath='" + xpath + '\'' +
-                '}';
-    }
-
     @Enumerated(EnumType.STRING)
     @Column(name = "DAY")
     private Day day;
@@ -96,5 +88,37 @@ public class Parser implements Serializable {
 
     public void setConfirmed(boolean confirmed) {
         this.confirmed = confirmed;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Parser)) return false;
+
+        Parser parser = (Parser) o;
+
+        if (getId() != null ? !getId().equals(parser.getId()) : parser.getId() != null) return false;
+        if (getRestaurant() != null ? !getRestaurant().equals(parser.getRestaurant()) : parser.getRestaurant() != null)
+            return false;
+        return getXpath() != null ? getXpath().equals(parser.getXpath()) : parser.getXpath() == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getId() != null ? getId().hashCode() : 0;
+        result = 31 * result + (getRestaurant() != null ? getRestaurant().hashCode() : 0);
+        result = 31 * result + (getXpath() != null ? getXpath().hashCode() : 0);
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Parser{" +
+                "id=" + id +
+                ", restaurant=" + ((restaurant==null) ? null : restaurant.getName()) +
+                ", xpath='" + xpath + '\'' +
+                ", day=" + day +
+                ", confirmed=" + confirmed +
+                '}';
     }
 }

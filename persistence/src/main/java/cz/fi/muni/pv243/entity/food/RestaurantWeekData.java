@@ -42,7 +42,7 @@ public class RestaurantWeekData {
     @Column(name = "WEEK_NUMBER")
     private int weekNumber;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JoinColumn(name="RESTAURANT_ID")
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Restaurant restaurant;
@@ -93,5 +93,36 @@ public class RestaurantWeekData {
 
     public void addMenuForDay(RestaurantDailyData dailyData) {
         this.menuForDays.add(dailyData);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof RestaurantWeekData)) return false;
+
+        RestaurantWeekData that = (RestaurantWeekData) o;
+
+        if (isSoupIncludedInPrice() != that.isSoupIncludedInPrice()) return false;
+        if (getWeekNumber() != that.getWeekNumber()) return false;
+        return getRestaurant() != null ? getRestaurant().equals(that.getRestaurant()) : that.getRestaurant() == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = (isSoupIncludedInPrice() ? 1 : 0);
+        result = 31 * result + getWeekNumber();
+        result = 31 * result + (getRestaurant() != null ? getRestaurant().hashCode() : 0);
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "RestaurantWeekData{" +
+                "id=" + id +
+                ", soupIncludedInPrice=" + soupIncludedInPrice +
+                ", weekNumber=" + weekNumber +
+                ", restaurant=" + ((restaurant==null) ? null : restaurant.getName()) +
+                ", menuForDays=" + menuForDays +
+                '}';
     }
 }

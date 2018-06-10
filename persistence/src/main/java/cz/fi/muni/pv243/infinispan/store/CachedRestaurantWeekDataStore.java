@@ -29,7 +29,6 @@ public class CachedRestaurantWeekDataStore implements RestaurantWeekDataStore {
     @DefaultCacheConfiguration
     private Cache<Long, RestaurantWeekData> restaurantWeekDataCache;
 
-
     @Override
     @Transactional
     public RestaurantWeekData addWeekData(RestaurantWeekData data) {
