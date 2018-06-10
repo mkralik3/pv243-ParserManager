@@ -12,6 +12,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Set;
 
 @Entity
@@ -24,6 +26,8 @@ public class FoodEntity {
     @JsonIgnore
     private long id;
 
+    @NotNull
+    @Size(min = 1, max = 32)
     private String name;
 
     private Integer price;

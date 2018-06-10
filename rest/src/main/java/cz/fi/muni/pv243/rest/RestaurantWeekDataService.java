@@ -8,6 +8,7 @@ import cz.fi.muni.pv243.store.RestaurantStore;
 import cz.fi.muni.pv243.store.RestaurantWeekDataStore;
 
 import javax.inject.Inject;
+import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -46,7 +47,7 @@ public class RestaurantWeekDataService {
     @POST
     @Consumes("application/json")
     @Produces("application/json")
-    public RestaurantWeekData createWeek(RestaurantWeekData weekData) {
+    public RestaurantWeekData createWeek(@Valid RestaurantWeekData weekData) {
         String googleID = weekData.getRestaurant().getGooglePlaceID();
         Restaurant restaurantAlreadyExists = restaurantStore.findById(googleID);
 

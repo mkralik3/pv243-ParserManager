@@ -3,6 +3,7 @@ package cz.fi.muni.pv243.rest;
 import static org.assertj.core.api.Assertions.*;
 
 import cz.fi.muni.pv243.entity.Parser;
+import cz.fi.muni.pv243.entity.Restaurant;
 import cz.fi.muni.pv243.infinispan.annotation.CachedStore;
 import cz.fi.muni.pv243.store.ParserStore;
 import io.restassured.http.ContentType;
@@ -47,6 +48,11 @@ public class ParserServiceTest {
         if (!initialized) { //workaround, beforeClass have to be static, but store is injected
             parser = new Parser();
             parser.setXpath("/a/b/c");
+            Restaurant restaurant = new Restaurant();
+            restaurant.setGooglePlaceID("testGOOGLEid");
+            restaurant.setName("uPstrosa");
+            restaurant.addParser(parser);
+            parser.setRestaurant(restaurant);
             store.addParser(parser);
             initialized = true;
         }
@@ -70,6 +76,11 @@ public class ParserServiceTest {
     public void testPost() throws IOException {
         Parser newParser = new Parser();
         newParser.setXpath("x/y/z");
+        Restaurant restaurant = new Restaurant();
+        restaurant.setGooglePlaceID("1122++");
+        restaurant.setName("purkynka");
+        restaurant.addParser(newParser);
+        newParser.setRestaurant(restaurant);
 
         Response response = given()
                 .when()

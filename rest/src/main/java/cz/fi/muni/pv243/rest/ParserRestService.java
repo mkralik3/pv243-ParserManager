@@ -9,6 +9,7 @@ import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
 import java.util.List;
@@ -34,7 +35,7 @@ public class ParserRestService {
     @Consumes("application/json")
     @Produces("application/json")
     @PermitAll
-    public Parser createParser(Parser parser) {
+    public Parser createParser(@Valid Parser parser) {
         return parserService.addParser(parser);
     }
 
@@ -52,7 +53,7 @@ public class ParserRestService {
     @Consumes("application/json")
     @Produces("application/json")
     @PermitAll
-    public Parser updateParser(Parser parser) {
+    public Parser updateParser(@Valid Parser parser) {
         return parserService.updateParser(parser);
     }
 }

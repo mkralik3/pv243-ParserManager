@@ -45,6 +45,9 @@ public class JPAParserStoreTest {
     @Before
     public void init() {
         firstParser = TestFactory.createParser("/a/b/c", false, Day.MONDAY);
+        Restaurant restaurant1 = TestFactory.createRestaurant("testName2", "idPlac2", null,null);
+        firstParser.setRestaurant(restaurant1);
+        restaurant1.addParser(secondParser);
         manager.persist(firstParser);
 
         secondParser = TestFactory.createParser("/x/y/z", true, Day.FRIDAY);

@@ -3,6 +3,7 @@ package cz.fi.muni.pv243.entity.food;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import cz.fi.muni.pv243.entity.Restaurant;
+import org.hibernate.validator.constraints.Range;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -18,6 +19,8 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -37,14 +40,19 @@ public class RestaurantWeekData {
     @JsonIgnore
     private long id;
 
+    @NotNull
     private boolean soupIncludedInPrice;
 
     @Column(name = "WEEK_NUMBER")
+    @NotNull
+    @Range(min=1, max=53)
     private int weekNumber;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JoinColumn(name="RESTAURANT_ID")
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @NotNull
+    @Valid //valid object in the object in the rest layer
     private Restaurant restaurant;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)

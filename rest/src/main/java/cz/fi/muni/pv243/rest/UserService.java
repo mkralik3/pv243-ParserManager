@@ -6,6 +6,7 @@ import cz.fi.muni.pv243.infinispan.annotation.CachedStore;
 import cz.fi.muni.pv243.store.UserStore;
 
 import javax.inject.Inject;
+import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -29,7 +30,7 @@ public class UserService {
     @POST
     @Consumes("application/json")
     @Produces("application/json")
-    public User createUser(User user) {
+    public User createUser(@Valid User user) {
         userStore.addUser(user);
         return user;
     }

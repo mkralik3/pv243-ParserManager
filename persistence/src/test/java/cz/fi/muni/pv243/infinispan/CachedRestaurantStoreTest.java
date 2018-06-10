@@ -3,6 +3,7 @@ package cz.fi.muni.pv243.infinispan;
 import cz.fi.muni.pv243.Configuration;
 import cz.fi.muni.pv243.TestFactory;
 import cz.fi.muni.pv243.entity.Day;
+import cz.fi.muni.pv243.entity.Parser;
 import cz.fi.muni.pv243.entity.Restaurant;
 import cz.fi.muni.pv243.entity.food.RestaurantDailyData;
 import cz.fi.muni.pv243.entity.food.RestaurantWeekData;
@@ -52,7 +53,9 @@ public class CachedRestaurantStoreTest {
     public void init() {
         firstRestaurant = TestFactory.createRestaurant("firstRestaurant",
                 "firstID","descript1", null);
-        firstRestaurant.addParser(TestFactory.createParser("/a/b/c", true, Day.MONDAY));
+        Parser parser = TestFactory.createParser("/a/b/c", true, Day.MONDAY);
+        parser.setRestaurant(firstRestaurant);
+        firstRestaurant.addParser(parser);
         RestaurantWeekData weekData = TestFactory.createWeekData(firstRestaurant,true,3,null);
         RestaurantDailyData dailyData = TestFactory.createDailyData(null, null);
         dailyData.addMenuToDay(TestFactory.createFoodEntity("menu1",100,null));
