@@ -5,11 +5,15 @@
  */
 package cz.fi.muni.pv243.service;
 
+import com.sun.org.apache.regexp.internal.RE;
 import cz.fi.muni.pv243.entity.Day;
 import cz.fi.muni.pv243.entity.Parser;
 import cz.fi.muni.pv243.entity.Restaurant;
 import cz.fi.muni.pv243.infinispan.annotation.CachedStore;
 import cz.fi.muni.pv243.infinispan.store.CachedParserStore;
+import cz.fi.muni.pv243.infinispan.store.CachedRestaurantStore;
+import cz.fi.muni.pv243.store.ParserStore;
+import cz.fi.muni.pv243.store.RestaurantStore;
 
 import java.util.List;
 
@@ -29,7 +33,11 @@ public class ParserServiceImpl implements ParserService {
 
     @Inject
     @CachedStore
-    private CachedParserStore parserStore;
+    private ParserStore parserStore;
+
+    @Inject
+    @CachedStore
+    private RestaurantStore restaurantStore;
 
     @Inject
     @RequestScoped
@@ -53,6 +61,16 @@ public class ParserServiceImpl implements ParserService {
 
     @Override
     public Parser addParser(Parser parser) {
+        System.out.println("------service------- parser to add - restaurant" + parser.getRestaurant());
+        Restaurant restaurant = parser.getRestaurant();
+        if (restaurant != null) {
+            restaurant = restaurantStore.findById(restaurant.getGooglePlaceID());
+            if (restaurant != null) {
+                parser.setRestaurant(restaurant);
+                restaurantStore.invalidateCache(restaurant.getGooglePlaceID());
+            }
+        }
+
         Parser p = parserStore.addParser(parser);
         senderSessionBean.sendMessage("create: " + String.valueOf(parser.getId()));
         return p;
@@ -65,10 +83,10 @@ public class ParserServiceImpl implements ParserService {
 
     @Override
     public Parser getConfirmedParser(Restaurant restaurant, Day day) {
-        if(restaurant==null){
+        if (restaurant == null) {
             throw new IllegalArgumentException("Restaurant is null");
         }
-        return  parserStore.getConfirmedParser(restaurant.getGooglePlaceID(), day);
+        return parserStore.getConfirmedParser(restaurant.getGooglePlaceID(), day);
     }
 
     @Override
