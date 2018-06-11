@@ -39,7 +39,7 @@ public class Parser implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name="RESTAURANT_ID")
     @NotNull
     @Valid //valid object in the object in the rest layer

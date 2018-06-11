@@ -59,4 +59,9 @@ public class CachedRestaurantStore implements RestaurantStore {
         return restaurantCache.computeIfAbsent(googleID,
                 s -> delegate.findById(s));
     }
+
+    @Override
+    public void invalidateCache(String googleID) {
+        restaurantCache.remove(googleID);
+    }
 }

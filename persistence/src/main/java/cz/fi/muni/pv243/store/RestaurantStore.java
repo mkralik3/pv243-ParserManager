@@ -16,4 +16,5 @@ public interface RestaurantStore {
 
     Restaurant findById(String googleID);
 
+    void invalidateCache(String googleID);
 }

@@ -64,6 +64,7 @@ public class CachedRestaurantStoreTest {
         firstRestaurant.addMenuForWeek(weekData);
 
         manager.persist(firstRestaurant);
+        manager.persist(parser);
 
         secondRestaurant = TestFactory.createRestaurant("res2", "id2", null, null);
         manager.remove(secondRestaurant);

@@ -64,4 +64,7 @@ public class JPARestaurantStore implements RestaurantStore {
             return null;
         }
     }
+
+    @Override
+    public void invalidateCache(String googleID) {}
 }
