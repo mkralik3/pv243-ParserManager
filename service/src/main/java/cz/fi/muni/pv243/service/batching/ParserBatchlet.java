@@ -8,15 +8,15 @@ package cz.fi.muni.pv243.service.batching;
 import cz.fi.muni.pv243.entity.Parser;
 import cz.fi.muni.pv243.service.ParserService;
 import cz.fi.muni.pv243.service.ParserUtil;
-import java.util.List;
+
 import javax.batch.api.Batchlet;
 import javax.batch.runtime.BatchStatus;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.util.List;
 
 /**
- *
  * @author Michaela Bocanova
  */
 @Named("parserBatchlet")
@@ -25,13 +25,13 @@ public class ParserBatchlet implements Batchlet {
 
     @Inject
     private ParserService parserService;
-    
+
     @Override
     public String process() throws Exception {
-        
+
         List<Parser> parsers = parserService.getAllParsers(true);
         for (Parser parser : parsers) {
-        	ParserUtil.execute(parser);
+            ParserUtil.execute(parser);
         }
         return BatchStatus.COMPLETED.toString();
     }
@@ -39,5 +39,5 @@ public class ParserBatchlet implements Batchlet {
     @Override
     public void stop() throws Exception {
     }
-    
+
 }

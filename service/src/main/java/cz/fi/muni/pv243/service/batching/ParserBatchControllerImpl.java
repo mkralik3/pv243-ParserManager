@@ -26,7 +26,7 @@ public class ParserBatchControllerImpl implements ParserBatchController {
      * @see cz.fi.muni.pv243.service.batching.ParserBatchController#startJob()
      */
     @Override
-    @Schedule(hour = "*", minute = "*", second = "*/10"/*dayOfWeek="Mon", hour="0"*/, persistent = false)
+    @Schedule(hour = "23", minute = "59", second = "59", dayOfWeek = "*", persistent = false)
     public void startJob() {        
         JobOperator jobOperator = BatchRuntime.getJobOperator();
         Properties jobParameters = new Properties();
