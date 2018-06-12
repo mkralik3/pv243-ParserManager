@@ -83,6 +83,17 @@ export default class RestaurantComponent extends Component {
         });
     }
 
+    notNullValidator(value) {
+        const response = {isValid: true, notification: {type: 'success', msg: '', title: ''}};
+        if (!value) {
+            response.isValid = false;
+            response.notification.type = 'error';
+            response.notification.msg = 'Xpath must be inserted';
+            response.notification.title = 'Requested Value';
+        }
+        return response
+    }
+
     render() {
         if (this.state.isLoading) {
 
@@ -133,7 +144,8 @@ export default class RestaurantComponent extends Component {
                             }} pagination insertRow={true}>
                 <TableHeaderColumn width={150} dataField='id' editable={false} isKey>Parser ID</TableHeaderColumn>
                 <TableHeaderColumn width={150} dataField='xpath'
-                                   dataFormat={UnconfirmedParsersComponent.xpathFormater}>XPath</TableHeaderColumn>
+                                   dataFormat={UnconfirmedParsersComponent.xpathFormater}
+                                   editable={{validator: this.notNullValidator}}>XPath</TableHeaderColumn>
                 <TableHeaderColumn width={150} dataField='day'
                                    editable={{type:'select', options:{values:this.days}}}>Day</TableHeaderColumn>
             </BootstrapTable>

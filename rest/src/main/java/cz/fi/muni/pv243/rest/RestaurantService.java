@@ -1,10 +1,10 @@
 package cz.fi.muni.pv243.rest;
 
-
 import cz.fi.muni.pv243.entity.Restaurant;
 import cz.fi.muni.pv243.infinispan.annotation.CachedStore;
 import cz.fi.muni.pv243.store.RestaurantStore;
 
+import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.validation.Valid;
 import javax.ws.rs.*;
@@ -24,6 +24,14 @@ public class RestaurantService {
         return restaurantStore.getAllRestaurants();
     }
 
+    @POST
+    @Consumes("application/json")
+    @Produces("application/json")
+    @RolesAllowed({"admin"})
+    public Restaurant createRestaurant(@Valid Restaurant restaurant) {
+        return restaurantStore.addRestaurant(restaurant);
+    }
+
     @PUT
     @Consumes("application/json")
     @Produces("application/json")
@@ -40,8 +48,6 @@ public class RestaurantService {
 
         return Response.ok().entity(toUpdate).build();
     }
-
-
 
     @GET
     @Path("{googleID}")
