@@ -4,7 +4,7 @@ import {BootstrapTable, TableHeaderColumn} from "react-bootstrap-table"
 import EditableText from './EditableText';
 import axios from 'axios';
 
-export default class AllRestaurantsComponent extends Component {
+export default class UnconfirmedParsersComponent extends Component {
 
     websocket;
 
@@ -15,6 +15,10 @@ export default class AllRestaurantsComponent extends Component {
             parsers: [],
             error: null
         };
+    }
+
+    componentWillUnmount() {
+        this.websocket.close();
     }
 
     componentDidMount() {
@@ -48,7 +52,7 @@ export default class AllRestaurantsComponent extends Component {
         return <EditableText value={cell} callback={(newValue) => {
             row.xpath = newValue;
 
-            axios.post('http://localhost:8080/ParserManager-rest/rest/parsers/', row, {
+            axios.put('http://localhost:8080/ParserManager-rest/rest/parsers/', row, {
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json',
@@ -83,7 +87,7 @@ export default class AllRestaurantsComponent extends Component {
                                }} pagination>
             <TableHeaderColumn width={150} dataField='id' isKey>Parser ID</TableHeaderColumn>
             <TableHeaderColumn width={150} dataField='xpath'
-                               dataFormat={AllRestaurantsComponent.xpathFormater}>XPath</TableHeaderColumn>
+                               dataFormat={UnconfirmedParsersComponent.xpathFormater}>XPath</TableHeaderColumn>
             <TableHeaderColumn width={150} dataField='day'>Day</TableHeaderColumn>
             <TableHeaderColumn width={150} dataField='restaurant'
                                dataFormat={(cell) => {if(cell!==null){ return <div style={{pointerEvents: "none"}}>{cell.name}</div>}

@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import axios from 'axios'
 import {NotificationManager} from "react-notifications"
-
+import {BootstrapTable, TableHeaderColumn} from "react-bootstrap-table"
+import UnconfirmedParsersComponent from './UnconfirmedParsersComponent';
 
 export default class RestaurantComponent extends Component {
 
@@ -10,11 +11,13 @@ export default class RestaurantComponent extends Component {
 
         this.state = {
             restaurant: {googlePlaceID: this.props.match.params['googlePlaceID']},
+            parsers: [],
             isLoading: false,
             error: null
         };
 
         this.fetchRestaurantData();
+        this.fetchParserForRestaurant();
     }
 
     fetchRestaurantData() {
@@ -22,6 +25,14 @@ export default class RestaurantComponent extends Component {
 
         axios.get("http://localhost:8080/ParserManager-rest/rest/restaurants/" + this.state.restaurant.googlePlaceID)
             .then(response => this.setState({restaurant: response.data, isLoading: false}))
+            .catch(error => this.setState({error, isLoading: false}));
+    }
+
+    fetchParserForRestaurant(){
+        this.setState({isLoading: true});
+
+        axios.get("http://localhost:8080/ParserManager-rest/rest/restaurants/" + this.state.restaurant.googlePlaceID + "/parsers")
+            .then(response => this.setState({parsers: response.data, isLoading: false}))
             .catch(error => this.setState({error, isLoading: false}));
     }
 
@@ -51,7 +62,8 @@ export default class RestaurantComponent extends Component {
         }
         let restaurant = this.state.restaurant;
 
-        return <form>
+        return <div>
+            <form>
             <div>{this.googlePlaceID}</div>
             <label htmlFor={"name"}>Name</label>
 
@@ -81,5 +93,18 @@ export default class RestaurantComponent extends Component {
                    }}
             />
         </form>
+            <BootstrapTable data={this.state.parsers}
+                            options={{
+                                noDataText: 'No unconfirmed parsers',
+                                paginationSize: 1
+                            }} pagination>
+                <TableHeaderColumn width={150} dataField='id' isKey>Parser ID</TableHeaderColumn>
+                <TableHeaderColumn width={150} dataField='xpath'
+                                   dataFormat={UnconfirmedParsersComponent.xpathFormater}>XPath</TableHeaderColumn>
+                <TableHeaderColumn width={150} dataField='day'>Day</TableHeaderColumn>
+            </BootstrapTable>
+        </div>
+
     }
+
 }
