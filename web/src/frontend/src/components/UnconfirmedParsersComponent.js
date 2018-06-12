@@ -57,7 +57,9 @@ export default class UnconfirmedParsersComponent extends Component {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json',
                 }
-            })
+            }).then(response => {
+                NotificationManager.success("INFO", "Parser was added", 3000);
+            });
         }}/>
     }
 
