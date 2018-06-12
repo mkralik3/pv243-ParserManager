@@ -55,4 +55,17 @@ public class RestaurantService {
 
         return Response.status(Response.Status.OK).entity(data).build();
     }
+
+    @GET
+    @Path("{googleID}/parsers")
+    @Produces("application/json")
+    public Response getRestaurantsParsers(@PathParam("googleID") String googleId) {
+        Restaurant data = restaurantStore.findById(googleId);
+
+        if (data == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+
+        return Response.status(Response.Status.OK).entity(data.getParsers()).build();
+    }
 }
