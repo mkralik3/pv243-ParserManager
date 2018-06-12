@@ -72,7 +72,7 @@ export default class UnconfirmedParsersComponent extends Component {
                                    onRowClick: (row, columnIndex) => {
                                        switch (columnIndex) {
                                            case 3:
-                                               this.props.history.push("/ParserManager-react/restaurants/" + row.restaurant.googlePlaceID);
+                                               this.props.history.push("/restaurants/" + row.restaurant.googlePlaceID);
                                                break;
                                            case 4:
                                                axios.post('http://localhost:8080/ParserManager-rest/rest/parsers/accept/' + row.id, {
