@@ -85,7 +85,7 @@ export default class AllRestaurantsComponent extends Component {
                                options={{
                                    noDataText: 'No restaurant in DB',
                                    onRowClick: (row, columnIndex) => {
-                                       this.props.history.push("/ParserManager-react/restaurants/" + row.googlePlaceID);
+                                       this.props.history.push("/restaurants/" + row.googlePlaceID);
                                    },
                                    onAddRow: this.addRestaurant.bind(this),
                                    paginationSize: 1

@@ -6,6 +6,7 @@ import AllRestaurantsComponent from "./components/AllRestaurantsComponent";
 import {Route, Switch} from "react-router-dom";
 import {ToastContainer} from "react-toastify";
 
+import '../node_modules/react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
 import 'react-toastify/dist/ReactToastify.css';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import {Nav, Navbar, NavItem} from "react-bootstrap";
