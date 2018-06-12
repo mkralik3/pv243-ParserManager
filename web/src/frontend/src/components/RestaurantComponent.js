@@ -20,6 +20,23 @@ export default class RestaurantComponent extends Component {
         this.fetchParserForRestaurant();
     }
 
+    days = [ {
+        value: 'MONDAY',
+        text: 'MONDAY'
+    }, {
+        value: 'TUESDAY',
+        text: 'TUESDAY'
+    }, {
+        value: 'WEDNESDAY',
+        text: 'WEDNESDAY'
+    }, {
+        value: 'THURSDAY',
+        text: 'THURSDAY'
+    }, {
+        value: 'FRIDAY',
+        text: 'FRIDAY'
+    } ];
+
     fetchRestaurantData() {
         this.setState({isLoading: true});
 
@@ -49,6 +66,21 @@ export default class RestaurantComponent extends Component {
                 NotificationManager.success("INFO", "Restaurant was updated", 3000);
             })
             .catch(error => this.setState({error, isLoading: false}));
+    }
+
+    addParser(row){
+        row.restaurant = this.state.restaurant;
+        row.id = null;
+        console.log(row);
+        axios.post('http://localhost:8080/ParserManager-rest/rest/parsers/', row, {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            }
+        }).then(response => {
+            this.fetchParserForRestaurant();
+            NotificationManager.success("INFO", "Parser was added", 3000);
+        });
     }
 
     render() {
@@ -96,12 +128,14 @@ export default class RestaurantComponent extends Component {
             <BootstrapTable data={this.state.parsers}
                             options={{
                                 noDataText: 'No unconfirmed parsers',
-                                paginationSize: 1
-                            }} pagination>
-                <TableHeaderColumn width={150} dataField='id' isKey>Parser ID</TableHeaderColumn>
+                                paginationSize: 1,
+                                onAddRow: this.addParser.bind(this)
+                            }} pagination insertRow={true}>
+                <TableHeaderColumn width={150} dataField='id' editable={false} isKey>Parser ID</TableHeaderColumn>
                 <TableHeaderColumn width={150} dataField='xpath'
                                    dataFormat={UnconfirmedParsersComponent.xpathFormater}>XPath</TableHeaderColumn>
-                <TableHeaderColumn width={150} dataField='day'>Day</TableHeaderColumn>
+                <TableHeaderColumn width={150} dataField='day'
+                                   editable={{type:'select', options:{values:this.days}}}>Day</TableHeaderColumn>
             </BootstrapTable>
         </div>
 

@@ -10,8 +10,7 @@ import cz.fi.muni.pv243.entity.Day;
 import cz.fi.muni.pv243.entity.Parser;
 import cz.fi.muni.pv243.entity.Restaurant;
 import cz.fi.muni.pv243.infinispan.annotation.CachedStore;
-import cz.fi.muni.pv243.infinispan.store.CachedParserStore;
-import cz.fi.muni.pv243.infinispan.store.CachedRestaurantStore;
+import cz.fi.muni.pv243.jpa.annotation.JPAStore;
 import cz.fi.muni.pv243.store.ParserStore;
 import cz.fi.muni.pv243.store.RestaurantStore;
 
@@ -36,8 +35,12 @@ public class ParserServiceImpl implements ParserService {
     private ParserStore parserStore;
 
     @Inject
-    @CachedStore
+    @JPAStore
     private RestaurantStore restaurantStore;
+
+    @Inject
+    @CachedStore
+    private RestaurantStore cachedRestaurantStore;
 
     @Inject
     @RequestScoped
@@ -61,13 +64,12 @@ public class ParserServiceImpl implements ParserService {
 
     @Override
     public Parser addParser(Parser parser) {
-        System.out.println("------service------- parser to add - restaurant" + parser.getRestaurant());
         Restaurant restaurant = parser.getRestaurant();
         if (restaurant != null) {
             restaurant = restaurantStore.findById(restaurant.getGooglePlaceID());
             if (restaurant != null) {
                 parser.setRestaurant(restaurant);
-                restaurantStore.invalidateCache(restaurant.getGooglePlaceID());
+                cachedRestaurantStore.invalidateCache(restaurant.getGooglePlaceID());
             }
         }
 
