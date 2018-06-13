@@ -40,8 +40,12 @@
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>2.0.2</version>
-            <scope>provided</scope>
+            <version>2.9.5</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.5.5</version>
         </dependency>
         <dependency>
             <groupId>jboss</groupId>
@@ -126,10 +130,45 @@
                                         <resource>
                                         <directory>${pom.basedir}/src/test/resources</directory>
                                             <includes>
-                                                <include>standalone-full.xml</include>
+                                                <include>standalone-full-ha.xml</include>
                                             </includes>
                                         </resource>
                                     </resources>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <version>1.2.1</version>
+                        <executions>
+                            <execution>
+                                <id>Add base directory 1</id>
+                                <phase>process-test-resources</phase>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                                <configuration>
+                                    <executable>mkdir</executable>
+                                    <arguments>
+                                        <argument>-p</argument>
+                                        <argument>${pom.basedir}/target/wildfly-11.0.0.Final/standalone-ha-node-1/deployments</argument>
+                                    </arguments>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>Add base directory 2</id>
+                                <phase>process-test-resources</phase>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                                <configuration>
+                                    <executable>mkdir</executable>
+                                    <arguments>
+                                        <argument>-p</argument>
+                                        <argument>${pom.basedir}/target/wildfly-11.0.0.Final/standalone-ha-node-2/deployments</argument>
+                                    </arguments>
                                 </configuration>
                             </execution>
                         </executions>

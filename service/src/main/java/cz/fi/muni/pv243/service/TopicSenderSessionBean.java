@@ -12,7 +12,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.jms.JMSContext;
 import javax.jms.JMSException;
-import javax.jms.Queue;
+import javax.jms.Topic;
 
 import cz.fi.muni.pv243.service.logging.ParserManagerLogger;
 
@@ -25,19 +25,19 @@ import java.io.Serializable;
 @Named
 @LocalBean
 @Stateless
-public class QueueSenderSessionBean {
+public class TopicSenderSessionBean {
 
-    @Resource(mappedName="java:jboss/exported/jms/queue/ChangedParsersQueue")
-    private Queue myQueue;
+    @Resource(mappedName="java:jboss/exported/jms/topic/ChangedParsersTopic")
+    private Topic myTopic;
     @Inject 
     private JMSContext jmsContext;
 
     public void sendMessage(Serializable message) {
-        jmsContext.createProducer().send(myQueue, message/*jmsContext.createMessage()*/);
         try {
-            ParserManagerLogger.LOGGER.logMessageQueued(myQueue.getQueueName(), message.toString());
+            jmsContext.createProducer().send(myTopic, message/*jmsContext.createMessage()*/);
+            ParserManagerLogger.LOGGER.logMessageTopiced(myTopic.getTopicName(), message.toString());
         } catch (JMSException e) {
-            ParserManagerLogger.LOGGER.logMessageQueueError(e);
+            ParserManagerLogger.LOGGER.logMessageTopicError(e);
         }
     }
 }

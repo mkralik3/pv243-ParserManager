@@ -56,10 +56,10 @@ public interface ParserManagerLogger extends BasicLogger {
     void logBatchJobAbandon(String jobName, long jobId, String status);
     
     @LogMessage(level = Logger.Level.INFO)
-    @Message(id = BASE + 140, value = "Message: {0} in queue: {1}.", format = Message.Format.MESSAGE_FORMAT)
-    void logMessageQueued(String queue, String msg);
+    @Message(id = BASE + 140, value = "Message: {0} in topic: {1}.", format = Message.Format.MESSAGE_FORMAT)
+    void logMessageTopiced(String topic, String msg);
     
     @LogMessage(level = Logger.Level.WARN)
-    @Message(id = BASE + 145, value = "JMS queue encountered error: {0}", format = Message.Format.MESSAGE_FORMAT)
-    void logMessageQueueError(Throwable error);
+    @Message(id = BASE + 145, value = "JMS topic encountered error: {0}", format = Message.Format.MESSAGE_FORMAT)
+    void logMessageTopicError(Throwable error);
 }
