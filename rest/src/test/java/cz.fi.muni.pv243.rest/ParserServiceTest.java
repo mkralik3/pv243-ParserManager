@@ -6,16 +6,17 @@ import cz.fi.muni.pv243.infinispan.annotation.CachedStore;
 import cz.fi.muni.pv243.store.ParserStore;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
+import org.apache.commons.io.FileUtils;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.arquillian.transaction.api.annotation.TransactionMode;
-import org.jboss.arquillian.transaction.api.annotation.Transactional;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import javax.inject.Inject;
+import java.io.File;
 import java.io.IOException;
 import java.util.logging.Logger;
 
@@ -35,7 +36,7 @@ public class ParserServiceTest {
 
     @Inject
     @CachedStore
-    ParserStore store;
+    private ParserStore store;
 
     @Deployment
     public static WebArchive createDeployment() {

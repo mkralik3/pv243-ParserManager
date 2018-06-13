@@ -5,7 +5,6 @@
  */
 package cz.fi.muni.pv243.service;
 
-import com.sun.org.apache.regexp.internal.RE;
 import cz.fi.muni.pv243.entity.Day;
 import cz.fi.muni.pv243.entity.Parser;
 import cz.fi.muni.pv243.entity.Restaurant;
@@ -44,7 +43,7 @@ public class ParserServiceImpl implements ParserService {
 
     @Inject
     @RequestScoped
-    private QueueSenderSessionBean senderSessionBean;
+    private TopicSenderSessionBean senderSessionBean;
 
     @Override
     public void confirm(long parserId) {

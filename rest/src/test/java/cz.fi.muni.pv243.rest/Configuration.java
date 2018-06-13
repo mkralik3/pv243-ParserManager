@@ -17,6 +17,7 @@ public class Configuration {
             : 8080 + Integer.valueOf(System.getProperty("port.offset"));
 
     public final static String BASE_URL = "http://localhost:" + PORT + "/" + Configuration.WAR_NAME + "/rest";
+    public final static String BASE_URL2 = "http://localhost:" + Integer.toString(8080 + 200) + "/" + Configuration.WAR_NAME + "/rest";
 
     public static final String WAR_NAME = "test-rest";
 

@@ -25,8 +25,8 @@ import java.util.List;
 @Named
 @MessageDriven(name = "ParserConfigurationHandler",
 activationConfig = {
-        @ActivationConfigProperty(propertyName = "destinationType", propertyValue = "javax.jms.Queue"),
-        @ActivationConfigProperty(propertyName = "destination", propertyValue = "java:jboss/exported/jms/queue/ChangedParsersQueue"),
+        @ActivationConfigProperty(propertyName = "destinationType", propertyValue = "javax.jms.Topic"),
+        @ActivationConfigProperty(propertyName = "destination", propertyValue = "java:jboss/exported/jms/topic/ChangedParsersTopic"),
         @ActivationConfigProperty(propertyName = "acknowledgeMode", propertyValue = "Auto-acknowledge")
 /*mappedName = "jms/myQueue"*/})
 public class ParserConfigurationMDB implements MessageListener {
